@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+    <Resource id="MyDataSource" type="DataSource">
+        JdbcDriver org.hsqldb.jdbcDriver
+        JdbcUrl jdbc:hsqldb:file:data/maBase;shutdown=true;hsqldb.write_delay=false
+        UserName sa
+        Password
+        JtaManaged false
+    </Resource>
+
+ 
+
+</resources>
