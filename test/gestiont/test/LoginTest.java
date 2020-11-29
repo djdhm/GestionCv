@@ -35,7 +35,7 @@ public class LoginTest  extends BaseJunit5 {
 	    Personne p = new Personne("name", "surname", "www.adresse.b", TEST_EMAIL_COM, PASSWORD, new Date());
 		personneDao.createPersonne(p);
 	
-		boolean loggedIn = userService.login(TEST_EMAIL_COM,PASSWORD);
+		boolean loggedIn = userService.authentify(TEST_EMAIL_COM,PASSWORD);
         
 		assertTrue(loggedIn);
 		
@@ -49,8 +49,8 @@ public class LoginTest  extends BaseJunit5 {
 	    Personne p = new Personne("name", "surname", "www.adresse.b", TEST_EMAIL_COM, PASSWORD, new Date());
 		personneDao.createPersonne(p);
 		
-		boolean loggedWithFalseEmail = userService.login("nocorrect@email.test", "password");
-		boolean loggedWithFalsePassword = userService.login(TEST_EMAIL_COM, "password");
+		boolean loggedWithFalseEmail = userService.authentify("nocorrect@email.test", "password");
+		boolean loggedWithFalsePassword = userService.authentify(TEST_EMAIL_COM, "password");
 		assertFalse(loggedWithFalsePassword);
 		assertFalse(loggedWithFalseEmail);
 		

@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -14,17 +15,16 @@ import gestion.dao.IPersonneDAO;
 import gestion.entities.Personne;
 
 @Stateless
-@Named
 public class GuestService {
 
-	
 	@EJB
 	IPersonneDAO personneDAO;
+	
 	
 	@PostConstruct
 	public void init() {
 		System.out.println("Create " + this);
-		System.out.println("---------------Actuellement il y a "+personneDAO.getAllPerson().size()+" personnes inscrites");
+		
 		/* Ce code crée des problèmes de persistence lors d'inscription avec page dédiée ??*/
 		/*if (personneDAO.getAllPerson().size() < 2) {
 			Personne p1 = new Personne();

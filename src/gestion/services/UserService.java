@@ -1,11 +1,10 @@
 package gestion.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.EJB;
+import javax.ejb.Remove;
 import javax.ejb.Stateful;
-import javax.inject.Named;
+import javax.inject.Inject;
 
 import gestion.dao.IActiviteDao;
 import gestion.dao.IPersonneDAO;
@@ -13,41 +12,60 @@ import gestion.entities.Activite;
 import gestion.entities.Personne;
 
 @Stateful
-@Named("personalSpace")
 public class UserService {
 
 	
 	
-	@EJB
+	@Inject
 	IPersonneDAO personneDao;
-	@EJB
+	@Inject
 	IActiviteDao activiteDao;
-	
 	
 	
 	private boolean loggedIn;
 	private Personne personne;
 	
-	public boolean login(String username,String password) {
+	public boolean authentify(String username,String password) {
 	 
 		System.out.println("I.m trying to login");
 		Personne p = personneDao.getPersonneByEmail(username);
-		if(p == null) return false;
+		if(p == null) {
+			System.out.println("--------Problème login : p est null...");
+			return false; 
+		}
 		if(p.verifyPassword(password)) {
 			loggedIn=true;
 			this.personne = p;
+			System.out.println("--------Login SUCCESS");
+			System.out.println(personne.getNom() +" "+ personne.getPrenom() + " s'est loggé");
+			System.out.println("Objet personne = "+personne);
 			return true;
-			
 		}
+		System.out.println("--------Problème login : le psw " + password + " est mauvais");
 		return false;
 	}
 	
-	public void logout() {
+	public String login(String username,String password) {
+		 
+		//TODO: faire un logout ici au cas où une personne ait 2 compte ??
+		
+		if(authentify(username, password))
+			return "loggedUserServices?faces-redirect=true";
+		else
+			return "login";
+	}
+	
+	@Remove
+	public String logout() {
 		if(loggedIn) {
 			loggedIn=false;
+			System.out.println(personne.getNom() +" "+ personne.getPrenom() + " s'est déconnecté");
 			personne=null;
+			return "search?faces-redirect=true";
 		}else {
-			throw new IllegalAccessError();
+			System.out.println("WTF je suis pas co...");
+			return "search?faces-redirect=true";
+			//throw new IllegalAccessError();
 		}
 	}
 	
@@ -89,5 +107,15 @@ public class UserService {
 		if(loggedIn) 		return this.personne.getActivities();
         return null;
 	}
+
+	public Personne getPersonne() {
+		return personne;
+	}
+
+	public void setPersonne(Personne personne) {
+		this.personne = personne;
+	}
+	
+	
 	
 }

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template/mylayout.xhtml">
+	<ui:define name="content">
+		<f:view>
+			<c:set var="p" value="#{userActions.personne}" />
+			<h1>Informations personnelles :</h1>
+				<h:outputText value="Nom : " />
+				<h:outputText value="#{p.nom}" />
+				<br/>
+
+				<h:outputText value="Prenom : " />
+				<h:outputText value="#{p.prenom}" />
+				<br/>
+				
+				<h:outputText value="Mail : " />
+				<h:outputText value="#{p.email}" />
+				<br/>
+				
+				<h:outputText value="Site Web : " />
+				<h:outputText value="#{p.siteweb}" />
+				<br/>
+				
+				<h:outputText value="Date de naissance : " />
+				<h:outputText value="#{p.dateNaissance}">
+					<f:convertDateTime pattern="dd-MM-yyyy" /> <!-- Format de conversion date identique peu importe si input ou output-->
+				</h:outputText>
+				<br/>
+				
+				<h:outputText value="Mot de passe : " />
+				<h:outputText value="#{p.password}" />
+				<br/>
+
+			<h:form id="logout">
+				<div class="form-group">
+					<h:commandButton
+						action="#{userActions.logout()}"
+						styleClass="btn btn-primary" value="Logout" />
+					<span> </span>
+				</div>
+			</h:form>
+
+		</f:view>
+	</ui:define>
+</ui:composition>
+
+</html>

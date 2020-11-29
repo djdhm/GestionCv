@@ -12,7 +12,7 @@
 
 			<h1>Inscription</h1>
 			<h:form id="inscription">
-				<c:set var="p" value="#{signup.person}" />
+				<c:set var="p" value="#{signup.signingUpPerson}" />
 
 				<div class="form-group">
 					<label for="nom">Nom:</label>
@@ -63,7 +63,7 @@
 
 				<div class="form-group">
 					<h:commandButton action="#{signup.save()}"
-						styleClass="btn btn-primary" value="Save" />
+						styleClass="btn btn-primary" value="S'inscrire" />
 					<span> </span>
 					<h:link styleClass="btn btn-info" outcome="hello" value="Quit" />
 				</div>
