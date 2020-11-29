@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template/mylayout.xhtml">
+	<ui:define name="content">
+		<f:view>
+
+			<h1>Inscription</h1>
+			<h:form id="inscription">
+				<c:set var="p" value="#{signup.person}" />
+
+				<div class="form-group">
+					<label for="nom">Nom:</label>
+					<h:inputText id="nom" value="#{p.nom}" styleClass="form-control"
+						required="true">
+					</h:inputText>
+				</div>
+
+				<div class="form-group">
+					<label for="prenom">Prenom:</label>
+					<h:inputText id="prenom" value="#{p.prenom}"
+						styleClass="form-control" required="true">
+					</h:inputText>
+				</div>
+				
+				<div class="form-group">
+					<label for="web">Site Web:</label>
+					<h:inputText id="web" value="#{p.siteweb}"
+						styleClass="form-control" required="true">
+					</h:inputText>
+				</div>
+
+				<div class="form-group">
+					<label for="mail">Email:</label>
+					<h:inputText id="mail" value="#{p.email}" styleClass="form-control"
+						required="true">
+					</h:inputText>
+				</div>
+
+				<div class="form-group">
+					<label for="password">Mot de passe:</label>
+					<h:inputText id="password" value="#{p.password}"
+						styleClass="form-control" required="true">
+					</h:inputText>
+				</div>
+
+				<div class="form-group">
+					<label for="birthday">Date de naissance (format dd-mm-YYYY):</label>
+					<h:panelGroup>
+						<h:inputText id="birthday" value="#{p.dateNaissance}"
+							label="Birthday">
+							<f:convertDateTime pattern="dd-MM-yyyy" />
+							<!-- Format de conversion date -->
+						</h:inputText>
+						<h:message errorClass="error" for="birthday" />
+					</h:panelGroup>
+				</div>
+
+				<div class="form-group">
+					<h:commandButton action="#{signup.save()}"
+						styleClass="btn btn-primary" value="Save" />
+					<span> </span>
+					<h:link styleClass="btn btn-info" outcome="hello" value="Quit" />
+				</div>
+				
+				
+			</h:form>
+
+		</f:view>
+	</ui:define>
+</ui:composition>
+
+</html>

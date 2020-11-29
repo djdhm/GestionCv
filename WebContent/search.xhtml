@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="/template/mylayout.xhtml">
+	<ui:define name="content">
+		<f:view>
+
+			<h1>Liste des personnes</h1>
+			<h:form>
+				<table class="table">
+
+					<h:dataTable value="#{guestService.getAllPersonnes()}" var="p"
+						styleClass="table table-hover" headerClass="danger"
+						footerClass="danger" rowClasses="success,warning">
+
+						<h:column>
+							<!-- Une colonne -->
+							<f:facet name="header">Number</f:facet>
+							<h:outputText value="#{p.id}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">Nom</f:facet>
+							<h:outputText value="#{p.nom}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">Prénom</f:facet>
+							<h:outputText value="#{p.prenom}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">Action</f:facet>
+							<h:commandLink value="voir CV"
+								styleClass="btn btn-primary btn-xs"
+								action="#{course.show(p.id)}" />
+						</h:column>
+					</h:dataTable>
+				</table>
+			</h:form>
+			
+
+		</f:view>
+	</ui:define>
+</ui:composition>
+
+</html>

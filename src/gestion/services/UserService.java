@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.inject.Named;
 
 import gestion.dao.IActiviteDao;
 import gestion.dao.IPersonneDAO;
@@ -12,6 +13,7 @@ import gestion.entities.Activite;
 import gestion.entities.Personne;
 
 @Stateful
+@Named("personalSpace")
 public class UserService {
 
 	

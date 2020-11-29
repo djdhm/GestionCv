@@ -59,10 +59,14 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 		
 	}
 
+	/*On devrait la renommer en save ? */
 	@Override
 	public void createPersonne(Personne p) {
 		// TODO Auto-generated method stub
-		em.persist(p);
+		if(p.getId() == null) /*Je fais ça à cause du problème du detached entity... Pourtant l'objet est sensé être nouveau ! */
+			em.persist(p);
+		else
+			em.merge(p);
 	}
 	public List<Personne> applyFilter(String nom,String prenom,String activiteTitre){
 		
