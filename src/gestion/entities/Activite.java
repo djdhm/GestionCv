@@ -26,7 +26,7 @@ public class Activite implements Serializable {
 
 	@Id
 	@GeneratedValue
-	long id;
+	Long id;
 	
 	@Column
 	@NotNull

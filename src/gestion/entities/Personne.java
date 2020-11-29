@@ -22,8 +22,12 @@ import org.hibernate.annotations.GenerationTime;
 
 import com.sun.istack.NotNull;
 
-@NamedQueries({ @NamedQuery(name = "findAllPersonnes", query = "Select p from Personne p"),
-		@NamedQuery(name = "findPersonneByEmail", query = "Select p from Personne p where p.email= :email") })
+@NamedQueries({ 
+		@NamedQuery(name = "findAllPersonnes", query = "Select p from Personne p"),
+		@NamedQuery(name = "findPersonsByLastName", query = "Select p from Personne p where p.nom= :nom"),
+		@NamedQuery(name = "findPersonByFirstName", query = "Select p from Personne p where p.prenom= :prenom"),
+		@NamedQuery(name = "findPersonneByEmail", query = "Select p from Personne p where p.email= :email") 
+		})
 @Entity
 public class Personne implements Serializable {
 

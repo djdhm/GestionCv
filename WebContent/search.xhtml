@@ -8,12 +8,28 @@
 <ui:composition template="/template/mylayout.xhtml">
 	<ui:define name="content">
 		<f:view>
-			
-			<h1>Liste des personnes</h1>
-			<h:form>
-				<table class="table">
 
-					<h:dataTable value="#{guestService.getAllPersonnes()}" var="p"
+
+
+			<h1>Recherche</h1>
+
+			<h:form>
+				<h4>Nom</h4>
+				<h:inputText id="text" value="#{guestService.nomC}" />
+				<h4>Prenom</h4>
+				<h:inputText id="text2" value="#{guestService.prenomC}" />
+				
+				<br />
+				<h:commandButton value="Show" action="#{guestService.search()}" >
+					<f:ajax execute="text text2" render="@all" />
+					<!-- ??? render tout ce qui fait appel à "text" ??? OU tout les objets ?? pas que les objets d'ID affichage ???-->
+				</h:commandButton>
+				<br />
+				
+				
+			
+				<table class="table">
+					<h:dataTable value="#{guestService.resultOfSearch}" var="p"
 						styleClass="table table-hover" headerClass="danger"
 						footerClass="danger" rowClasses="success,warning">
 
@@ -39,7 +55,6 @@
 					</h:dataTable>
 				</table>
 			</h:form>
-			
 
 		</f:view>
 	</ui:define>

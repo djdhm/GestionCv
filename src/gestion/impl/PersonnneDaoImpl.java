@@ -3,6 +3,7 @@ package gestion.impl;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -70,17 +71,53 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 	}
 	public List<Personne> applyFilter(String nom,String prenom,String activiteTitre){
 		
-		String queryString= "select p from personne p join activite a where p.nom like :nomF and p.prenom like :prenomF and a.titre like :titreF";
-		Query query = em.createNativeQuery(queryString,Personne.class);
-		query.setParameter("nomF", "%"+nom+"%");
-		query.setParameter("prenomF","%"+ prenom+"%");
-		query.setParameter("titreF","%"+activiteTitre+"%");
+		//TODO:
 		
+		HashMap<String, String> parameters = new HashMap();
+		if(!nom.equals("")) parameters.put("n", nom);
+		if(!prenom.equals("")) parameters.put("p", prenom);
+		if(!activiteTitre.equals("")) parameters.put("a", activiteTitre);
 		
+		/*Il faut construire la requêtes en fonction des params présents*/
+		/*TODO: rajouter le champs activite... Je l'ai enlevé temporairement*/
+		/*TODO: rendre insensible à la casse ?? ie. Aucune différence entre minuscule et maj*/
+		String queryString= "select p from Personne p where ";
+		
+		int counter = 0;
+		
+		for (Map.Entry me : parameters.entrySet()) {
+			
+	          System.out.println("Key: "+me.getKey() + " & Value: " + me.getValue());
+	          
+	          if(counter > 0) {
+	        	  queryString += " and ";
+	          }
+	          
+	          if(me.getKey().equals("n") && !me.getValue().equals("")) {
+	        	  queryString += "p.nom like :nomF";
+	          }
+	          if(me.getKey().equals("p") && !me.getValue().equals("")) {
+	        	  queryString += "p.prenom like :prenomF";
+	          }
+	          if(me.getKey().equals("a") && !me.getValue().equals("")) {
+	        	  queryString += "a.titre like :titreF and a.personne =p";
+	          }
+	          counter++;
+	        }
+		System.out.println("QUERY FINALE FILTER: "+queryString);
+		Query query = em.createQuery(queryString,Personne.class);
+		
+		for (Map.Entry me : parameters.entrySet()) {
+	          if(me.getKey().equals("n") && !me.getValue().equals("")) {query.setParameter("nomF", "%"+nom+"%");}
+	          if(me.getKey().equals("p") && !me.getValue().equals("")) {query.setParameter("prenomF","%"+ prenom+"%");}
+	          if(me.getKey().equals("a") && !me.getValue().equals("")) {query.setParameter("titreF","%"+activiteTitre+"%");}
+	        }
 		try {
-			return query.getResultList();
+			List<Personne> results = query.getResultList();
+			return results;
 
 		}catch(NoResultException e) {
+			/*WHAT ???*/
 			return new ArrayList<Personne>();
 		}
 

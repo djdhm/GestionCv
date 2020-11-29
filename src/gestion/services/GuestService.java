@@ -25,14 +25,19 @@ public class GuestService {
 	public void init() {
 		System.out.println("Create " + this);
 		
-		/* Ce code crée des problèmes de persistence lors d'inscription avec page dédiée ??*/
-		/*if (personneDAO.getAllPerson().size() < 2) {
-			Personne p1 = new Personne();
-			p1.setNom("Albert");
-			p1.setPrenom("Einstein");
-			p1.setEmail("relativite@restreinte.emc2");
-			personneDAO.createPersonne(p1);
-		}*/
+		if (personneDAO.getAllPerson().size() < 2) {
+			Personne p = new Personne();
+			p.setNom("Einstein");
+			p.setPrenom("Albert");
+			p.setEmail("relativite@restreinte.emc2");
+			personneDAO.createPersonne(p);
+			
+			p = new Personne();
+			p.setNom("Poincare");
+			p.setPrenom("Henri");
+			p.setEmail("conjecture@riemann.pi");
+			personneDAO.createPersonne(p);
+		}
 	}
 	
 	public List<Personne> getAllPersonnes(){
