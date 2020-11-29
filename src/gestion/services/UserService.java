@@ -25,6 +25,8 @@ public class UserService {
 	private boolean loggedIn;
 	private Personne personne;
 	
+	private Activite editedActivity;
+	
 	public boolean authentify(String username,String password) {
 	 
 		System.out.println("I.m trying to login");
@@ -83,11 +85,22 @@ public class UserService {
 	public void addActivite(Activite activite) throws AccessInterditException {
 		if(loggedIn) {
 			
-			this.activiteDao.createActivite(activite);
+			this.activiteDao.saveActivite(activite);
 			this.personne.addActivite(activite);
 			this.personneDao.updatePerson(personne);
 			
 		}else throw new AccessInterditException("adding activite");
+	}
+	
+	public String editActivity() {
+		if(loggedIn) {
+			editedActivity = new Activite();
+			return "editActivity?faces-redirect=true";
+		}else {
+			System.out.println("WTF je suis pas co...");
+			return "search?faces-redirect=true";
+			//throw new IllegalAccessError();
+		}
 	}
 	
 	public List<Personne> getCoptations() throws AccessInterditException {
@@ -114,6 +127,14 @@ public class UserService {
 
 	public void setPersonne(Personne personne) {
 		this.personne = personne;
+	}
+
+	public Activite getEditedActivity() {
+		return editedActivity;
+	}
+
+	public void setEditedActivity(Activite editedActivity) {
+		this.editedActivity = editedActivity;
 	}
 	
 	

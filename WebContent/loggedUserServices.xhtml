@@ -45,6 +45,43 @@
 					<span> </span>
 				</div>
 			</h:form>
+			
+			<h2>Liste des activités</h2>
+			
+			<h:form id="addActivity">
+				<div class="form-group">
+					<h:commandButton
+						action="#{userActions.editActivity()}"
+						styleClass="btn btn-primary" value="Ajouter une activité" />
+					<span> </span>
+				</div>
+			</h:form>
+			
+			<table class="table">
+					<h:dataTable value="#{userActions.activities}" var="a"
+						styleClass="table table-hover" headerClass="danger"
+						footerClass="danger" rowClasses="success,warning">
+
+						<h:column>
+							<!-- Une colonne -->
+							<f:facet name="header">Titre</f:facet>
+							<h:outputText value="#{a.titre}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">Année</f:facet>
+							<h:outputText value="#{a.annee}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">Description</f:facet>
+							<h:outputText value="#{a.description}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">Site web</f:facet>
+							<h:outputText value="#{a.siteWeb}" />
+						</h:column>
+						
+					</h:dataTable>
+				</table>
 
 		</f:view>
 	</ui:define>

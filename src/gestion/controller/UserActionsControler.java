@@ -1,6 +1,7 @@
 package gestion.controller;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -8,7 +9,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import gestion.dao.IPersonneDAO;
+import gestion.entities.Activite;
 import gestion.entities.Personne;
+import gestion.services.AccessInterditException;
 import gestion.services.UserService;
 
 @Named("userActions")
@@ -28,6 +31,7 @@ public class UserActionsControler implements Serializable{
    private String mail = "";
    
    Personne personne;
+   Activite editedActivity;
    
    @PostConstruct
    public void init() {
@@ -55,7 +59,15 @@ public class UserActionsControler implements Serializable{
 			return result;
 		}
 
-	
+		public String editActivity() {
+			String result = userService.editActivity();
+			editedActivity = new Activite();
+			return result;
+		}
+		
+		public void saveActivity() throws AccessInterditException {
+			userService.addActivite(editedActivity);
+		}
 
 		public String getPwd() {
 			return pwd;
@@ -73,4 +85,17 @@ public class UserActionsControler implements Serializable{
 			this.mail = mail;
 		}
 	
+		public List<Activite> getActivities() {
+			return userService.getActivities();
+		}
+
+		public Activite getEditedActivity() {
+			return editedActivity;
+		}
+
+		public void setEditedActivity(Activite editedActivity) {
+			this.editedActivity = editedActivity;
+		}
+		
+		
 }

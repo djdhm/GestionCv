@@ -109,6 +109,11 @@ public class Activite implements Serializable {
 	public void setNature(NatureActivite nature) {
 		this.nature = nature;
 	}
+
+	public Long getId() {
+		return id;
+	}
+	
 	
    
 }

@@ -17,9 +17,11 @@ public class ActiviteDaoImpl implements IActiviteDao {
 
 	
 	@Override
-	public void createActivite(Activite activite) {
-		// TODO Auto-generated method stub
-		em.persist(activite);
+	public void saveActivite(Activite activite) {
+		if(activite.getId() == null) /*Je fais ça à cause du problème du detached entity... Pourtant l'objet est sensé être nouveau ! */
+			em.persist(activite);
+		else
+			em.merge(activite);
 		
 		
 	}
