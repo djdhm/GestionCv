@@ -75,9 +75,9 @@ public class UserService {
 		System.out.println(this.personne);
 		System.out.println(this.loggedIn);
 		if(loggedIn) {
-			personneDao.createPersonne(p);
+			personneDao.savePersonne(p);
 			this.personne.addCooptation(p);
-			personneDao.updatePerson(p);
+			personneDao.savePersonne(p);
 			
 		}else throw new AccessInterditException("test");
 	}
@@ -87,7 +87,7 @@ public class UserService {
 			
 			this.activiteDao.saveActivite(activite);
 			this.personne.addActivite(activite);
-			this.personneDao.updatePerson(personne);
+			this.personneDao.savePersonne(personne);
 			
 		}else throw new AccessInterditException("adding activite");
 	}

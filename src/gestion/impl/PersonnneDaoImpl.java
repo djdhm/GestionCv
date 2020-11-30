@@ -39,12 +39,6 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 	}
 
 	@Override
-	public void updatePerson(Personne p) {
-		// TODO Auto-generated method stub
-		em.merge(p);
-	}
-
-	@Override
 	public void deletePersonne(Personne p) {
 		// TODO Auto-generated method stub
 		em.remove(em.contains(p) ? p : em.merge(p));
@@ -62,12 +56,16 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 
 	/*On devrait la renommer en save ? */
 	@Override
-	public void createPersonne(Personne p) {
+	public void savePersonne(Personne p) {
 		// TODO Auto-generated method stub
-		if(p.getId() == null) /*Je fais ça à cause du problème du detached entity... Pourtant l'objet est sensé être nouveau ! */
+		if(p.getId() == null) { /*Je fais ça à cause du problème du detached entity... Pourtant l'objet est sensé être nouveau ! */
+			System.err.println("On persiste une personne");
 			em.persist(p);
-		else
+		}
+		else {
+			System.err.println("On merge une personne");
 			em.merge(p);
+			}
 	}
 	public List<Personne> applyFilter(String nom,String prenom,String activiteTitre){
 		

@@ -29,6 +29,8 @@ public class GuestServiceControler implements Serializable{
 	private List<Activite> currentCV;
 	private Personne currentPerson;
 	
+	boolean search;
+	
 	@Inject
     GuestService guestService;
 	
@@ -50,6 +52,8 @@ public class GuestServiceControler implements Serializable{
 	
 	public void search() {
 		System.out.println("SEARCH " + nomC +" "+ prenomC +" "+ ActiviteC);
+		
+		search = true;
 		resultOfSearch = guestService.filterPersonnes(nomC,prenomC,ActiviteC);
     }
 	
@@ -80,12 +84,13 @@ public class GuestServiceControler implements Serializable{
 	}
 
 	public List<Personne> getResultOfSearch() {
-		return resultOfSearch;
+		
+		if(!search)
+			return guestService.getAllPersonnes();
+		else
+			return resultOfSearch;
 	}
 
-	public void setResultOfSearch(List<Personne> resultOfSearch) {
-		this.resultOfSearch = resultOfSearch;
-	}
 
 	public List<Activite> getCurrentCV() {
 		return currentCV;

@@ -38,7 +38,7 @@ public class TestCrud extends BaseJunit5 {
 
 		
 	    this.p = new Personne("name", "surname", "www.adresse.b", TEST_EMAIL_COM, PASSWORD, new Date());
-		personneDao.createPersonne(p);
+		personneDao.savePersonne(p);
 	
 		userService.authentify(TEST_EMAIL_COM,PASSWORD);
 	}

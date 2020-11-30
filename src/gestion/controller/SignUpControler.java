@@ -34,7 +34,12 @@ public class SignUpControler implements Serializable{
 
 	public String save() {
 		System.out.println(signingUpPerson.getPrenom() +" est en train de s'inscrire");
-		personneDao.createPersonne(signingUpPerson);
+		personneDao.savePersonne(signingUpPerson);
+		
+		System.err.println("Il y'a maintenant toutes ces personnes inscrites");
+		for(Personne p : personneDao.getAllPerson()) {
+			System.err.println(p.getId() + " " + p.getNom());
+		}
 		signingUpPerson = new Personne(); /*Pour forcer le changement d'ID"*/
 		return "search?faces-redirect=true"; /*Pour l'instant on retourne à ça et non l'espace perso*/
 	}

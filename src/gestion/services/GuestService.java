@@ -36,18 +36,18 @@ public class GuestService {
 			p.setNom("Einstein");
 			p.setPrenom("Albert");
 			p.setEmail("relativite@restreinte.emc2");
-			personneDAO.createPersonne(p);
+			personneDAO.savePersonne(p);
 			
 			Activite a = new Activite("Physicien", "c génial", "universe.org", null);
 			activityDAO.saveActivite(a);
 			p.addActivite(a);
-			personneDAO.updatePerson(p);
+			personneDAO.savePersonne(p);
 			
 			p = new Personne();
 			p.setNom("Poincare");
 			p.setPrenom("Henri");
 			p.setEmail("conjecture@riemann.pi");
-			personneDAO.createPersonne(p);
+			personneDAO.savePersonne(p);
 		}
 	}
 	
