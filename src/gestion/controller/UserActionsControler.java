@@ -8,6 +8,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import gestion.dao.IActiviteDao;
 import gestion.dao.IPersonneDAO;
 import gestion.entities.Activite;
 import gestion.entities.Personne;
@@ -25,6 +26,8 @@ public class UserActionsControler implements Serializable{
 
    @Inject
 	IPersonneDAO personneDao;
+   
+   private boolean newActivity;
    
    /* Champs qu'on utilise pour le login */
    private String pwd = "";
@@ -59,14 +62,25 @@ public class UserActionsControler implements Serializable{
 			return result;
 		}
 
-		public String editActivity() {
-			String result = userService.editActivity();
+		public String createActivity() {
+			String result = userService.createActivity();
 			editedActivity = new Activite();
+			newActivity = true;
+			return result;
+		}
+		
+		public String editActivity(long id) {
+			String result = userService.editActivity(id);
+			editedActivity = userService.getEditedActivity();
+			newActivity = false;
 			return result;
 		}
 		
 		public String saveActivity() throws AccessInterditException {
-			userService.addActivite(editedActivity);
+			if(newActivity)
+				userService.addActivite(editedActivity);
+			else
+				userService.updateActivite(editedActivity);
 			return "loggedUserServices?faces-redirect=true";
 		}
 

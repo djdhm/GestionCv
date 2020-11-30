@@ -58,7 +58,7 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 	@Override
 	public void savePersonne(Personne p) {
 		// TODO Auto-generated method stub
-		if(p.getId() == null) { /*Je fais ça à cause du problème du detached entity... Pourtant l'objet est sensé être nouveau ! */
+		if(p.getIdPerson() == null) { /*Je fais ça à cause du problème du detached entity... Pourtant l'objet est sensé être nouveau ! */
 			System.err.println("On persiste une personne");
 			em.persist(p);
 		}

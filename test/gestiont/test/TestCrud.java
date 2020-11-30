@@ -61,15 +61,15 @@ public class TestCrud extends BaseJunit5 {
 			userService.addPersonne(p2);
 			userService.addPersonne(p3);
 
-			Personne pDb = personneDao.getPersonById(p1.getId());
-			assert(pDb.getId()==p1.getId());
+			Personne pDb = personneDao.getPersonById(p1.getIdPerson());
+			assert(pDb.getIdPerson()==p1.getIdPerson());
 			List<Personne> listeCoptations = userService.getCoptations();
 			
 			System.out.println(listeCoptations);
 			listeCoptations = userService.getCoptations();
 			System.out.println("allo");
 			System.out.println(listeCoptations.size());
-			assert(listeCoptations.get(0).getId()==p1.getId());
+			assert(listeCoptations.get(0).getIdPerson()==p1.getIdPerson());
 
 			assert(listeCoptations.size()==3);
 

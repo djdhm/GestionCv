@@ -13,9 +13,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.JoinColumn;
 import javax.validation.constraints.Past;
 
 import org.hibernate.annotations.GenerationTime;
@@ -37,7 +40,7 @@ public class Personne implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id @GeneratedValue()
-	Long id;
+	Long idPerson;
 
 	@Column
 	@NotNull
@@ -60,10 +63,13 @@ public class Personne implements Serializable {
 	@Past
 	Date dateNaissance;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	//@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany( targetEntity=Personne.class)
 	List<Personne> cooptations = new ArrayList<Personne>();
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	
+	//@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@OneToMany( targetEntity=Activite.class, mappedBy="personne", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private List<Activite> activites = new ArrayList<Activite>();
 
 	public Personne() {
@@ -95,6 +101,23 @@ public class Personne implements Serializable {
 		activite.setPersonne(this);
 		this.activites.add(activite);
 	}
+	
+	public void updateActivite(Activite activite) {
+		for(Activite a : this.activites){
+			System.err.println("***** " + a.getIdActivity() + " " + activite.getIdActivity());
+			if(a.getIdActivity().equals(activite.idActivity)) {
+				System.err.println("----------------- On a réussit à modifier l'activité de la personne");
+				a = activite;
+				break;
+			}
+		}
+		
+		//DEBUG
+		for(Activite a : this.activites){
+			System.err.println("*+*+* " + a.getIdActivity() + " " + a.getTitre());
+		}
+		
+	}
 
 	public void removeActivite(Activite activite) {
 		this.activites.remove(activite);
@@ -105,9 +128,9 @@ public class Personne implements Serializable {
 		return this.activites;
 	}
 
-	public Long getId() {
+	public Long getIdPerson() {
 		// TODO Auto-generated method stub
-		return this.id;
+		return this.idPerson;
 	}
 
 	public String getNom() {
@@ -180,7 +203,7 @@ public class Personne implements Serializable {
 	}
 
 	public void setId(long id) {
-		this.id = id;
+		this.idPerson = id;
 	}
 
 	public void setNom(String nom) {

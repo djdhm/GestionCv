@@ -8,10 +8,18 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+
+@NamedQueries({ 
+	@NamedQuery(name = "findAllActivites", query = "Select a from Activite a")
+	})
 @Entity
 public class Activite implements Serializable {
 
@@ -26,7 +34,7 @@ public class Activite implements Serializable {
 
 	@Id
 	@GeneratedValue
-	Long id;
+	Long idActivity;
 	
 	@Column
 	@NotNull
@@ -42,6 +50,8 @@ public class Activite implements Serializable {
 	@Column
 	String siteWeb;
 	
+	
+	//@ManyToOne @JoinColumn(name="idPerson", nullable=false)
 	@ManyToOne(fetch = FetchType.LAZY)
     private Personne personne;
 	
@@ -110,8 +120,8 @@ public class Activite implements Serializable {
 		this.nature = nature;
 	}
 
-	public Long getId() {
-		return id;
+	public Long getIdActivity() {
+		return idActivity;
 	}
 	
 	/*public String toString() {

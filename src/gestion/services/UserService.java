@@ -92,9 +92,37 @@ public class UserService {
 		}else throw new AccessInterditException("adding activite");
 	}
 	
-	public String editActivity() {
+	public void updateActivite(Activite activite) throws AccessInterditException {
+		if(loggedIn) {
+			this.activiteDao.saveActivite(activite);
+			this.personne.updateActivite(activite);
+			for(Activite a : activiteDao.getAllActivities()){
+				System.err.println("*+*+* Activite" + a.getIdActivity() + " " + a.getTitre());
+			}
+			for(Personne p : personneDao.getAllPerson()){
+				System.err.println("*+*+* Personne" + p.getIdPerson() + " " + p.getNom());
+				for(Activite a : p.getActivites()){
+					System.err.println("*+*+* Activite de personne" + a.getIdActivity() + " " + a.getTitre());
+				}
+			}
+			this.personneDao.savePersonne(personne);
+		}else throw new AccessInterditException("updating activite");
+	}
+	
+	public String createActivity() {
 		if(loggedIn) {
 			editedActivity = new Activite();
+			return "editActivity?faces-redirect=true";
+		}else {
+			System.out.println("WTF je suis pas co...");
+			return "search?faces-redirect=true";
+			//throw new IllegalAccessError();
+		}
+	}
+	
+	public String editActivity(long id) {
+		if(loggedIn) {
+			editedActivity = activiteDao.getActiviteById(id);
 			return "editActivity?faces-redirect=true";
 		}else {
 			System.out.println("WTF je suis pas co...");

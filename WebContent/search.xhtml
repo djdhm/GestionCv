@@ -36,7 +36,7 @@
 						<h:column>
 							<!-- Une colonne -->
 							<f:facet name="header">Number</f:facet>
-							<h:outputText value="#{p.id}" />
+							<h:outputText value="#{p.idPerson}" />
 						</h:column>
 						<h:column>
 							<f:facet name="header">Nom</f:facet>
@@ -50,7 +50,7 @@
 							<f:facet name="header">Action</f:facet>
 							<h:commandLink value="voir CV"
 								styleClass="btn btn-primary btn-xs"
-								action="#{guestService.seeCV(p.id)}" />
+								action="#{guestService.seeCV(p.idPerson)}" />
 						</h:column>
 					</h:dataTable>
 				</table>
