@@ -5,15 +5,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import gestion.entities.Activite;
 import gestion.entities.Personne;
 import gestion.services.GuestService;
 
 @Named("guestService")
-@ViewScoped
+@SessionScoped
 public class GuestServiceControler implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -24,6 +26,8 @@ public class GuestServiceControler implements Serializable{
 	private String ActiviteC = "";
 	
 	private List<Personne> resultOfSearch;
+	private List<Activite> currentCV;
+	private Personne currentPerson;
 	
 	@Inject
     GuestService guestService;
@@ -39,7 +43,9 @@ public class GuestServiceControler implements Serializable{
 	}
 	
 	public String seeCV(long id){
-        return guestService.seeCV(id);
+		currentPerson = guestService.getPersonById(id);
+		currentCV = currentPerson.getActivites();
+        return "showCV?faces-redirect=true";
 	}
 	
 	public void search() {
@@ -79,6 +85,22 @@ public class GuestServiceControler implements Serializable{
 
 	public void setResultOfSearch(List<Personne> resultOfSearch) {
 		this.resultOfSearch = resultOfSearch;
+	}
+
+	public List<Activite> getCurrentCV() {
+		return currentCV;
+	}
+
+	public void setCurrentCV(List<Activite> currentCV) {
+		this.currentCV = currentCV;
+	}
+
+	public Personne getCurrentPerson() {
+		return currentPerson;
+	}
+
+	public void setCurrentPerson(Personne currentPerson) {
+		this.currentPerson = currentPerson;
 	}
 	
 	

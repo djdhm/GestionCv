@@ -114,6 +114,9 @@ public class Activite implements Serializable {
 		return id;
 	}
 	
+	/*public String toString() {
+		return titre + " " + annee;
+	}*/
 	
    
 }

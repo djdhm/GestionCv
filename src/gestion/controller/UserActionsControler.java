@@ -65,8 +65,9 @@ public class UserActionsControler implements Serializable{
 			return result;
 		}
 		
-		public void saveActivity() throws AccessInterditException {
+		public String saveActivity() throws AccessInterditException {
 			userService.addActivite(editedActivity);
+			return "loggedUserServices?faces-redirect=true";
 		}
 
 		public String getPwd() {

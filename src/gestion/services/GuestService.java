@@ -11,7 +11,9 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import gestion.dao.IActiviteDao;
 import gestion.dao.IPersonneDAO;
+import gestion.entities.Activite;
 import gestion.entities.Personne;
 
 @Stateless
@@ -20,6 +22,10 @@ public class GuestService {
 	@EJB
 	IPersonneDAO personneDAO;
 	
+	@EJB
+	IActiviteDao activityDAO;
+	
+	List<Activite> currentActivity; /* Un CV */
 	
 	@PostConstruct
 	public void init() {
@@ -31,6 +37,11 @@ public class GuestService {
 			p.setPrenom("Albert");
 			p.setEmail("relativite@restreinte.emc2");
 			personneDAO.createPersonne(p);
+			
+			Activite a = new Activite("Physicien", "c génial", "universe.org", null);
+			activityDAO.saveActivite(a);
+			p.addActivite(a);
+			personneDAO.updatePerson(p);
 			
 			p = new Personne();
 			p.setNom("Poincare");
@@ -44,8 +55,12 @@ public class GuestService {
 		return this.personneDAO.getAllPerson();
 	}
 	
-	public String seeCV(long id){
-	        return "showCV"; /*COMMENT indiquer l'id de la personne dont on va afficher le CV à la vue ?*/
+	public Personne getPersonById(long id) {
+		return personneDAO.getPersonById(id);
+	}
+	
+	public List<Activite> getActivitiesOfPerson(long id){
+			return personneDAO.getPersonById(id).getActivites();
 	}
 
 	public List<Personne> filterPersonnes(String nom,String  prenom,String titreActivite){
