@@ -3,7 +3,7 @@
 	<!-- J'ai fait passer la BDD en memoire -->
     <Resource id="MyDataSource" type="DataSource">
         JdbcDriver org.hsqldb.jdbcDriver
-        JdbcUrl jdbc:hsqldb:file:/home/imbert/temp/maBase;shutdown=true;hsqldb.write_delay=false
+        JdbcUrl jdbc:hsqldb:mem:maBase;shutdown=true;hsqldb.write_delay=false
         UserName sa
         Password
         JtaManaged false
