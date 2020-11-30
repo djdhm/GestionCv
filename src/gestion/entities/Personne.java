@@ -103,14 +103,9 @@ public class Personne implements Serializable {
 	}
 	
 	public void updateActivite(Activite activite) {
-		for(Activite a : this.activites){
-			System.err.println("***** " + a.getIdActivity() + " " + activite.getIdActivity());
-			if(a.getIdActivity().equals(activite.idActivity)) {
-				System.err.println("----------------- On a réussit à modifier l'activité de la personne");
-				a = activite;
-				break;
-			}
-		}
+		/*Technique du futur xD*/
+		activites.removeIf(a -> a.getIdActivity().equals(activite.idActivity));
+		activites.add(activite);
 		
 		//DEBUG
 		for(Activite a : this.activites){
