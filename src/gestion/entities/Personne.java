@@ -67,8 +67,7 @@ public class Personne implements Serializable {
 	@OneToMany( targetEntity=Personne.class)
 	List<Personne> cooptations = new ArrayList<Personne>();
 
-	
-	//@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+
 	@OneToMany( targetEntity=Activite.class, mappedBy="personne", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private List<Activite> activites = new ArrayList<Activite>();
 

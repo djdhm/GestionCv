@@ -32,7 +32,8 @@ public class UserActionsControler implements Serializable{
    /* Champs qu'on utilise pour le login */
    private String pwd = "";
    private String mail = "";
-   
+
+   /* Les objets en cours de manipulation*/
    Personne personne;
    Activite editedActivity;
    
@@ -58,6 +59,7 @@ public class UserActionsControler implements Serializable{
 		public String login(String username,String password) {
 			
 			String result = userService.login(username, password);
+			//TODO: Corriger !! Là une personne est loggé même si authentifié. Checker dans userService si on est loggé
 			personne = userService.getPersonne();
 			return result;
 		}

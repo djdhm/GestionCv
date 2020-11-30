@@ -26,39 +26,33 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 
 	@Override
 	public List<Personne> getAllPerson() {
-		// TODO Auto-generated method stub
 		  Query query = em.createNamedQuery("findAllPersonnes",Personne.class);
 		  return query.getResultList();
 	}
 
 	@Override
 	public Personne getPersonById(long id) {
-		// TODO Auto-generated method stub
 		return em.find(Personne.class,id);
 		
 	}
 
 	@Override
 	public void deletePersonne(Personne p) {
-		// TODO Auto-generated method stub
 		em.remove(em.contains(p) ? p : em.merge(p));
 
 	}
 
 	@Override
 	public void deletePersonneById(long id) {
-		// TODO Auto-generated method stub
 		Personne p=getPersonById(id);
 	
 		em.remove(p);
 		
 	}
 
-	/*On devrait la renommer en save ? */
 	@Override
 	public void savePersonne(Personne p) {
-		// TODO Auto-generated method stub
-		if(p.getIdPerson() == null) { /*Je fais ça à cause du problème du detached entity... Pourtant l'objet est sensé être nouveau ! */
+		if(p.getIdPerson() == null) {
 			System.err.println("On persiste une personne");
 			em.persist(p);
 		}
@@ -68,9 +62,7 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 			}
 	}
 	public List<Personne> applyFilter(String nom,String prenom,String activiteTitre){
-		
-		//TODO:
-		
+
 		HashMap<String, String> parameters = new HashMap();
 		if(!nom.equals("")) parameters.put("n", nom);
 		if(!prenom.equals("")) parameters.put("p", prenom);
@@ -86,7 +78,7 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 		for (Map.Entry me : parameters.entrySet()) {
 			
 	          System.out.println("Key: "+me.getKey() + " & Value: " + me.getValue());
-	          
+	          //TODO: Utiliser StringBuilder LOL ???
 	          if(counter > 0) {
 	        	  queryString += " and ";
 	          }
@@ -124,7 +116,6 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 
 	@Override
 	public Personne getPersonneByEmail(String email) {
-		// TODO Auto-generated method stub
 
 		Query query = em.createNamedQuery("findPersonneByEmail", Personne.class);
 		query.setParameter("email", email);

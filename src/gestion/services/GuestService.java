@@ -30,7 +30,8 @@ public class GuestService {
 	@PostConstruct
 	public void init() {
 		System.out.println("Create " + this);
-		
+
+		/*On rajoute un peu des personnes dans la BDD*/
 		if (personneDAO.getAllPerson().size() < 2) {
 			Personne p = new Personne();
 			p.setNom("Einstein");

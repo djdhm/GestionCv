@@ -50,8 +50,7 @@ public class Activite implements Serializable {
 	@Column
 	String siteWeb;
 	
-	
-	//@ManyToOne @JoinColumn(name="idPerson", nullable=false)
+
 	@ManyToOne(fetch = FetchType.LAZY)
     private Personne personne;
 	

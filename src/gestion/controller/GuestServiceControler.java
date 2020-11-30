@@ -28,7 +28,8 @@ public class GuestServiceControler implements Serializable{
 	private List<Personne> resultOfSearch;
 	private List<Activite> currentCV;
 	private Personne currentPerson;
-	
+
+	/* Booléen pour savoir si on on remplit resultOfSearch avec toutes les personnes OU avec les personnes respectant les critères de recherche */
 	boolean search;
 	
 	@Inject
@@ -43,7 +44,7 @@ public class GuestServiceControler implements Serializable{
 	public List<Personne> getAllPersonnes(){
 		return guestService.getAllPersonnes();
 	}
-	
+
 	public String seeCV(long id){
 		currentPerson = guestService.getPersonById(id);
 		currentCV = currentPerson.getActivites();
@@ -83,6 +84,7 @@ public class GuestServiceControler implements Serializable{
 		ActiviteC = activiteC;
 	}
 
+	/*Si aucun critère de recherche, on retourne toutes les personnes*/
 	public List<Personne> getResultOfSearch() {
 		
 		if(!search)

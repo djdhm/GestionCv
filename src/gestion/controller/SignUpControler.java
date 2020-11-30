@@ -40,8 +40,8 @@ public class SignUpControler implements Serializable{
 		for(Personne p : personneDao.getAllPerson()) {
 			System.err.println(p.getIdPerson() + " " + p.getNom());
 		}
-		signingUpPerson = new Personne(); /*Pour forcer le changement d'ID"*/
-		return "search?faces-redirect=true"; /*Pour l'instant on retourne à ça et non l'espace perso*/
+		signingUpPerson = new Personne(); /*Pour forcer le changement d'ID pour la prochaine inscription"*/
+		return "search?faces-redirect=true"; /*Pour l'instant on retourne à ça et non l'espace perso ??*/
 	}
 	
 	public Personne getSigningUpPerson() {

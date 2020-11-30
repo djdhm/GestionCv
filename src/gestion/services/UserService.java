@@ -26,21 +26,18 @@ public class UserService {
 	private Personne personne;
 	
 	private Activite editedActivity;
-	
+
+	/*On vérifie si l'authentification est correcte */
 	public boolean authentify(String username,String password) {
-	 
-		System.out.println("I.m trying to login");
 		Personne p = personneDao.getPersonneByEmail(username);
 		if(p == null) {
-			System.out.println("--------Problème login : p est null...");
+			System.out.println("Aucun compte n'est associé à "+username);
 			return false; 
 		}
 		if(p.verifyPassword(password)) {
 			loggedIn=true;
 			this.personne = p;
-			System.out.println("--------Login SUCCESS");
 			System.out.println(personne.getNom() +" "+ personne.getPrenom() + " s'est loggé");
-			System.out.println("Objet personne = "+personne);
 			return true;
 		}
 		System.out.println("--------Problème login : le psw " + password + " est mauvais");
@@ -70,7 +67,8 @@ public class UserService {
 			//throw new IllegalAccessError();
 		}
 	}
-	
+
+	//TODO: Pour la cooptation, j'ai pas compris quoi en faire ^^
 	public void addPersonne(Personne p) throws AccessInterditException {
 		System.out.println(this.personne);
 		System.out.println(this.loggedIn);
@@ -81,7 +79,8 @@ public class UserService {
 			
 		}else throw new AccessInterditException("test");
 	}
-	
+
+	/* Ajoute une activité à la personne */
 	public void addActivite(Activite activite) throws AccessInterditException {
 		if(loggedIn) {
 			
@@ -96,15 +95,6 @@ public class UserService {
 		if(loggedIn) {
 			this.activiteDao.saveActivite(activite);
 			this.personne.updateActivite(activite);
-			for(Activite a : activiteDao.getAllActivities()){
-				System.err.println("*+*+* Activite" + a.getIdActivity() + " " + a.getTitre());
-			}
-			for(Personne p : personneDao.getAllPerson()){
-				System.err.println("*+*+* Personne" + p.getIdPerson() + " " + p.getNom());
-				for(Activite a : p.getActivites()){
-					System.err.println("*+*+* Activite de personne" + a.getIdActivity() + " " + a.getTitre());
-				}
-			}
 			this.personneDao.savePersonne(personne);
 		}else throw new AccessInterditException("updating activite");
 	}
@@ -130,7 +120,8 @@ public class UserService {
 			//throw new IllegalAccessError();
 		}
 	}
-	
+
+	//TODO: Que faire de ça ??
 	public List<Personne> getCoptations() throws AccessInterditException {
 		if(loggedIn) {
 			return this.personne.getCoptations();
@@ -144,7 +135,6 @@ public class UserService {
 	}
 
 	public List<Activite> getActivities() {
-		// TODO Auto-generated method stub
 		if(loggedIn) 		return this.personne.getActivities();
         return null;
 	}
