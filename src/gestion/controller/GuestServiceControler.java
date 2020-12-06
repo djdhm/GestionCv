@@ -3,6 +3,7 @@ package gestion.controller;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -10,6 +11,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import antlr.debug.GuessingEvent;
 import gestion.entities.Activite;
 import gestion.entities.Personne;
 import gestion.services.GuestService;
@@ -35,14 +37,32 @@ public class GuestServiceControler implements Serializable{
 	@Inject
     GuestService guestService;
 	
+	private List<Personne> filteredPersonnes = new ArrayList<Personne>();
+	private List<Personne> allPersonnes;
+	public List<Personne> getFilteredPersonnes() {
+		System.out.println("TEEST Filtering get");
+		return filteredPersonnes;
+	}
+
+	public void setFilteredPersonnes(List<Personne> filteredPersonnes) {
+		System.out.println("TEEST Filtering set ");
+
+		this.filteredPersonnes = filteredPersonnes;
+	}
+
 	@PostConstruct
 	public void init() {
 		/*On fait en sorte que ce ne soit pas null simplement*/
-		resultOfSearch = guestService.getAllPersonnes();
+		allPersonnes = guestService.getAllPersonnes();
+		
 	}
 	
 	public List<Personne> getAllPersonnes(){
-		return guestService.getAllPersonnes();
+		if(allPersonnes == null) {
+			allPersonnes = guestService.getAllPersonnes();
+		}
+		System.out.println(allPersonnes.size());
+		return allPersonnes;
 	}
 
 	public String seeCV(long id){
@@ -87,12 +107,13 @@ public class GuestServiceControler implements Serializable{
 	/*Si aucun critère de recherche, on retourne toutes les personnes*/
 	public List<Personne> getResultOfSearch() {
 		
+		System.out.println(guestService.getAllPersonnes().size());
 		if(!search)
 			return guestService.getAllPersonnes();
 		else
 			return resultOfSearch;
 	}
-
+	
 
 	public List<Activite> getCurrentCV() {
 		return currentCV;
@@ -110,6 +131,28 @@ public class GuestServiceControler implements Serializable{
 		this.currentPerson = currentPerson;
 	}
 	
-	
-	
+	public boolean globalFilterFunction(Object value, Object filter, Locale locale) {
+		System.out.println("Filtrage globale");
+        String filterText = (filter == null) ? null : filter.toString().trim().toLowerCase();
+        if (filterText == null || filterText.equals("")) {
+            return true;
+        }
+        int filterInt = getInteger(filterText);
+        
+        Personne p = (Personne) value;
+        return p.getIdPerson().toString().contains(filterText)
+                || p.getNom().toLowerCase().contains(filterText)
+                || p.getPrenom().toLowerCase().contains(filterText)
+                || p.getDateNaissance().getYear() < filterInt;
+
+    }
+
+	  private int getInteger(String string) {
+	        try {
+	            return Integer.valueOf(string);
+	        }
+	        catch (NumberFormatException ex) {
+	            return 0;
+	        }
+	    }
 }

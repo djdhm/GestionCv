@@ -3,8 +3,11 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
 
+
+<h:outputStylesheet library="css" name="style.css"  />
 <ui:composition template="/template/mylayout.xhtml">
 	<ui:define name="content">
 		<f:view>
@@ -13,49 +16,42 @@
 
 			<h1>Recherche</h1>
 
-			<h:form>
-				<h4>Nom</h4>
-				<h:inputText id="text" value="#{guestService.nomC}" />
-				<h4>Prenom</h4>
-				<h:inputText id="text2" value="#{guestService.prenomC}" />
-				
-				<br />
-				<h:commandButton value="Show" action="#{guestService.search()}" >
-					<f:ajax execute="text text2" render="@all" />
-					<!-- ??? render tout ce qui fait appel à "text" ??? OU tout les objets ?? pas que les objets d'ID affichage ???-->
-				</h:commandButton>
-				<br />
-				
-				
-			
-				<table class="table">
-					<h:dataTable value="#{guestService.resultOfSearch}" var="p"
-						styleClass="table table-hover" headerClass="danger"
-						footerClass="danger" rowClasses="success,warning">
+			<h:form id="form">
 
-						<h:column>
-							<!-- Une colonne -->
-							<f:facet name="header">Number</f:facet>
-							<h:outputText value="#{p.idPerson}" />
-						</h:column>
-						<h:column>
-							<f:facet name="header">Nom</f:facet>
-							<h:outputText value="#{p.nom}" />
-						</h:column>
-						<h:column>
-							<f:facet name="header">Prénom</f:facet>
-							<h:outputText value="#{p.prenom}" />
-						</h:column>
-						<h:column>
-							<f:facet name="header">Action</f:facet>
-							<h:commandLink value="voir CV"
-								styleClass="btn btn-primary btn-xs"
-								action="#{guestService.seeCV(p.idPerson)}" />
-						</h:column>
-					</h:dataTable>
-				</table>
-			</h:form>
+				<p:dataTable id="matable" var="car" value="#{searchView.listePersonnes}"
+					widgetVar="carsTable"
+					emptyMessage="Aucune Personne ne satisfait les criteres de recherches " 
+					filteredValue="#{searchView.filteredPersonnes}">
+					<f:facet name="header">
+						<p:outputPanel>
+							<h:outputText value="Search all fields:" />
+							<p:inputText id="globalFilter"
+								onkeyup="#{searchView.f1()}" style="width:150px"
+								placeholder="Enter keyword" />
+						</p:outputPanel>
+					</f:facet>
 
+
+					<p:column filterBy="#{car.nom}" headerText="Nom"
+						footerText="contains" filterMatchMode="contains">
+						<h:outputText value="#{car.nom}" />
+					</p:column>
+					<p:column filterBy="#{car.prenom}" headerText="Prenom"
+						footerText="contains" filterMatchMode="contains" >
+						<h:outputText value="#{car.prenom}" />
+					</p:column>
+
+				</p:dataTable>
+
+	  			 <h:commandButton id="saveEdit#{customer.id}" value="Submit" >
+    <f:ajax render="@form" execute="@form"/>
+</h:commandButton>
+	
+
+
+    
+ 			</h:form>
+ 		
 		</f:view>
 	</ui:define>
 </ui:composition>
