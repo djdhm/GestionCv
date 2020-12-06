@@ -9,7 +9,7 @@
 <ui:composition template="/template/mylayout.xhtml">
 	<ui:define name="content">
 		<f:view>
-			<c:set var="p" value="#{userActions.personne}" />
+			<c:set var="p" value="#{userSpaceView.personne}" />
 			<h1>Informations personnelles :</h1>
 			<h:outputText value="Nom : " />
 			<h:outputText value="#{p.nom}" />
@@ -40,7 +40,7 @@
 
 			<h:form id="logout">
 				<div class="form-group">
-					<h:commandButton action="#{userActions.logout()}"
+					<h:commandButton action="#{userSpaceView.logout()}"
 						styleClass="btn btn-primary" value="Logout" />
 					<span> </span>
 				</div>
@@ -50,7 +50,7 @@
 
 			<h:form id="addActivity">
 				<div class="form-group">
-					<h:commandButton action="#{userActions.createActivity()}"
+					<h:commandButton action="#{userSpaceView.createActivity()}"
 						styleClass="btn btn-primary" value="Ajouter une activité" />
 					<span> </span>
 				</div>
@@ -58,7 +58,7 @@
 
 			<h:form>
 				<table class="table">
-					<h:dataTable value="#{userActions.activities}" var="a"
+					<h:dataTable value="#{userSpaceView.activities}" var="a"
 						styleClass="table table-hover" headerClass="danger"
 						footerClass="danger" rowClasses="success,warning">
 
@@ -82,7 +82,7 @@
 						<h:column>
 							<f:facet name="header">Action</f:facet>
 							<h:commandLink value="edit" styleClass="btn btn-primary btn-xs"
-								action="#{userActions.editActivity(a.idActivity)}" />
+								action="#{userSpaceView.editActivity(a.idActivity)}" />
 						</h:column>
 
 					</h:dataTable>

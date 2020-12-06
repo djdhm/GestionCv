@@ -8,34 +8,46 @@
 
 <ui:composition template="/template/mylayout.xhtml">
 	<ui:define name="content">
+
 		<f:view>
-
+			
 			<h1>Login</h1>
-			<h:form id="login">
-
-				<div class="form-group">
-					<label for="mail">Email:</label>
-					<h:inputText id="mail" value="#{userActions.mail}" styleClass="form-control"
-						required="true">
-					</h:inputText>
-				</div>
-
-				<div class="form-group">
-					<label for="password">Mot de Passe:</label>
-					<h:inputText id="password" value="#{userActions.pwd}"
-						styleClass="form-control" required="true">
-					</h:inputText>
-				</div>
-				
-				<div class="form-group">
-					<h:commandButton action="#{userActions.login(userActions.mail,userActions.pwd)}"
-						styleClass="btn btn-primary" value="Se Connecter" />
-					<span> </span>
-					<h:link styleClass="btn btn-info" outcome="hello" value="Quit" />
-				</div>
-				
-				
-			</h:form>
+			<h:form id="loginForm">
+ 
+           
+            <p:growl id="msg" showDetail="true" life="3000" />
+            <p:panel header="Login" style="width: 360px;">
+ 
+                <h:panelGrid id="loginPanel" columns="2">
+ 
+                    <h:outputText value="Email:" />
+ 
+                    <p:inputText id="email" value="#{loginView.email}" >
+              <f:validator validatorId="email-validator" />
+                    	<p:ajax update="emailMsg" event="keyup" />
+                    </p:inputText>
+ 
+                    <p:spacer></p:spacer>
+ 
+                    <p:message for="email" id="emailMsg" ></p:message>
+ 
+                    <h:outputText value="Mot de passe:" />
+ 
+                    <p:password id="password" value="#{loginView.password}"  feedback="false"></p:password>
+ 
+                    <p:spacer></p:spacer>
+ 
+                    <p:message for="password"></p:message>
+ 
+                    <p:spacer></p:spacer>
+ 
+                    <p:commandButton action="#{loginView.login}" value="Login" update="loginForm" ajax="true"></p:commandButton>
+ 
+                </h:panelGrid>
+ 
+            </p:panel>
+ 
+        </h:form>s
 
 		</f:view>
 	</ui:define>

@@ -44,14 +44,11 @@ public class UserService {
 		return false;
 	}
 	
-	public String login(String username,String password) {
+	public Personne login(String username,String password) {
 		 
 		//TODO: faire un logout ici au cas où une personne ait 2 compte ??
-		
-		if(authentify(username, password))
-			return "loggedUserServices?faces-redirect=true";
-		else
-			return "login";
+		authentify(username, password);
+		return this.personne;
 	}
 	
 	@Remove
@@ -153,6 +150,10 @@ public class UserService {
 
 	public void setEditedActivity(Activite editedActivity) {
 		this.editedActivity = editedActivity;
+	}
+	
+	public boolean isLoggedIn() {
+		return loggedIn;
 	}
 	
 	

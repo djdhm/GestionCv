@@ -56,14 +56,7 @@ public class UserActionsControler implements Serializable{
 		return result;
 	}
 		
-		public String login(String username,String password) {
-			
-			String result = userService.login(username, password);
-			//TODO: Corriger !! Là une personne est loggé même si authentifié. Checker dans userService si on est loggé
-			personne = userService.getPersonne();
-			return result;
-		}
-
+		
 		public String createActivity() {
 			String result = userService.createActivity();
 			editedActivity = new Activite();

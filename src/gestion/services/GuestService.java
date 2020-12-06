@@ -36,7 +36,7 @@ public class GuestService {
 			Personne p = new Personne();
 			p.setNom("Einstein");
 			p.setPrenom("Albert");
-			p.setEmail("relativite@restreinte.emc2");
+			p.setEmail("	");
 			personneDAO.savePersonne(p);
 			
 			Activite a = new Activite("Physicien", "c génial", "universe.org", null);
@@ -47,6 +47,7 @@ public class GuestService {
 			p = new Personne();
 			p.setNom("Poincare");
 			p.setPrenom("Henri");
+			p.setPassword("password");
 			p.setEmail("conjecture@riemann.pi");
 			personneDAO.savePersonne(p);
 		}
