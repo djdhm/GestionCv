@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ejb.Remove;
 import javax.ejb.Stateful;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 
 import gestion.dao.IActiviteDao;
@@ -12,6 +13,7 @@ import gestion.entities.Activite;
 import gestion.entities.Personne;
 
 @Stateful
+@SessionScoped
 public class UserService {
 
 	

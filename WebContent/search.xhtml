@@ -39,7 +39,10 @@
 						footerText="contains" filterMatchMode="contains" >
 						<h:outputText value="#{car.prenom}" />
 					</p:column>
-
+<p:column filterBy="#{car.email}" headerText="Email"
+						footerText="contains" filterMatchMode="contains" >
+						<h:outputText value="#{car.email}" />
+					</p:column>
 				</p:dataTable>
 
 	  			 <h:commandButton id="saveEdit#{customer.id}" value="Submit" >
