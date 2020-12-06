@@ -60,6 +60,10 @@ public class GuestService {
 		return personneDAO.getPersonById(id);
 	}
 	
+	public void signup(Personne p ) {
+		personneDAO.savePersonne(p);
+	}
+	
 	public List<Activite> getActivitiesOfPerson(long id){
 			return personneDAO.getPersonById(id).getActivites();
 	}
@@ -68,6 +72,12 @@ public class GuestService {
 		
 		return this.personneDAO.applyFilter(nom, prenom, titreActivite);
 				
+	}
+
+	public boolean verifyExistingEmail(String email) {
+		// TODO Auto-generated method stub
+		return (this.personneDAO.getPersonneByEmail(email)!=null);
+		
 	}
     
 	

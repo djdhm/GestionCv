@@ -12,63 +12,67 @@
 
 			<h1>Inscription</h1>
 			<h:form id="inscription">
+			
 				<c:set var="p" value="#{signup.signingUpPerson}" />
+   			<p:panel header="Inscription" style="width: 800px;">
 
-				<div class="form-group">
-					<label for="nom">Nom:</label>
-					<h:inputText id="nom" value="#{p.nom}" styleClass="form-control"
-						required="true">
-					</h:inputText>
-				</div>
+			<h:panelGrid columns="3">
+      <p:outputLabel value="Email:*"/>
+      <p:inputText id="email" value="#{signup.signingUpPerson.email}"
+          required="true" label="Email"   >
+              <f:validator validatorId="email-validator" />
+          
+        <p:ajax event="keyup"  update="emailMsg"/>
+      </p:inputText>
+      <p:message id="emailMsg" for="email"/>
+      
+      <p:outputLabel value="Mot de Passe:*"/>
+      <p:password id="password" value="#{signup.signingUpPerson.password}" 
+            required="true" label="MotDePasse">
+        <f:validateLength minimum="4"/>
+                      <f:validator validatorId="password-strength-validator" />
+        
+        <p:ajax update="passwordMsg" event="keyup"/>
+      </p:password>
+      <p:message id="passwordMsg" for="password"/>
+      
+      <p:outputLabel value="Nom:*" />    
+      
+      <p:inputText id="nom" value="#{signup.signingUpPerson.nom}"  placeholder="John"
+             required="true" label="Nom">
+      	
+      </p:inputText>
+      <p:message id="nomMsg" for="nom"/>
+      
+      <p:outputLabel value="Prenom:"/>
+      <p:inputText id="lastName" value="#{signup.signingUpPerson.prenom}" placeholder="Doe"
+       required="true" label="Prenom"
+      />
+      <p:message id="lastNameMsg" for="lastName"/>
+      
+ 
+        <p:outputLabel value="Site Web:"/>
+      <p:inputText id="siteweb" value="#{signup.signingUpPerson.siteweb}" type="url" placeholder="https://www.monsite.fr"
+       required="false" label="SiteWeb"
+      >
+      <f:validator validatorId="website-validator" />
+      <p:ajax update="sitewebMsg" event="keyup" />
+      </p:inputText>
+      <p:message id="sitewebMsg" for="siteweb"/>
 
-				<div class="form-group">
-					<label for="prenom">Prenom:</label>
-					<h:inputText id="prenom" value="#{p.prenom}"
-						styleClass="form-control" required="true">
-					</h:inputText>
-				</div>
+      
+	<p:outputLabel for="datenaissance" value="Date de naissance*:" />
+	<p:datePicker id="datenaissance" value="#{signup.signingUpPerson.dateNaissance}" yearNavigator="true"  pattern="dd/MM/yyyy" placeholder="dd/MM/yyyy" maxdate="#{signup.maxAge}" mindate="#{signup.minAge}" yearRange="1900:2002" />
+        <p:ajax update="dateNaissanceMsg" event="keyup" />
+
+    <p:message id="dateNaissanceMsg" for="datenaissance"/>
+        
+     <p:outputLabel value=""/>
+     <p:commandButton action="#{signup.save}" value="S'inscrire" update="inscription"/>
+     <p:outputLabel value=""/>
+    </h:panelGrid>
 				
-				<div class="form-group">
-					<label for="web">Site Web:</label>
-					<h:inputText id="web" value="#{p.siteweb}"
-						styleClass="form-control" required="true">
-					</h:inputText>
-				</div>
-
-				<div class="form-group">
-					<label for="mail">Email:</label>
-					<h:inputText id="mail" value="#{p.email}" styleClass="form-control"
-						required="true">
-					</h:inputText>
-				</div>
-
-				<div class="form-group">
-					<label for="password">Mot de passe:</label>
-					<h:inputText id="password" value="#{p.password}"
-						styleClass="form-control" required="true">
-					</h:inputText>
-				</div>
-
-				<div class="form-group">
-					<label for="birthday">Date de naissance (format dd-mm-YYYY):</label>
-					<h:panelGroup>
-						<h:inputText id="birthday" value="#{p.dateNaissance}"
-							label="Birthday">
-							<f:convertDateTime pattern="dd-MM-yyyy" />
-							<!-- Format de conversion date -->
-						</h:inputText>
-						<h:message errorClass="error" for="birthday" />
-					</h:panelGroup>
-				</div>
-
-				<div class="form-group">
-					<h:commandButton action="#{signup.save()}"
-						styleClass="btn btn-primary" value="S'inscrire" />
-					<span> </span>
-					<h:link styleClass="btn btn-info" outcome="hello" value="Quit" />
-				</div>
-				
-				
+				    </p:panel>
 			</h:form>
 
 		</f:view>
