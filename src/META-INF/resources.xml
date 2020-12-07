@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
 	<!-- J'ai fait passer la BDD en memoire -->
-    <Resource id="MyDataSource" type="DataSource">
+<!--     <Resource id="MyDataSource" type="DataSource"> -->
+<!--         JdbcDriver org.hsqldb.jdbcDriver -->
+<!--         JdbcUrl jdbc:hsqldb:mem:maBase;shutdown=true;hsqldb.write_delay=false -->
+<!--         UserName sa -->
+<!--         Password -->
+<!--         JtaManaged false -->
+<!--     </Resource> -->
+	<!-- J'ai fait passer la BDD en fichier pour faires des tests sur de grande donnees  -->
+
+<Resource id="MyDataSource" type="DataSource">
         JdbcDriver org.hsqldb.jdbcDriver
-        JdbcUrl jdbc:hsqldb:mem:maBase;shutdown=true;hsqldb.write_delay=false
-        UserName sa
-        Password
+        JdbcUrl jdbc:hsqldb:file:./data/maBase;shutdown=true;hsqldb.write_delay=false
+
         JtaManaged false
     </Resource>
-
  
 
 </resources>

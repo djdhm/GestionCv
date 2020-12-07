@@ -1,7 +1,7 @@
 package gestion.entities;
 
 import java.io.Serializable;
-
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +23,7 @@ import javax.validation.constraints.Past;
 
 import org.hibernate.annotations.GenerationTime;
 
+import com.github.javafaker.Faker;
 import com.sun.istack.NotNull;
 
 @NamedQueries({ 
@@ -38,7 +39,31 @@ public class Personne implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private static final Faker faker= new Faker();
+	public static Personne randomPersonne() {
 
+		Personne p = new Personne();
+		p.setNom(faker.name().firstName());
+		p.setPrenom(faker.name().lastName());
+		p.setDateNaissance(faker.date().birthday(18,70));
+		p.setEmail(faker.internet().emailAddress());
+		p.setPassword(faker.superhero().name());
+		p.setSiteweb(faker.internet().domainName());
+		
+		for(int i = 0 ; i< faker.number().numberBetween(0, 5);i++) {
+			Activite a = new Activite();
+			a.setAnnee(2020+faker.number().numberBetween(-10, 0));
+			a.setDescription(faker.beer().style());
+			a.setNature(NatureActivite.values()[faker.number().numberBetween(0,NatureActivite.values().length-1)]);
+			a.setSiteWeb(faker.internet().url());
+			a.setTitre(faker.app().name());
+			p.addActivite(a);
+		}
+		
+		
+		return p;
+	}
+	
 	@Id @GeneratedValue()
 	Long idPerson;
 
@@ -207,5 +232,6 @@ public class Personne implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
 
 }

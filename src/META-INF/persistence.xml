@@ -12,7 +12,7 @@
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <non-jta-data-source>MyDataSource</non-jta-data-source>
         <properties>
-            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.show_sql" value="false" />
             <property name="hibernate.format_sql" value="true" />
             <property name="hibernate.dialect"
                 value="org.hibernate.dialect.HSQLDialect" />

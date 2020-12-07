@@ -64,12 +64,7 @@ public class UserActionsControler implements Serializable{
 			return result;
 		}
 		
-		public String editActivity(long id) {
-			String result = userService.editActivity(id);
-			editedActivity = userService.getEditedActivity();
-			newActivity = false;
-			return result;
-		}
+	
 		
 		public String saveActivity() throws AccessInterditException {
 			if(newActivity)

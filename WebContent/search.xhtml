@@ -18,6 +18,11 @@
 			<h:form id="form">
 
 				<p:dataTable id="matable" var="car" value="#{searchView.listePersonnes}"
+				 	 rows="10"
+                 paginator="true"
+                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                 currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} personnes"
+                 rowsPerPageTemplate="5,10,15"
 					widgetVar="carsTable"
 					emptyMessage="Aucune Personne ne satisfait les criteres de recherches " 
 					filteredValue="#{searchView.filteredPersonnes}">
@@ -45,9 +50,7 @@
 					</p:column>
 				</p:dataTable>
 
-	  			 <h:commandButton id="saveEdit#{customer.id}" value="Submit" >
-    <f:ajax render="@form" execute="@form"/>
-</h:commandButton>
+	  			
 	
 
 

@@ -31,26 +31,7 @@ public class GuestService {
 	public void init() {
 		System.out.println("Create " + this);
 
-		/*On rajoute un peu des personnes dans la BDD*/
-		if (personneDAO.getAllPerson().size() < 2) {
-			Personne p = new Personne();
-			p.setNom("Einstein");
-			p.setPrenom("Albert");
-			p.setEmail("	");
-			personneDAO.savePersonne(p);
-			
-			Activite a = new Activite("Physicien", "c génial", "universe.org", null);
-			activityDAO.saveActivite(a);
-			p.addActivite(a);
-			personneDAO.savePersonne(p);
-			
-			p = new Personne();
-			p.setNom("Poincare");
-			p.setPrenom("Henri");
-			p.setPassword("password");
-			p.setEmail("conjecture@riemann.pi");
-			personneDAO.savePersonne(p);
-		}
+	
 	}
 	
 	public List<Personne> getAllPersonnes(){
