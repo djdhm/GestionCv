@@ -13,6 +13,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.CloseEvent;
+import org.primefaces.event.MoveEvent;
 import org.primefaces.event.RowEditEvent;
 
 import gestion.entities.Activite;
@@ -101,8 +103,29 @@ public class UserSpaceView implements Serializable {
 		try {
 			userService.addActivite(nouvelleActivite);
 			nouvelleActivite = new Activite();
+
 		}catch(AccessInterditException e) {
 			System.out.println("Vous netes pas connecete");
+		}
+	}
+	
+	public void handleClose(CloseEvent event) {
+			System.out.println("Test annule");
+    }
+     
+    public void handleMove(MoveEvent event) {
+		System.out.println("Move");
+
+    }
+     
+	public void supprimerActivite(Activite activite) {
+		try {
+			userService.deleteActivity(activite);
+			 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Activite Supprimée", "");
+		        FacesContext.getCurrentInstance().addMessage(null, message);
+		}catch(AccessInterditException e) {
+			System.out.println("Vous netes pas connecete");
+
 		}
 	}
 	
@@ -130,8 +153,7 @@ public class UserSpaceView implements Serializable {
         Object newValue = event.getNewValue();
          
         if(newValue != null && !newValue.equals(oldValue)) {
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);
-            FacesContext.getCurrentInstance().addMessage(null, msg);
+         
         }
         
     }

@@ -36,7 +36,7 @@ public class ActiviteDaoImpl implements IActiviteDao {
 
 	@Override
 	public void deleteActivite(Activite activite) {
-		em.remove(activite);
+		em.remove(em.contains(activite) ? activite: em.merge(activite));
 		em.flush();
 	}
 

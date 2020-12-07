@@ -127,6 +127,8 @@
 								<p:inputText value="#{activity.siteWeb}" style="width:100%"
 									label="annee" />
 							</f:facet>
+							
+						
 						</p:cellEditor>
 					</p:column>
 
@@ -134,14 +136,29 @@
 						<p:rowEditor />
 					</p:column>
 
+					<p:column style="width:50px">
+					<p:commandButton icon="ui-icon-trash" style="width:30px;"
+                        title="Supprimer"
+                        actionListener="#{userSpaceView.supprimerActivite(activity)}"
+                        update="form"
+                        > 
+                                                        <p:confirm header="Attention!" message="Voulez vous vraiment supprimer cette activite?" icon="pi pi-exclamation-triangle" />
+                        
+                        </p:commandButton>			
+                        	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+	    			   		<p:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+	     				   	<p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+			 	   </p:confirmDialog>  
+                        </p:column>
+
 
 				</p:dataTable>
 
 			
 
 
-
-				<div class="ui-g"></div>
+	
+				
 
 			</h:form>
 

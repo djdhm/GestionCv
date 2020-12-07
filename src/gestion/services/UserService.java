@@ -109,13 +109,15 @@ public class UserService {
 		}
 	}
 	
-	public String editActivity(long id) {
+
+	public void deleteActivity(Activite activite )  throws AccessInterditException {
+		
 		if(loggedIn) {
-			editedActivity = activiteDao.getActiviteById(id);
-			return "editActivity?faces-redirect=true";
+			personne.removeActivite(activite);
+			this.personneDao.savePersonne(personne);
+			this.activiteDao.deleteActivite(activite);
 		}else {
-			System.out.println("WTF je suis pas co...");
-			return "search?faces-redirect=true";
+			 throw new AccessInterditException("Suppression");
 			//throw new IllegalAccessError();
 		}
 	}
