@@ -5,7 +5,7 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
- <script type="text/javascript">
+<script type="text/javascript">
         function editLastDatatableRow(){
 
       jQuery('.ui-datatable-data tr').last().find('span.ui-icon-pencil').each(function(){
@@ -17,7 +17,7 @@
 <ui:composition template="/template/mylayout.xhtml">
 	<ui:define name="content">
 		<f:view>
-		
+
 			<c:set var="p" value="#{userSpaceView.personne}" />
 			<h1>Informations personnelles :</h1>
 			<h:outputText value="Nom : " />
@@ -55,154 +55,166 @@
 				</div>
 			</h:form>
 			<h:form id="form">
- 			  <p:growl id="msgs" showDetail="true"/>
- 			      <p:dataTable id="listeAct" widgetVar="activities" var="activity" value="#{userSpaceView.activities}" editable="true" 
- 			      emptyMessage="Aucune Activite	 " 
- 			      style="margin-bottom:00px;width:100%">
-			        <f:facet name="header">
+				<p:growl id="msgs" showDetail="true" />
+				<p:dataTable id="listeAct" widgetVar="activities" var="activity"
+					value="#{userSpaceView.activities}" editable="true"
+					emptyMessage="Aucune Activite	 "
+					style="margin-bottom:00px;width:100%">
+					<f:facet name="header">
 			            Mes activites
-			        </f:facet>  
-			          <p:ajax event="rowEdit" listener="#{userSpaceView.onRowEdit}" update=":form:msgs" />
-        		 <p:ajax event="rowEditCancel" listener="#{userSpaceView.onRowCancel}" update=":form:msgs" />
-        		 
-			         <p:column headerText="Titre	">
-			            <p:cellEditor>
-			                <f:facet name="output"><h:outputText value="#{activity.titre}" /></f:facet>
-			                <f:facet name="input"><p:inputText id="titre" value="#{activity.titre}" style="width:100%"/></f:facet>
-			            </p:cellEditor>
-			        </p:column>
-					         <p:column headerText="Nature">
-		            <p:cellEditor>
-		                <f:facet name="output"><h:outputText value="#{activity.nature}" /></f:facet>
-		                <f:facet name="input">
-<!-- 		                    <h:selectOneMenu value="#{activity.nature}" style="width:100%;height:100%;"> -->
-<!-- 		                        <f:selectItems value="#{userSpaceView.natures}" var="nature" itemLabel="#{nature}" itemValue="#{nature}" style="width:100%;height:100%;" /> -->
-<!-- 		                    </h:selectOneMenu> -->
-		                    <p:inputText id="nature" value="#{activity.titre}" style="width:100%"/>
-		                </f:facet>
-		            </p:cellEditor>
-		        </p:column>
-			        <p:column headerText="Annee">
-			            <p:cellEditor>
-			                <f:facet name="output"><h:outputText value="#{activity.annee}" /></f:facet>
-			                <f:facet name="input"><p:inputText value="#{activity.annee}" style="width:100%" label="annee"/></f:facet>
-			            </p:cellEditor>
-			        </p:column>	
-			         <p:column headerText="Description">
-			            <p:cellEditor>
-			                <f:facet name="output"><h:outputText value="#{activity.description}" /></f:facet>
-			                <f:facet name="input"><p:inputText value="#{activity.description}" style="width:100%" label="annee"/></f:facet>
-			            </p:cellEditor>
-			        </p:column>	
-			         <p:column headerText="Site Web ">
-			            <p:cellEditor>
-			                <f:facet name="output"><h:outputText value="#{activity.siteWeb}" /></f:facet>
-			                <f:facet name="input"><p:inputText value="#{activity.siteWeb}" style="width:100%" label="annee"/></f:facet>
-			            </p:cellEditor>
-			        </p:column>	
-			        
-			          <p:column style="width:35px">
-            <p:rowEditor />
-        </p:column>
-			         
-			       
- 				</p:dataTable>
- 				<p:dataTable id="nouvelleActivite" widgetVar="nouvelleAct" var="activity" value="#{userSpaceView.activities}" editable="true" 
- 			      emptyMessage="Aucune Activite	 " 
- 			      style="margin-bottom:00px;width:100%">
-			        <f:facet name="header">
-			            Mes activites
-			        </f:facet>  
-			          <p:ajax event="rowEdit" listener="#{userSpaceView.onRowEdit}" update=":form:msgs" />
-        		 <p:ajax event="rowEditCancel" listener="#{userSpaceView.onRowCancel}" update=":form:msgs" />
-        		 
-			         <p:column headerText="Titre	">
-			            <p:cellEditor>
-			                <f:facet name="input"><p:inputText id="titre" value="#{activity.titre}" style="width:100%"/></f:facet>
-			            </p:cellEditor>
-			        </p:column>
-					         <p:column headerText="Nature">
-		            <p:cellEditor>
-		                <f:facet name="input">
-<!-- 		                    <h:selectOneMenu value="#{activity.nature}" style="width:100%;height:100%;"> -->
-<!-- 		                        <f:selectItems value="#{userSpaceView.natures}" var="nature" itemLabel="#{nature}" itemValue="#{nature}" style="width:100%;height:100%;" /> -->
-<!-- 		                    </h:selectOneMenu> -->
-		                </f:facet>
-		            </p:cellEditor>
-		        </p:column>
-			        <p:column headerText="Annee">
-			            <p:cellEditor>
-			                <f:facet name="input"><p:inputText value="#{activity.annee}" style="width:100%" label="annee"/></f:facet>
-			            </p:cellEditor>
-			        </p:column>	
-			         <p:column headerText="Description">
-			            <p:cellEditor>
-			                <f:facet name="input"><p:inputText value="#{activity.description}" style="width:100%" label="annee"/></f:facet>
-			            </p:cellEditor>
-			        </p:column>	
-			         <p:column headerText="Site Web ">
-			            <p:cellEditor>
-			                <f:facet name="input"><p:inputText value="#{activity.siteWeb}" style="width:100%" label="annee"/></f:facet>
-			            </p:cellEditor>
-			        </p:column>	
-			        
-			          <p:column style="width:35px">
-            <p:rowEditor />
-        </p:column>
-			         
-			       
- 				</p:dataTable>
- 				
- 				 
-           
- 				<div class="ui-g">
-         <div class="ui-g-12">
-             <p:commandButton value="Ajouter Activite" styleClass="ui-priority-primary" process="@this"
-                              action="#{userSpaceView.ajouterActivite()}"   update="listeAct"   oncomplete="console.log(jQuery('.ui-datatable-data tr:last').find('span.ui-icon-pencil:last').click())"  />
-         </div>
-     </div>
- 		</h:form>
-			<h2>Liste des activités</h2>
+			        </f:facet>
+					<p:ajax event="rowEdit" listener="#{userSpaceView.onRowEdit}"
+						update=":form:msgs" />
+					<p:ajax event="rowEditCancel"
+						listener="#{userSpaceView.onRowCancel}" update=":form:msgs" />
 
-			<h:form id="addActivity">
-				<div class="form-group">
-					<h:commandButton action="#{userSpaceView.createActivity()}"
-						styleClass="btn btn-primary" value="Ajouter une activité" />
-					<span> </span>
-				</div>
+					<p:column headerText="Titre	">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{activity.titre}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText id="titre" value="#{activity.titre}"
+									style="width:100%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="Nature" sortBy="#{activity.nature}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{activity.nature}" />
+							</f:facet>
+							<f:facet name="input">
+								<h:selectOneMenu
+									styleClass="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all"
+									value="#{activity.nature}" style="width:100%;height:100%;">
+									<f:selectItems value="#{userSpaceView.natures}" var="nature"
+										itemLabel="#{nature}" itemValue="#{nature}"
+										style="width:100%;height:100%;" />
+								</h:selectOneMenu>
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="Annee" sortBy="#{activity.annee}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{activity.annee}">  </h:outputText>
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{activity.annee}" style="width:100%"
+									label="annee" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="Description">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{activity.description}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{activity.description}" style="width:100%"
+									label="annee" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column headerText="Site Web ">
+						<p:cellEditor>
+
+							<f:facet name="output">
+								<h:outputText value="#{activity.siteWeb}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{activity.siteWeb}" style="width:100%"
+									label="annee" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column style="width:35px">
+						<p:rowEditor />
+					</p:column>
+
+
+				</p:dataTable>
+
+			
+
+
+
+				<div class="ui-g"></div>
+
 			</h:form>
 
-			<h:form>
-				<table class="table">
-					<h:dataTable value="#{userSpaceView.activities}" var="a"
-						styleClass="table table-hover" headerClass="danger"
-						footerClass="danger" rowClasses="success,warning">
+			
 
-						<h:column>
-							<!-- Une colonne -->
-							<f:facet name="header">Titre</f:facet>
-							<h:outputText value="#{a.titre}" />
-						</h:column>
-						<h:column>
-							<f:facet name="header">Année</f:facet>
-							<h:outputText value="#{a.annee}" />
-						</h:column>
-						<h:column>
-							<f:facet name="header">Description</f:facet>
-							<h:outputText value="#{a.description}" />
-						</h:column>
-						<h:column>
-							<f:facet name="header">Site web</f:facet>
-							<h:outputText value="#{a.siteWeb}" />
-						</h:column>
-						<h:column>
-							<f:facet name="header">Action</f:facet>
-							<h:commandLink value="edit" styleClass="btn btn-primary btn-xs"
-								action="#{userSpaceView.editActivity(a.idActivity)}" />
-						</h:column>
+			<h:form id="inscription">
 
-					</h:dataTable>
-				</table>
+				<c:set var="p" value="#{userSpaceView.signingUpPerson}" />
+				<p:panel header="Nouvelle Activite" style="width: 800px;">
+
+					<h:panelGrid columns="3">
+					<p:outputLabel value="Titre:*" />
+						<p:inputText id="titre"
+							value="#{userSpaceView.nouvelleActivite.titre}" required="true"
+							label="Titre" style="width:100%"
+							placeholder="titre de l'activite">
+							<p:ajax event="keyup" update="titreMsg"></p:ajax>
+						</p:inputText>
+						<p:message id="titreMsg" for="titre" />
+						
+						
+						
+
+						<p:outputLabel value="Categorie:*" />
+						<h:selectOneMenu required="true" label="Categorie*:" id="cat"
+							styleClass="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all"
+							value="#{userSpaceView.nouvelleActivite.nature}"
+							style="width:100%;height:100%;">
+							<f:selectItems value="#{userSpaceView.natures}" var="nature"
+								itemLabel="#{nature}" itemValue="#{nature}"
+								style="width:100%;height:100%;">
+
+							</f:selectItems>
+						</h:selectOneMenu>
+						<p:message id="categorieMsg" for="cat" />
+						
+						
+						<p:outputLabel value="Annee:*" />
+						<p:inputText value="#{userSpaceView.nouvelleActivite.annee}"
+							id="annee" required="true" style="width:100%" label="annee"
+							placeholder="YYYY">
+							<p:ajax event="keyup" update="anneeMsg"></p:ajax>
+
+						</p:inputText>
+
+						<p:message autoUpdate="true" id="anneeMsg" for="annee" />
+
+						<p:outputLabel value="Description:" />
+						<p:inputTextarea rows="3" id="description" minQueryLength="10"
+							value="#{userSpaceView.nouvelleActivite.description}"
+							style="width:100%" label="description"
+							placeholder="Description de l'activite" />
+						<p:message id="descMsg" for="description" />
+
+						<p:outputLabel value="Site Web:" />
+						<p:inputText value="#{userSpaceView.nouvelleActivite.siteWeb}"
+							style="width:100%" label="siteweb" id="siteweb"
+							placeholder="https://www.site.fr">
+							<f:validator validatorId="website-validator"></f:validator>
+						</p:inputText>
+						<p:message id="sitewebMsg" for="siteweb" />
+						
+				
+
+
+
+						<p:outputLabel value="" />
+						<p:commandButton action="#{userSpaceView.ajouterActivite}" value="Ajouter Activite"
+							update="inscription :form" />
+						<p:outputLabel value="" />
+					</h:panelGrid>
+
+				</p:panel>
 			</h:form>
 
 		</f:view>

@@ -25,7 +25,7 @@ public class WebsiteValidator implements Validator<String>,ClientValidator {
 
 	@Override
 	public void validate(FacesContext context, UIComponent component, String value) throws ValidatorException {
-		if(value==null) return;
+		if(value=="") return;
 		String[] schemes = {"http","https"};
 		UrlValidator urlValidator = new UrlValidator(schemes);
 		if (!urlValidator.isValid(value)) 

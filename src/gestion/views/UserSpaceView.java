@@ -18,6 +18,7 @@ import org.primefaces.event.RowEditEvent;
 import gestion.entities.Activite;
 import gestion.entities.NatureActivite;
 import gestion.entities.Personne;
+import gestion.services.AccessInterditException;
 import gestion.services.UserService;
 
 @Named
@@ -30,23 +31,33 @@ public class UserSpaceView implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Inject
-	UserService UserService;
+	UserService userService;
 
 	private Activite nouvelleActivite;
 	private boolean isNewActivite;
 	private List<Activite> activities;
 	private NatureActivite[] natures = NatureActivite.values();
 	private Personne personne;
+	private boolean ajout;
+	private Personne signingUpPerson = new Personne();
+	
 	
 	
 	@PostConstruct
 	public void init() throws IOException {
 		
-		if(UserService.isLoggedIn()) {
-			this.personne = UserService.getPersonne();
-			activities = personne.getActivites();
-			nouvelleActivite = new Activite();
-			isNewActivite = false;
+		if(userService.isLoggedIn()) {
+			try {
+				this.personne = userService.getPersonne();
+				activities = personne.getActivites();
+				nouvelleActivite = new Activite();
+				isNewActivite = false;
+				setAjout(false);
+			}catch(Exception e ) {
+				FacesContext facesContext = FacesContext.getCurrentInstance();
+				ExternalContext externalContext = facesContext.getExternalContext();
+				externalContext.redirect("login.xhtml?redirect-to=loggedUserServices.xhtml");
+			}
 		}else {
 			FacesContext facesContext = FacesContext.getCurrentInstance();
 			ExternalContext externalContext = facesContext.getExternalContext();
@@ -58,7 +69,15 @@ public class UserSpaceView implements Serializable {
 	public Personne getPersonne() {
 		return personne;
 	}
+	
+	
+	public String logout() {
+		FacesContext facesContext = FacesContext.getCurrentInstance();
 
+		ExternalContext externalContext = facesContext.getExternalContext();
+		externalContext.invalidateSession();
+		return "login.xhtml";
+	}
 
 	public List<Activite> getActivities() {
 		return activities;
@@ -79,25 +98,29 @@ public class UserSpaceView implements Serializable {
 		this.nouvelleActivite = nouvelleActivite;
 	}
 	public void ajouterActivite() {
-		System.out.println("Test");
-		this.activities.add(new Activite());
-		isNewActivite = true;
+		try {
+			userService.addActivite(nouvelleActivite);
+			nouvelleActivite = new Activite();
+		}catch(AccessInterditException e) {
+			System.out.println("Vous netes pas connecete");
+		}
 	}
 	
 	public void onRowEdit(RowEditEvent<Activite> event) {
-        FacesMessage msg = new FacesMessage("Car Edited", event.getObject().getSiteWeb());
+		try {
+			userService.updateActivite(event.getObject());
+
+		}catch(AccessInterditException exception) {
+			FacesMessage msg = new FacesMessage("Erreur de modification", event.getObject().getSiteWeb());
+	        FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		FacesMessage msg = new FacesMessage("Activite Modifie", event.getObject().getSiteWeb());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
      
     public void onRowCancel(RowEditEvent<Activite> event) {
 
-        FacesMessage msg = new FacesMessage("Edit Cancelled", event.getObject().getSiteWeb());
-        if(isNewActivite) {
-        	System.out.println(activities.size());
-        	activities.remove(event.getObject());
-        	System.out.println(activities.size());
-        	isNewActivite = false;
-        }
+        FacesMessage msg = new FacesMessage("Modification Annullee", event.getObject().getSiteWeb());
         FacesContext.getCurrentInstance().addMessage(null, msg);
 
     }
@@ -123,4 +146,24 @@ public class UserSpaceView implements Serializable {
 		this.isNewActivite = isNewActivite;
 	}
 
-}
+
+	public boolean isAjout() {
+		return ajout;
+	}
+
+
+	public void setAjout(boolean ajout) {
+		this.ajout = ajout;
+	}
+
+
+	public Personne getSigningUpPerson() {
+		return signingUpPerson;
+	}
+
+
+	public void setSigningUpPerson(Personne signingUpPerson) {
+		this.signingUpPerson = signingUpPerson;
+	}
+
+}	

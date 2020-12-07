@@ -93,7 +93,7 @@ public class UserService {
 	public void updateActivite(Activite activite) throws AccessInterditException {
 		if(loggedIn) {
 			this.activiteDao.saveActivite(activite);
-			this.personne.updateActivite(activite);
+			//this.personne.updateActivite(activite);
 			this.personneDao.savePersonne(personne);
 		}else throw new AccessInterditException("updating activite");
 	}
