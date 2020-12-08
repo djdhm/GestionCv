@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -59,7 +61,12 @@ public class SearchView implements Serializable {
 		lazyListePersonne = new LazyPersonneDataModel(guestService);	
 	}
 
-	
+	public void setActivityFilter(ValueChangeEvent	 event) {
+		System.out.println(event.getNewValue());
+		NatureActivite nature =(NatureActivite) event.getNewValue();
+		if( nature !=null) this.lazyListePersonne.setFilter("activity" , nature.name());
+		else lazyListePersonne.removeFilter("activity");
+	}
 	public void f1()
 	{
 		System.out.println("Fonction filter ");

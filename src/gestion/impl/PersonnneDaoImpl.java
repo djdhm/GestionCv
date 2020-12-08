@@ -12,6 +12,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.openejb.jee.wls.SqlQuery;
+import org.hibernate.Session;
 
 import gestion.dao.IPersonneDAO;
 import gestion.entities.Activite;
@@ -152,19 +153,31 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 	@Override
 	public List<Personne> getFilteredData(Map<String,String> filters) {
 		// TODO Auto-generated method stub
-		System.out.println("We Are inn filtering function");
-		String queryString  = "Select p from Personne p ";
-		if(!filters.isEmpty()) queryString+=" where 1=1  ";
-		for(String key:filters.keySet()) {
-			queryString += "AND p."+key+" LIKE '%"+filters.get(key)+"'";
-		}
-		System.out.println(queryString);
-		
-		Query query = em.createQuery(queryString,Personne.class);
+		org.hibernate.Session session =em.unwrap(Session.class);
+
+		Query query = em.createNamedQuery("findAllPersonnes",Personne.class);
+		session.enableFilter("nomLike").setParameter("value", "Poincare");
+		System.out.println(		session.getEnabledFilter("nomLike"));
 		query.setMaxResults(1000);
 		return query.getResultList();
 		
 		
+	}
+	@Override
+	public int countAllPersonne(HashMap<String, String> filters) {
+		// TODO Auto-generated method stub
+		org.hibernate.Session session =em.unwrap(Session.class);
+
+		session.enableFilter("nomLike").setParameter("value", "Poincare");
+		System.out.println(		session.getEnabledFilter("nomLike"));
+		Query query = em.createNamedQuery("countAllPersonnes");
+		System.out.println(query.toString());
+		List liste = query.getResultList();
+		for(Object o:liste) {
+			System.out.println(o.toString());
+			return Integer.parseInt(o.toString()) ;
+		}
+		return 0;
 	}
 
 

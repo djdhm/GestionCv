@@ -21,7 +21,11 @@ import javax.persistence.Table;
 import javax.persistence.JoinColumn;
 import javax.validation.constraints.Past;
 
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.Filters;
 import org.hibernate.annotations.GenerationTime;
+import org.hibernate.annotations.ParamDef;
 
 import com.github.javafaker.Faker;
 import com.sun.istack.NotNull;
@@ -31,10 +35,12 @@ import com.sun.istack.NotNull;
 		@NamedQuery(name = "findPersonsByLastName", query = "Select p from Personne p where p.nom= :nom"),
 		@NamedQuery(name = "findPersonByFirstName", query = "Select p from Personne p where p.prenom= :prenom"),
 		@NamedQuery(name = "findPersonneByEmail", query = "Select p from Personne p where p.email= :email") ,
-		@NamedQuery(name = "countAllPersonne", query = "Select count(p) from Personne p") 
+		@NamedQuery(name = "countAllPersonnes", query = "Select count(p) from Personne p") 
 
 		})
 @Entity
+@FilterDef(name="nomLike", parameters = {@ParamDef( name = "value", type="string")})
+@Filter(name="nomLike", condition="nom = :value")
 public class Personne implements Serializable {
 
 	/**
@@ -96,6 +102,7 @@ public class Personne implements Serializable {
 
 
 	@OneToMany( targetEntity=Activite.class, mappedBy="personne", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @Filter(name = "activity_by_nature", condition = "nature= :nature")
 	private List<Activite> activites = new ArrayList<Activite>();
 
 	public Personne() {

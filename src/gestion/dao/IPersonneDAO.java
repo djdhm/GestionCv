@@ -1,5 +1,6 @@
 package gestion.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,4 +20,5 @@ public interface IPersonneDAO {
 	public List<Personne> getAllPerson(int page, int pageSize);
 	public int countAllPersonne();
 	public List<Personne> getFilteredData(Map<String,String> filters);
+	public int countAllPersonne(HashMap<String, String> filters);
 }

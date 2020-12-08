@@ -37,13 +37,15 @@
 								onkeyup="PF('personnesTable').filter()" style="width:150px"
 								placeholder="Type Activite" />
 								<h:outputText value="Categories d'activites:" />
-									<h:selectOneMenu
+									<h:selectOneMenu  valueChangeListener="#{searchView.setActivityFilter}"
 									styleClass="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all"
 									value="#{searchView.typeActiviteFilter}" style="height:100%;">
 									<f:selectItem itemLabel="Tout Types" itemValue="#{null}"></f:selectItem>
 									<f:selectItems value="#{searchView.natures}" var="nature"
 										itemLabel="#{nature}" itemValue="#{nature}"
-										style="width:100%;height:100%;" />
+										style="width:100%;height:100%;	" />
+										 <p:ajax event="valueChange" 
+										 listener="#{searchView.setActivityFilter}" oncomplete="PF('personnesTable').filter()" />
 								</h:selectOneMenu>
 							
 						</p:outputPanel>

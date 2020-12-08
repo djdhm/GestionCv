@@ -2,6 +2,7 @@ package gestion.services;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,8 +49,8 @@ public class GuestService {
 	public List<Personne> getAllPersonnes(int page, int pageSize){
 		return this.personneDAO.getAllPerson(page,pageSize);
 	}
-	public int countAllPersonne() {
-		return personneDAO.countAllPersonne();
+	public int countAllPersonne(HashMap<String, String> filters) {
+		return personneDAO.countAllPersonne(filters);
 	}
 	public Personne getPersonById(long id) {
 		return personneDAO.getPersonById(id);
@@ -74,6 +75,8 @@ public class GuestService {
 		return (this.personneDAO.getPersonneByEmail(email)!=null);
 		
 	}
+
+	
     
 	
 }
