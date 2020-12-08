@@ -3,6 +3,7 @@ package gestion.services;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -30,14 +31,26 @@ public class GuestService {
 	@PostConstruct
 	public void init() {
 		System.out.println("Create " + this);
-
-	
+		
+		// Creating Mock Data 
+		// Tu peux ennlever les commentaire et choisir laa taaille des donneess 
+//		for(int i=0;i<100000;i++) {
+//			personneDAO.savePersonne(Personne.randomPersonne());
+//			
+//		}
+		
 	}
 	
 	public List<Personne> getAllPersonnes(){
 		return this.personneDAO.getAllPerson();
 	}
 	
+	public List<Personne> getAllPersonnes(int page, int pageSize){
+		return this.personneDAO.getAllPerson(page,pageSize);
+	}
+	public int countAllPersonne() {
+		return personneDAO.countAllPersonne();
+	}
 	public Personne getPersonById(long id) {
 		return personneDAO.getPersonById(id);
 	}
@@ -50,9 +63,9 @@ public class GuestService {
 			return personneDAO.getPersonById(id).getActivites();
 	}
 
-	public List<Personne> filterPersonnes(String nom,String  prenom,String titreActivite){
+	public List<Personne> filterPersonnes(Map<String,String> filters){
 		
-		return this.personneDAO.applyFilter(nom, prenom, titreActivite);
+		return this.personneDAO.getFilteredData(filters);
 				
 	}
 

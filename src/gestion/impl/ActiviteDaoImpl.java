@@ -15,7 +15,7 @@ import gestion.entities.Personne;
 public class ActiviteDaoImpl implements IActiviteDao {
 
 	
-	@PersistenceContext(unitName="myBase")
+	@PersistenceContext(unitName="persistence")
 	EntityManager em; 
 	
 	@Override

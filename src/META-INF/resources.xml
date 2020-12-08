@@ -18,4 +18,13 @@
     </Resource>
  
 
+   <Resource id="MysqlDataSource" type="DataSource">
+    JdbcDriver com.mysql.jdbc.Driver
+    JdbcUrl jdbc:mysql://localhost:3306/gestioncv?serverTimezone=UTC
+    JtaManaged true
+	DefaultAutoCommit	true
+    UserName gestion
+    Password password
+  </Resource>
+
 </resources>

@@ -71,12 +71,6 @@ public class GuestServiceControler implements Serializable{
         return "showCV?faces-redirect=true";
 	}
 	
-	public void search() {
-		System.out.println("SEARCH " + nomC +" "+ prenomC +" "+ ActiviteC);
-		
-		search = true;
-		resultOfSearch = guestService.filterPersonnes(nomC,prenomC,ActiviteC);
-    }
 	
 	//------------- SETTERS ET GETTERS -----------------
 

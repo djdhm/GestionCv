@@ -8,6 +8,9 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.model.LazyDataModel;
+
+import gestion.entities.NatureActivite;
 import gestion.entities.Personne;
 import gestion.services.GuestService;
 
@@ -24,6 +27,10 @@ public class SearchView implements Serializable {
 	private List<Personne> listePersonnes;
 	private List<Personne> filteredPersonnes;
 
+	private LazyPersonneDataModel lazyListePersonne;
+
+	private NatureActivite typeActiviteFilter;
+	
 	
 	public List<Personne> getFilteredPersonnes() {
 		return filteredPersonnes;
@@ -47,13 +54,39 @@ public class SearchView implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		listePersonnes = guestService.getAllPersonnes();
+		//listePersonnes = guestService.getAllPersonnes();
+		System.out.println("Recuperer les personnne caa prends du tempss...s");
+		lazyListePersonne = new LazyPersonneDataModel(guestService);	
 	}
 
 	
 	public void f1()
 	{
-		System.out.println("Keyup");
+		System.out.println("Fonction filter ");
+		
 	// somecode
+	}
+
+
+	public LazyDataModel<Personne> getLazyListePersonne() {
+		return lazyListePersonne;
+	}
+
+
+	public void setLazyListePersonne(LazyPersonneDataModel lazyListePersonne) {
+		this.lazyListePersonne = lazyListePersonne;
+	}
+
+
+	public NatureActivite getTypeActiviteFilter() {
+		return typeActiviteFilter;
+	}
+
+
+	public void setTypeActiviteFilter(NatureActivite typeActiviteFilter) {
+		this.typeActiviteFilter = typeActiviteFilter;
+	}
+	public NatureActivite[] getNatures() {
+		return NatureActivite.values();
 	}
 }

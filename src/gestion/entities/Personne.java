@@ -30,7 +30,9 @@ import com.sun.istack.NotNull;
 		@NamedQuery(name = "findAllPersonnes", query = "Select p from Personne p"),
 		@NamedQuery(name = "findPersonsByLastName", query = "Select p from Personne p where p.nom= :nom"),
 		@NamedQuery(name = "findPersonByFirstName", query = "Select p from Personne p where p.prenom= :prenom"),
-		@NamedQuery(name = "findPersonneByEmail", query = "Select p from Personne p where p.email= :email") 
+		@NamedQuery(name = "findPersonneByEmail", query = "Select p from Personne p where p.email= :email") ,
+		@NamedQuery(name = "countAllPersonne", query = "Select count(p) from Personne p") 
+
 		})
 @Entity
 public class Personne implements Serializable {

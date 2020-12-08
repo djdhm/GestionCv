@@ -1,6 +1,7 @@
 package gestion.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import gestion.entities.Personne;
 
@@ -15,4 +16,7 @@ public interface IPersonneDAO {
 	public void savePersonne(Personne p);
 	public Personne getPersonneByEmail(String email);
 	public List<Personne> applyFilter(String nom,String prenom,String activiteTitre);
+	public List<Personne> getAllPerson(int page, int pageSize);
+	public int countAllPersonne();
+	public List<Personne> getFilteredData(Map<String,String> filters);
 }

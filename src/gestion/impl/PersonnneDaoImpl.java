@@ -11,6 +11,8 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.apache.openejb.jee.wls.SqlQuery;
+
 import gestion.dao.IPersonneDAO;
 import gestion.entities.Activite;
 import gestion.entities.Personne;
@@ -19,7 +21,7 @@ import gestion.entities.Personne;
 public class PersonnneDaoImpl implements IPersonneDAO {
 	
 	
-	@PersistenceContext(unitName="myBase")
+	@PersistenceContext(unitName="persistence")
 	EntityManager em; 
 	
 
@@ -29,7 +31,14 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 		  Query query = em.createNamedQuery("findAllPersonnes",Personne.class);
 		  return query.getResultList();
 	}
-
+	@Override
+	public List<Personne> getAllPerson(int page, int pageSize) {
+		// TODO Auto-generated method stub
+		 Query query = em.createNamedQuery("findAllPersonnes",Personne.class);
+		 query.setFirstResult(pageSize*page);
+		 query.setMaxResults(pageSize);
+		 return query.getResultList();
+	}
 	@Override
 	public Personne getPersonById(long id) {
 		return em.find(Personne.class,id);
@@ -126,5 +135,37 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 			return null;
 		}
 	}
+	@Override
+	public int countAllPersonne() {
+		// TODO Auto-generated method stub
+		Query query = em.createNamedQuery("countAllPersonne");
+		
+		List liste = query.getResultList();
+		for(Object o:liste) {
+			System.out.println(o.toString());
+			return Integer.parseInt(o.toString()) ;
+		}
+		return 1000;
+	}
+
+
+	@Override
+	public List<Personne> getFilteredData(Map<String,String> filters) {
+		// TODO Auto-generated method stub
+		System.out.println("We Are inn filtering function");
+		String queryString  = "Select p from Personne p ";
+		if(!filters.isEmpty()) queryString+=" where 1=1  ";
+		for(String key:filters.keySet()) {
+			queryString += "AND p."+key+" LIKE '%"+filters.get(key)+"'";
+		}
+		System.out.println(queryString);
+		
+		Query query = em.createQuery(queryString,Personne.class);
+		query.setMaxResults(1000);
+		return query.getResultList();
+		
+		
+	}
+
 
 }
