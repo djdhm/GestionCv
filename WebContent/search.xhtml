@@ -35,9 +35,9 @@
 							<h:outputText value="Search all fields:" />
 							<p:inputText id="descriptionFilter"
 								style="width:150px"
-								placeholder="Type Activite">
-								 <p:ajax event="valueChange" 
-										 listener="#{searchView.setDescriptionFilter}" oncomplete="PF('personnesTable').filter()" />
+								placeholder="Type Activite" valueChangeListener="#{searchView.setDescriptionFilter}" >
+								 <p:ajax event="change" 
+										  oncomplete="PF('personnesTable').filter()" />
 								</p:inputText>
 								<h:outputText value="Categories d'activites:" />
 									<h:selectOneMenu  valueChangeListener="#{searchView.setActivityFilter}"
@@ -57,17 +57,32 @@
 
 
 					<p:column filterBy="#{car.nom}" headerText="Nom"
-						footerText="contains" filterMatchMode="contains" onkeyup="PF('personnesTable').filter()" >
+						footerText="contains" filterMatchMode="contains"  >
+						 <f:facet name="filter">
+					        <p:inputText class="ui-column-filter" valueChangeListener="#{searchView.setNameFilter}" >
+					         <p:ajax event="change" 
+										  oncomplete="PF('personnesTable').filter()" />
+					        </p:inputText>
+					    </f:facet>
 						<h:outputText value="#{car.nom}" />
 					</p:column>
 					<p:column filterBy="#{car.prenom}" headerText="Prenom"
-						footerText="contains" filterMatchMode="contains" onkeyup="PF('personnesTable').filter()" >
-						<h:outputText value="#{car.prenom}" />
+						footerText="contains" filterMatchMode="contains" >
+						 <f:facet name="filter">
+					        <p:inputText valueChangeListener="#{searchView.setLastNameFilter}" class="ui-column-filter">
+					         <p:ajax event="keyup" 
+										  oncomplete="PF('personnesTable').filter()" />
+					        </p:inputText>	
+					    </f:facet>
+								<h:outputText value="#{car.prenom}" />
 					</p:column>
 <p:column filterBy="#{car.email}" headerText="Email"
-						footerText="contains" filterMatchMode="contains"  onkeyup="PF('personnesTable').filter()" >
+						footerText="contains" filterMatchMode="contains"    >
 						 <f:facet name="filter">
-					        <p:inputText onkeyup="PF('personnesTable').filter();" class="ui-column-filter"/>
+					        <p:inputText valueChangeListener="#{searchView.setEmailFilter}" class="ui-column-filter">
+					         <p:ajax event="keyup" 
+									 oncomplete="PF('personnesTable').filter()" />
+					        </p:inputText>
 					    </f:facet>
 						<h:outputText value="#{car.email}" />
 					</p:column>

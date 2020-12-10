@@ -156,10 +156,11 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 			if( activiteFilters.get("activity")!=null) {
 				queryString += " a.nature="+NatureActivite.valueOf(activiteFilters.get("activity")).ordinal()+" and ";
 			}
-			queryString += "a.description LIKE '%"+activiteFilters.getOrDefault("description","")+"%'";
+			queryString += " lower(a.description) LIKE '%"+activiteFilters.getOrDefault("description","")+"%'";
 			
 			Query tst = em.createNativeQuery(queryString);
-			tst.setMaxResults(1000);
+			tst.setFirstResult(first);
+			tst.setMaxResults(pageSize*10);
 			List<Long>  a = tst.getResultList();
 			if(a.size()==0) return null;
 			CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -169,11 +170,15 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 			//Query vrai = em.createQuery("select p from Personne p where p.idPerson in (1,2,3,4,5,6,7,8,9,10) ");
 			//Query vrai = em.createNamedQuery("findAllPersonnesIn");
 			TypedQuery<Personne> allQuery = em.createQuery(vrai);
-	        return allQuery.getResultList();
+			List<Personne> resultat = allQuery.getResultList();
+			disableFilters(session, filters);
+	        return resultat;
 		}else {
-			Query query = em.createNamedQuery("findAllPersonnes",Personne.class);
+			TypedQuery<Personne> query = em.createNamedQuery("findAllPersonnes",Personne.class);
+			List<Personne> resultList = query.getResultList();
+			disableFilters(session, filters);
 
-			return query.getResultList();
+			return resultList;
 
 		}
 		//	query.setMaxResults(1000);
@@ -184,33 +189,46 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 	public int countAllPersonne(Map<String, String> filters, Map<String, String> activiteFilters) {
 		// TODO Auto-generated method stub
 		org.hibernate.Session session =em.unwrap(Session.class);
+		System.out.println("activite Filter vide == "+activiteFilters.isEmpty());
 		applyFilter(session, filters);
-		// 		session.enableFilter("prenom").setParameter("value", "%po%");
-	//	System.out.println(		session.getEnabledFilter("prenom").getFilterDefinition());
+
 		if(!activiteFilters.isEmpty()) {
-			String queryString = "select count(distinct idperson) from personne_activite pa left join activite a on pa.activites_idActivity = a.idActivity where";
+			
+			String queryString = "select distinct idperson from personne_activite pa left join activite a on pa.activites_idActivity = a.idActivity where";
 			if( activiteFilters.get("activity")!=null) {
 				queryString += " a.nature="+NatureActivite.valueOf(activiteFilters.get("activity")).ordinal()+" and ";
 			}
-			queryString += "a.description LIKE '%"+activiteFilters.getOrDefault("description","")+"%'";
+			queryString += " lower(a.description) LIKE '%"+activiteFilters.getOrDefault("description","")+"%'";
 			
 			System.out.println(queryString);
 			Query tst = em.createNativeQuery(queryString);
 			List liste = tst.getResultList();
-			for(Object o:liste) {
-				System.out.println(o.toString());
-				return Integer.parseInt(o.toString()) ;
-			}
-		}
-		Query query = em.createNamedQuery("countAllPersonnes");
+			if(liste.size()==0) return 0;
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<Personne> cq = cb.createQuery(Personne.class);
+			CriteriaQuery<Long> vrai = cb.createQuery(Long.class);
+			Root<Personne> root = vrai.from(Personne.class);
+			vrai.select(cb.count(root));
+			
+			vrai.where(root.get("idPerson").in(liste)) ;
+			//Query vrai = em.createQuery("select p from Personne p where p.idPerson in (1,2,3,4,5,6,7,8,9,10) ");
+			//Query vrai = em.createNamedQuery("findAllPersonnesIn");
+			TypedQuery<Long> allQuery = em.createQuery(vrai);
+			Long x = allQuery.getSingleResult();
+			System.out.println("Compte as long with filters " + x);
 
-		List liste = query.getResultList();
-		
-		for(Object o:liste) {
-			System.out.println(o.toString());
-			return Integer.parseInt(o.toString()) ;
+			disableFilters(session,filters);
+			return x.intValue();
+			
 		}
-		return 0;
+		TypedQuery<Long> query = em.createNamedQuery("countAllPersonnes",Long.class);
+		System.out.println("Compte as long without filters " + query.getSingleResult());
+		int intValue = query.getSingleResult().intValue();
+		disableFilters(session, filters);
+
+		return intValue;
+		
+		
 	}
 	
 	private void applyFilter(Session session, Map<String, String> filters) {
@@ -219,9 +237,18 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 			if(column=="activity") {
 				session.enableFilter(column).setParameter("value", filters.get(column));
 			}else {
+				System.out.println("Applying filter:"+column);
 				session.enableFilter(column).setParameter("value", "%"+filters.get(column)+"%");
 
 			}
+		}
+	}
+	private void disableFilters(Session session,Map<String,String> filters) {
+		for(String column:filters.keySet()) {
+			System.out.println(column+"=="+filters.get(column));
+			
+				System.out.println("disabling :"+column);
+				session.disableFilter(column);
 		}
 	}
 

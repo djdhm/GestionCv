@@ -34,7 +34,7 @@ import com.github.javafaker.Faker;
 import com.sun.istack.NotNull;
 
 @NamedQueries({ 
-	@NamedQuery(name = "findAllPersonnes", query = "Select distinct p from Personne p "),
+	@NamedQuery(name = "findAllPersonnes", query = "Select p from Personne p "),
 	@NamedQuery(name = "findAllPersonnesIn", query = "Select distinct p from Personne p where p.idPerson in (:liste)"),
 		@NamedQuery(name = "findPersonsByLastName", query = "Select p from Personne p where p.nom= :nom"),
 		@NamedQuery(name = "findPersonByFirstName", query = "Select p from Personne p where p.prenom= :prenom"),

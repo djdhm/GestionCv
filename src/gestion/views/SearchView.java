@@ -71,8 +71,8 @@ public class SearchView implements Serializable {
 	public void setDescriptionFilter(ValueChangeEvent	 event) {
 		lazyListePersonne.setFiltersHaveChanged(true);
 		System.out.println(event.getNewValue());
-		NatureActivite nature =(NatureActivite) event.getNewValue();
-		if( nature !=null) this.lazyListePersonne.setFilter("description" , nature.name());
+		String value  = event.getNewValue().toString();
+		if( value !="") this.lazyListePersonne.setFilter("description" , value);
 		else lazyListePersonne.removeFilter("description");
 	}
 	public void f1()
@@ -82,7 +82,30 @@ public class SearchView implements Serializable {
 	// somecode
 	}
 
+	public void setLastNameFilter(ValueChangeEvent event) {
+		lazyListePersonne.setFiltersHaveChanged(true);
+		System.out.println(event.getNewValue().toString());
+		System.out.println(event.getNewValue());
+		String value = event.getNewValue().toString();
+		if( value !="") this.lazyListePersonne.setPersonneFilter("prenom" ,value );
+		else lazyListePersonne.removePersonneFilter("prenom");
+	}
 
+	public void setEmailFilter(ValueChangeEvent event) {
+		lazyListePersonne.setFiltersHaveChanged(true);
+		System.out.println(event.getNewValue());
+		String value = event.getNewValue().toString();
+		if( value !="") this.lazyListePersonne.setPersonneFilter("email" ,value );
+		else lazyListePersonne.removePersonneFilter("email");
+	}
+
+	public void setNameFilter(ValueChangeEvent event) {
+		lazyListePersonne.setFiltersHaveChanged(true);
+		System.out.println(event.getNewValue());
+		String value = event.getNewValue().toString();
+		if( value !="") this.lazyListePersonne.setPersonneFilter("nom" ,value );
+		else lazyListePersonne.removePersonneFilter("nom");
+	}
 	public LazyDataModel<Personne> getLazyListePersonne() {
 		return lazyListePersonne;
 	}
