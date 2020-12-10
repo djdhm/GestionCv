@@ -24,12 +24,11 @@ public class LazyPersonneDataModel extends LazyDataModel<Personne>{
 	
 	
 	private static final long serialVersionUID = -4059712193758273525L;
-	private List<Personne> listePersonne;
-	private int pageSize=1000;
-	private int page;
-	private int count;
+	private List<Personne> data;
+	private int rowsByReq=1000;
+	int rangeBegin,rangeEnd;
 	private HashMap<String, String> otherFilters;
-	
+	private boolean filtersHaveChanged ;
 	
 	  public LazyPersonneDataModel(GuestService guestService) {
 		  this.guestService = guestService;
@@ -40,7 +39,7 @@ public class LazyPersonneDataModel extends LazyDataModel<Personne>{
 
 	@Override
 	   public Personne getRowData(String rowKey) {
-	        for (Personne p : listePersonne) {
+	        for (Personne p : data) {
 	            if (p.getIdPerson().equals(rowKey)) {
 	                return p;
 	            }
@@ -58,29 +57,39 @@ public class LazyPersonneDataModel extends LazyDataModel<Personne>{
 	  
 	  @Override
 	    public List<Personne> load(int first, int pageSize, Map<String, SortMeta> sortMeta, Map<String, FilterMeta> filterMeta) {
-	        List<Personne> data = new ArrayList<>();
+	        System.out.println("Page a afficher"+first);
+	        if(first>=this.rangeBegin && first+pageSize<rangeEnd && !filtersHaveChanged){
+	            try {
+	                return data.subList(first, first + pageSize);
+	            }
+	            catch (IndexOutOfBoundsException e) {
+	                return data.subList(first, first + (data.size() % pageSize));
+	            }
+	        }
+	        rangeBegin = first;
+	        rangeEnd = first+ pageSize*5;
+		  	data = new ArrayList<>();
 	        HashMap<String,String> filters = new HashMap<String, String>();
 	        //filter
 	        for(String key:filterMeta.keySet()) {
 	        	System.out.println(key);
 	        	try {
 	        		FilterMeta filter = filterMeta.get(key);
-	        		System.out.println(filter);
+	        		filters.put(key,filter.getFilterValue().toString());
 	        	}catch(Exception e) {
-	        		System.out.println("Impossible pour "+key);
 	        	}
 	        	
 	        }
 	        for(String key:otherFilters.keySet()) {
 	        	System.out.println(key);
 	        	try {
-	        		System.out.println(otherFilters.get(key));
+	        		filters.put(key,otherFilters.get(key));
+	        		
 	        	}catch(Exception e) {
-	        		System.out.println("Impossible pour "+key);
 	        	}
 	        	
 	        }
-	        data = guestService.filterPersonnes(filters);
+	        data = guestService.filterPersonnes(filters,otherFilters,first,pageSize);
 	        
 	        if (sortMeta != null && !sortMeta.isEmpty()) {
 	            for (SortMeta meta : sortMeta.values()) {
@@ -89,10 +98,11 @@ public class LazyPersonneDataModel extends LazyDataModel<Personne>{
 	 
 	       
 	        //rowCount
-	        int dataSize = guestService.countAllPersonne(filters);
+	        int dataSize = guestService.countAllPersonne(filters,otherFilters);
+	      //  int dataSize = data.size();
 	        this.setRowCount(dataSize);
 //	        this.setRowCount(dataSize);
-	 
+	        filtersHaveChanged = false;
 	        //paginate
 	        if (dataSize > pageSize) {
 	            try {
@@ -119,6 +129,16 @@ public class LazyPersonneDataModel extends LazyDataModel<Personne>{
 		 }
 		 
 	 }
+
+
+	public boolean isFiltersHaveChanged() {
+		return filtersHaveChanged;
+	}
+
+
+	public void setFiltersHaveChanged(boolean filtersHaveChanged) {
+		this.filtersHaveChanged = filtersHaveChanged;
+	}
 
 }
 

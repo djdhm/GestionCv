@@ -49,8 +49,8 @@ public class GuestService {
 	public List<Personne> getAllPersonnes(int page, int pageSize){
 		return this.personneDAO.getAllPerson(page,pageSize);
 	}
-	public int countAllPersonne(HashMap<String, String> filters) {
-		return personneDAO.countAllPersonne(filters);
+	public int countAllPersonne(Map<String, String> filters, Map<String,String> activiteFilters) {
+		return personneDAO.countAllPersonne(filters,activiteFilters);
 	}
 	public Personne getPersonById(long id) {
 		return personneDAO.getPersonById(id);
@@ -64,9 +64,9 @@ public class GuestService {
 			return personneDAO.getPersonById(id).getActivites();
 	}
 
-	public List<Personne> filterPersonnes(Map<String,String> filters){
+	public List<Personne> filterPersonnes(Map<String,String> filters, Map<String, String> activiteFilters, int first, int pageSize){
 		
-		return this.personneDAO.getFilteredData(filters);
+		return this.personneDAO.getFilteredData(filters,activiteFilters,first,pageSize);
 				
 	}
 

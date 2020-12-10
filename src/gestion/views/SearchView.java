@@ -32,12 +32,12 @@ public class SearchView implements Serializable {
 	private LazyPersonneDataModel lazyListePersonne;
 
 	private NatureActivite typeActiviteFilter;
-	
+	private boolean filtersHaveChanged = false;
 	
 	public List<Personne> getFilteredPersonnes() {
 		return filteredPersonnes;
 	}
-
+	
 
 	public void setFilteredPersonnes(List<Personne> filteredPersonnes) {
 		this.filteredPersonnes = filteredPersonnes;
@@ -62,10 +62,18 @@ public class SearchView implements Serializable {
 	}
 
 	public void setActivityFilter(ValueChangeEvent	 event) {
+		lazyListePersonne.setFiltersHaveChanged(true);
 		System.out.println(event.getNewValue());
 		NatureActivite nature =(NatureActivite) event.getNewValue();
 		if( nature !=null) this.lazyListePersonne.setFilter("activity" , nature.name());
 		else lazyListePersonne.removeFilter("activity");
+	}
+	public void setDescriptionFilter(ValueChangeEvent	 event) {
+		lazyListePersonne.setFiltersHaveChanged(true);
+		System.out.println(event.getNewValue());
+		NatureActivite nature =(NatureActivite) event.getNewValue();
+		if( nature !=null) this.lazyListePersonne.setFilter("description" , nature.name());
+		else lazyListePersonne.removeFilter("description");
 	}
 	public void f1()
 	{

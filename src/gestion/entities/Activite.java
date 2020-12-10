@@ -16,11 +16,26 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.FilterDefs;
+import org.hibernate.annotations.Filters;
+import org.hibernate.annotations.ParamDef;
+
 
 @NamedQueries({ 
 	@NamedQuery(name = "findAllActivites", query = "Select a from Activite a")
 	})
 @Entity
+@FilterDefs({
+	@FilterDef(name="activity", parameters = {@ParamDef( name = "value", type="string")}),
+	@FilterDef(name="description", parameters = {@ParamDef( name = "value", type="string")})
+
+})
+@Filters({
+	@Filter(name = "activity", condition = "nature = :value	"),
+	@Filter(name = "description", condition = "description like :value"),
+})
 public class Activite implements Serializable {
 
 	

@@ -18,7 +18,6 @@ public interface IPersonneDAO {
 	public Personne getPersonneByEmail(String email);
 	public List<Personne> applyFilter(String nom,String prenom,String activiteTitre);
 	public List<Personne> getAllPerson(int page, int pageSize);
-	public int countAllPersonne();
-	public List<Personne> getFilteredData(Map<String,String> filters);
-	public int countAllPersonne(HashMap<String, String> filters);
+	public int countAllPersonne(Map<String,String> filters, Map<String, String> activiteFilters);
+	public List<Personne> getFilteredData(Map<String,String> filters, Map<String, String> activiteFilters, int first, int pageSize);
 }

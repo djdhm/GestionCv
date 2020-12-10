@@ -33,9 +33,12 @@
 					<f:facet name="header">
 						<p:outputPanel>
 							<h:outputText value="Search all fields:" />
-							<p:inputText id="globalFilter"
-								onkeyup="PF('personnesTable').filter()" style="width:150px"
-								placeholder="Type Activite" />
+							<p:inputText id="descriptionFilter"
+								style="width:150px"
+								placeholder="Type Activite">
+								 <p:ajax event="valueChange" 
+										 listener="#{searchView.setDescriptionFilter}" oncomplete="PF('personnesTable').filter()" />
+								</p:inputText>
 								<h:outputText value="Categories d'activites:" />
 									<h:selectOneMenu  valueChangeListener="#{searchView.setActivityFilter}"
 									styleClass="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all"
@@ -62,7 +65,10 @@
 						<h:outputText value="#{car.prenom}" />
 					</p:column>
 <p:column filterBy="#{car.email}" headerText="Email"
-						footerText="contains" filterMatchMode="contains"  onkeyup="PF('personnesTable').filter()">
+						footerText="contains" filterMatchMode="contains"  onkeyup="PF('personnesTable').filter()" >
+						 <f:facet name="filter">
+					        <p:inputText onkeyup="PF('personnesTable').filter();" class="ui-column-filter"/>
+					    </f:facet>
 						<h:outputText value="#{car.email}" />
 					</p:column>
 				</p:dataTable>

@@ -20,7 +20,7 @@
 
    <Resource id="MysqlDataSource" type="DataSource">
     JdbcDriver com.mysql.jdbc.Driver
-    JdbcUrl jdbc:mysql://localhost:3306/gestioncv?serverTimezone=UTC
+    JdbcUrl jdbc:mysql://localhost:3306/gestioncvv?serverTimezone=UTC
     JtaManaged true
 	DefaultAutoCommit	true
     UserName gestion

@@ -21,8 +21,11 @@ import javax.persistence.Table;
 import javax.persistence.JoinColumn;
 import javax.validation.constraints.Past;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.FilterDefs;
 import org.hibernate.annotations.Filters;
 import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.ParamDef;
@@ -31,16 +34,28 @@ import com.github.javafaker.Faker;
 import com.sun.istack.NotNull;
 
 @NamedQueries({ 
-		@NamedQuery(name = "findAllPersonnes", query = "Select p from Personne p"),
+	@NamedQuery(name = "findAllPersonnes", query = "Select distinct p from Personne p "),
+	@NamedQuery(name = "findAllPersonnesIn", query = "Select distinct p from Personne p where p.idPerson in (:liste)"),
 		@NamedQuery(name = "findPersonsByLastName", query = "Select p from Personne p where p.nom= :nom"),
 		@NamedQuery(name = "findPersonByFirstName", query = "Select p from Personne p where p.prenom= :prenom"),
 		@NamedQuery(name = "findPersonneByEmail", query = "Select p from Personne p where p.email= :email") ,
-		@NamedQuery(name = "countAllPersonnes", query = "Select count(p) from Personne p") 
+		@NamedQuery(name = "countAllPersonnes", query = "Select count(p) from Personne p ") 
 
 		})
 @Entity
-@FilterDef(name="nomLike", parameters = {@ParamDef( name = "value", type="string")})
-@Filter(name="nomLike", condition="nom = :value")
+@FilterDefs({
+	@FilterDef(name="nom", parameters = {@ParamDef( name = "value", type="string")}),
+	@FilterDef(name="prenom", parameters = {@ParamDef( name = "value", type="string")}),
+	@FilterDef(name="email", parameters = {@ParamDef( name = "value", type="string")}),
+	
+
+})
+@Filters({
+	@Filter(name="nom", condition="lower(nom) like :value"),
+	@Filter(name = "prenom", condition = "lower(prenom) like :value"),
+	@Filter(name = "email", condition = "lower(email) like  :value")
+
+})
 public class Personne implements Serializable {
 
 	/**
@@ -100,9 +115,11 @@ public class Personne implements Serializable {
 	@OneToMany( targetEntity=Personne.class)
 	List<Personne> cooptations = new ArrayList<Personne>();
 
-
-	@OneToMany( targetEntity=Activite.class, mappedBy="personne", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @Filter(name = "activity_by_nature", condition = "nature= :nature")
+	@OneToMany( targetEntity=Activite.class, cascade = CascadeType.ALL, orphanRemoval = true)
+	    @JoinTable(
+	            name="PERSONNE_ACTIVITE",
+	            joinColumns = @JoinColumn( name="idPerson")
+	  )
 	private List<Activite> activites = new ArrayList<Activite>();
 
 	public Personne() {
