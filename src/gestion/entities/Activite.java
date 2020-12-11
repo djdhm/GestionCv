@@ -24,16 +24,17 @@ import org.hibernate.annotations.ParamDef;
 
 
 @NamedQueries({ 
-	@NamedQuery(name = "findAllActivites", query = "Select a from Activite a")
+	@NamedQuery(name = "findAllActivites", query = "Select a from Activite a"),
+
 	})
 @Entity
 @FilterDefs({
-	@FilterDef(name="activity", parameters = {@ParamDef( name = "value", type="string")}),
+	@FilterDef(name="activity", parameters = {@ParamDef( name = "value", type="int")}),
 	@FilterDef(name="description", parameters = {@ParamDef( name = "value", type="string")})
 
 })
 @Filters({
-	@Filter(name = "activity", condition = "nature = :value	"),
+	@Filter(name = "activity", condition = "nature = :value"),
 	@Filter(name = "description", condition = "description like :value"),
 })
 public class Activite implements Serializable {
