@@ -107,22 +107,27 @@
 					widgetVar="carDialog" modal="true" showEffect="fade"
 					hideEffect="fade" resizable="false">
 					<p:outputPanel id="carDetail" style="text-align:center;">
-						<h:outputText value="Id:" />
+						<h:outputText value="Id de la personne:" />
 						<h:outputText value="#{searchView.selectedPersonne.idPerson}" />
-						<p:panelGrid columns="2" columnClasses="label,value">
+						<br />
 
+						<p:dataTable var="a" value="#{searchView.selectedPersonne.activites}">
+							<p:column headerText="Titre">
+								<h:outputText value="#{a.titre}" />
+							</p:column>
 
+							<p:column headerText="Année">
+								<h:outputText value="#{a.annee}" />
+							</p:column>
 
+							<p:column headerText="Description">
+								<h:outputText value="#{a.description}" />
+							</p:column>
 
-							<h:outputText value="Year" />
-							<h:outputText value="#{searchView.selectedPersonne.idPerson}" />
-
-							<h:outputText value="Color:" />
-							<h:outputText value="#{searchView.selectedPersonne.idPerson}" />
-
-							<h:outputText value="Price" />
-							<h:outputText value="#{searchView.selectedPersonne.idPerson}" />
-						</p:panelGrid>
+							<p:column headerText="Site Web">
+								<h:outputText value="#{a.siteWeb}" />
+							</p:column>
+						</p:dataTable>
 					</p:outputPanel>
 				</p:dialog>
 

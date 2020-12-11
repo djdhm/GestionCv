@@ -150,6 +150,10 @@ public class Personne implements Serializable {
 	public void addActivite(Activite activite) {
 		activite.setPersonne(this);
 		this.activites.add(activite);
+		System.out.println("Les activités de la personne "+this.getIdPerson());
+		for(Activite a : this.activites) {
+			System.out.println(a.getIdActivity()+" "+a.getTitre());
+		}
 	}
 	
 	public void updateActivite(Activite activite) {

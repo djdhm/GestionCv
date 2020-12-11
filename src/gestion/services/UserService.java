@@ -90,7 +90,7 @@ public class UserService {
 			
 			this.activiteDao.saveActivite(activite);
 			this.personne.addActivite(activite);
-			this.personneDao.savePersonne(personne);
+			this.personneDao.savePersonne(this.personne);
 			
 		}else throw new AccessInterditException("adding activite");
 	}

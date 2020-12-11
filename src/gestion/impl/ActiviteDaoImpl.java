@@ -26,11 +26,20 @@ public class ActiviteDaoImpl implements IActiviteDao {
 	
 	@Override
 	public void saveActivite(Activite activite) {
-		if(activite.getIdActivity() == null)
+		if(activite.getIdActivity() == null) {
+			System.err.println("persiste activité : "+ activite.getIdActivity() +" "+activite.getTitre());
 			em.persist(activite);
-		else
+			System.err.println("Maintenant voici toutes les activités :");
+			for(Activite a : getAllActivities())
+				System.err.println(a.getIdActivity()+" "+a.getTitre());
+		}
+		else {
+			System.err.println("merge activité : "+ activite.getIdActivity() +" "+activite.getTitre());
 			em.merge(activite);
-		
+			System.err.println("Maintenant voici toutes les activités :");
+			for(Activite a : getAllActivities())
+				System.err.println(a.getIdActivity()+" "+a.getTitre());
+		}
 		
 	}
 
