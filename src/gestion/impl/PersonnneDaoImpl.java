@@ -187,7 +187,6 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 	public List<Personne> getFilteredData(Map<String,String> filters, Map<String, String> activiteFilters,int first,int pageSize) {
 		// TODO Auto-generated method stub
 		org.hibernate.Session session =em.unwrap(Session.class);
-		//applyFilter(session, filters);
 		if(!activiteFilters.isEmpty()) {
 			
 			List<Long> a = this.activiteDao.getAssociatedPersonne((activiteFilters));
@@ -203,10 +202,12 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 			disableFilters(session, filters);
 	        return resultat;
 		}else {
+			applyFilter(session, filters);
+
 			TypedQuery<Personne> query = em.createNamedQuery("findAllPersonnes",Personne.class);
 			List<Personne> resultList = query.getResultList();
 			disableFilters(session, filters);
-
+			
 			return resultList;
 
 		}
