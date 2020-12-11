@@ -17,39 +17,88 @@
 <ui:composition template="/template/mylayout.xhtml">
 	<ui:define name="content">
 		<f:view>
-			<p:accordionPanel>
-				<p:tab title="Mes infos personelles">
-					<c:set var="p" value="#{userSpaceView.personne}" />
-					<h1>Informations personnelles :</h1>
-					<h:outputText value="Nom : " />
-					<h:outputText value="#{p.nom}" />
-					<br />
+			<h1>Inscription</h1>
+			<c:set var="p" value="#{userSpaceView.personne}" />
+			<!-- Je peux placer var ici ???? -->
 
-					<h:outputText value="Prenom : " />
-					<h:outputText value="#{p.prenom}" />
-					<br />
+			<h:form id="modifInfos">
 
-					<h:outputText value="Mail : " />
-					<h:outputText value="#{p.email}" />
-					<br />
+				<p:accordionPanel>
+					<p:tab title="Mes infos personelles">
+						<p:panel header="Modifications infos persos" style="width: 800px;">
 
-					<h:outputText value="Site Web : " />
-					<h:outputText value="#{p.siteweb}" />
-					<br />
+							<h:panelGrid columns="3">
+								<p:outputLabel value="Email:*" />
+								<p:inputText id="email" value="#{p.email}" required="true"
+									label="Email">
+									<f:validator validatorId="email-validator" />
 
-					<h:outputText value="Date de naissance : " />
-					<h:outputText value="#{p.dateNaissance}">
-						<f:convertDateTime pattern="dd-MM-yyyy" />
-						<!-- Format de conversion date identique peu importe si input ou output-->
-					</h:outputText>
-					<br />
+									<p:ajax event="keyup" update="emailMsg" />
+								</p:inputText>
+								<p:message id="emailMsg" for="email" />
 
-					<h:outputText value="Mot de passe : " />
-					<h:outputText value="#{p.password}" />
-					<br />
+								<p:outputLabel value="Mot de Passe:*" />
+								<p:password id="password" value="#{p.password}" required="true"
+									label="MotDePasse">
+									<f:validateLength minimum="4" />
+									<f:validator validatorId="password-strength-validator" />
 
-				</p:tab>
-			</p:accordionPanel>
+									<p:ajax update="passwordMsg" event="keyup" />
+								</p:password>
+								<p:message id="passwordMsg" for="password" />
+
+								<p:outputLabel value="Nom:*" />
+
+								<p:inputText id="nom" value="#{p.nom}" required="true"
+									label="Nom">
+
+								</p:inputText>
+								<p:message id="nomMsg" for="nom" />
+
+								<p:outputLabel value="Prenom:" />
+								<p:inputText id="lastName" value="#{p.prenom}" required="true"
+									label="Prenom" />
+								<p:message id="lastNameMsg" for="lastName" />
+
+
+								<p:outputLabel value="Site Web:" />
+								<p:inputText id="siteweb" value="#{p.siteweb}" type="url"
+									required="false" label="SiteWeb">
+									<f:validator validatorId="website-validator" />
+									<p:ajax update="sitewebMsg" event="keyup" />
+								</p:inputText>
+								<p:message id="sitewebMsg" for="siteweb" />
+
+
+								<p:outputLabel for="datenaissance" value="Date de naissance*:" />
+								<p:datePicker id="datenaissance" value="#{p.dateNaissance}"
+									yearNavigator="true" pattern="dd/MM/yyyy"
+									placeholder="dd/MM/yyyy" yearRange="1900:2002" />
+								<p:ajax update="dateNaissanceMsg" event="keyup" />
+
+								<p:message id="dateNaissanceMsg" for="datenaissance" />
+
+								<h:commandButton value="Confirmer modification">
+									<p:ajax event="click"
+										listener="#{userSpaceView.onModifyPersosDatas}"
+										update=":form:msgs" />
+								</h:commandButton>
+							</h:panelGrid>
+
+						</p:panel>
+					</p:tab>
+				</p:accordionPanel>
+			</h:form>
+
+
+
+
+
+
+
+
+
+
 
 
 			<h:form id="form">

@@ -121,13 +121,24 @@ public class UserSpaceView implements Serializable {
 	public void supprimerActivite(Activite activite) {
 		try {
 			userService.deleteActivity(activite);
-			 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Activite Supprim�e", "");
+			 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Activite Supprim�e", "");
 		        FacesContext.getCurrentInstance().addMessage(null, message);
 		}catch(AccessInterditException e) {
 			System.out.println("Vous netes pas connecete");
 
 		}
 	}
+	
+	//On modifie les données persos
+    public void onModifyPersosDatas() {
+
+    	userService.updatePerson(personne);
+    	System.out.println("Nouveau nom : "+personne.getNom());
+    	//TODO: faire de la validation ??
+        FacesMessage msg = new FacesMessage("Infos Persos modifié");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+
+    }
 	
 	public void onRowEdit(RowEditEvent<Activite> event) {
 		try {

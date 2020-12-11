@@ -66,6 +66,11 @@ public class UserService {
 			//throw new IllegalAccessError();
 		}
 	}
+	
+	//TODO: Rajouter cooptation après ??
+	public void updatePerson(Personne p ) {
+		personneDao.savePersonne(p);
+	}
 
 	//TODO: Pour la cooptation, j'ai pas compris quoi en faire ^^
 	public void addPersonne(Personne p) throws AccessInterditException {
