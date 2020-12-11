@@ -116,12 +116,8 @@ public class Personne implements Serializable {
 	@OneToMany( targetEntity=Personne.class, fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	List<Personne> cooptations = new ArrayList<Personne>();
 
-	@OneToMany( targetEntity=Activite.class, cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-	    @JoinTable(
-	            name="PERSONNE_ACTIVITE",
-	            joinColumns = @JoinColumn( name="idPerson", unique = false)
-	  )
-	//@OneToMany( targetEntity=Activite.class, mappedBy="personne", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+
+	@OneToMany( targetEntity=Activite.class, cascade = CascadeType.ALL, orphanRemoval = true , fetch = FetchType.LAZY)
 	private List<Activite> activites = new ArrayList<Activite>();
 
 	public Personne() {
@@ -191,6 +187,7 @@ public class Personne implements Serializable {
 
 	public boolean verifyPassword(String password2) {
 		// TODO Auto-generated method stub
+		System.out.println(this.password);
 		return this.password.equals(password2);
 	}
 

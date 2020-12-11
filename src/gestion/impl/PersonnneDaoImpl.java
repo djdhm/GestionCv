@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -20,6 +21,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.openejb.jee.wls.SqlQuery;
 import org.hibernate.Session;
 
+import gestion.dao.IActiviteDao;
 import gestion.dao.IPersonneDAO;
 import gestion.entities.Activite;
 import gestion.entities.NatureActivite;
@@ -32,6 +34,8 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 	@PersistenceContext(unitName="persistence")
 	EntityManager em; 
 	
+	@Inject
+	IActiviteDao activiteDao;
 
 
 	@Override
@@ -69,14 +73,24 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 
 	@Override
 	public void savePersonne(Personne p) {
+	      em.createNativeQuery("SHOW TABLES");
+	      em.createNativeQuery("SHOW COLUMNS from Personne");
+	      
+	      
 		if(p.getIdPerson() == null) {
 			System.err.println("On persiste une personne");
 			em.persist(p);
 		}
 		else {
 			System.err.println("On merge une personne");
+			List<Activite> activities = p.getActivites();
+			for(Activite act:activities)		System.out.println(act.getIdActivity()+"=="+act.getTitre());
 			em.merge(p);
-			}
+
+			p.setActivites(new ArrayList<Activite>(activities));
+			em.merge(p);
+
+		}
 	}
 	
 	/*@Override
@@ -173,18 +187,10 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 	public List<Personne> getFilteredData(Map<String,String> filters, Map<String, String> activiteFilters,int first,int pageSize) {
 		// TODO Auto-generated method stub
 		org.hibernate.Session session =em.unwrap(Session.class);
-		applyFilter(session, filters);
+		//applyFilter(session, filters);
 		if(!activiteFilters.isEmpty()) {
-			String queryString = "select distinct idperson from personne_activite pa left join activite a on pa.activites_idActivity = a.idActivity where";
-			if( activiteFilters.get("activity")!=null) {
-				queryString += " a.nature="+NatureActivite.valueOf(activiteFilters.get("activity")).ordinal()+" and ";
-			}
-			queryString += " lower(a.description) LIKE '%"+activiteFilters.getOrDefault("description","")+"%'";
 			
-			Query tst = em.createNativeQuery(queryString);
-			tst.setFirstResult(first);
-			tst.setMaxResults(pageSize*10);
-			List<Long>  a = tst.getResultList();
+			List<Long> a = this.activiteDao.getAssociatedPersonne((activiteFilters));
 			if(a.size()==0) return null;
 			CriteriaBuilder cb = em.getCriteriaBuilder();
 			CriteriaQuery<Personne> cq = cb.createQuery(Personne.class);
@@ -217,15 +223,7 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 
 		if(!activiteFilters.isEmpty()) {
 			
-			String queryString = "select distinct idperson from personne_activite pa left join activite a on pa.activites_idActivity = a.idActivity where";
-			if( activiteFilters.get("activity")!=null) {
-				queryString += " a.nature="+NatureActivite.valueOf(activiteFilters.get("activity")).ordinal()+" and ";
-			}
-			queryString += " lower(a.description) LIKE '%"+activiteFilters.getOrDefault("description","")+"%'";
-			
-			System.out.println(queryString);
-			Query tst = em.createNativeQuery(queryString);
-			List liste = tst.getResultList();
+			List<Long> liste = activiteDao.getAssociatedPersonne(activiteFilters);
 			if(liste.size()==0) return 0;
 			CriteriaBuilder cb = em.getCriteriaBuilder();
 			CriteriaQuery<Personne> cq = cb.createQuery(Personne.class);
@@ -238,6 +236,8 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 			//Query vrai = em.createNamedQuery("findAllPersonnesIn");
 			TypedQuery<Long> allQuery = em.createQuery(vrai);
 			Long x = allQuery.getSingleResult();
+			
+			
 			System.out.println("Compte as long with filters " + x);
 
 			disableFilters(session,filters);
