@@ -1,30 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-	<!-- J'ai fait passer la BDD en memoire -->
-<!--     <Resource id="MyDataSource" type="DataSource"> -->
-<!--         JdbcDriver org.hsqldb.jdbcDriver -->
-<!--         JdbcUrl jdbc:hsqldb:mem:maBase;shutdown=true;hsqldb.write_delay=false -->
-<!--         UserName sa -->
-<!--         Password -->
-<!--         JtaManaged false -->
-<!--     </Resource> -->
-	<!-- J'ai fait passer la BDD en fichier pour faires des tests sur de grande donnees  -->
 
-<Resource id="MyDataSource" type="DataSource">
+	<Resource id="MyDataSource" type="DataSource">
         JdbcDriver org.hsqldb.jdbcDriver
-        JdbcUrl jdbc:hsqldb:file:./data/maBase;shutdown=true;hsqldb.write_delay=false
-
-        JtaManaged false
+        JdbcUrl jdbc:hsqldb:file:/home/imbert/Documents/M2/Archi_Appli/GestionCv/data/maBase;shutdown=true;hsqldb.write_delay=false
+        JtaManaged true
+        UserName gestion
+    	Password password
     </Resource>
  
 
-   <Resource id="MysqlDataSource" type="DataSource">
+  <!-- <Resource id="MysqlDataSource" type="DataSource">
     JdbcDriver com.mysql.jdbc.Driver
     JdbcUrl jdbc:mysql://localhost:3306/gestioncvv?serverTimezone=UTC
     JtaManaged true
 	DefaultAutoCommit	true
     UserName gestion
     Password password
-  </Resource>
+  </Resource> -->
 
 </resources>
