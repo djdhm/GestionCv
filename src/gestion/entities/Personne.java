@@ -4,10 +4,13 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -20,6 +23,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.Past;
 
 import org.hibernate.annotations.Fetch;
@@ -113,11 +117,11 @@ public class Personne implements Serializable {
 	Date dateNaissance;
 
 	//@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@OneToMany( targetEntity=Personne.class, fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-	List<Personne> cooptations = new ArrayList<Personne>();
+	@ElementCollection(fetch = FetchType.EAGER )
+	Set<Long> cooptations = new HashSet<Long>();
+	
 
-
-	@OneToMany( targetEntity=Activite.class, cascade = CascadeType.ALL, orphanRemoval = true , fetch = FetchType.LAZY)
+	@OneToMany( targetEntity=Activite.class, cascade = CascadeType.ALL, orphanRemoval = true , fetch = FetchType.EAGER)
 	private List<Activite> activites = new ArrayList<Activite>();
 
 	public Personne() {
@@ -138,11 +142,11 @@ public class Personne implements Serializable {
 		this.email = email;
 		this.password = password;
 		this.dateNaissance = dateNaissance;
-		this.cooptations = new ArrayList<Personne>();
+		this.cooptations = new HashSet<Long>();
 	}
 
-	public void addCooptation(Personne personne) {
-		this.cooptations.add(personne);
+	public void addCooptation(Long idCoopte) {
+		this.cooptations.add(idCoopte);
 	}
 
 	public void addActivite(Activite activite) {
@@ -191,10 +195,6 @@ public class Personne implements Serializable {
 		return this.password.equals(password2);
 	}
 
-	public List<Personne> getCoptations() {
-		// TODO Auto-generated method stub
-		return this.cooptations;
-	}
 
 	public String getEmail() {
 		// TODO Auto-generated method stub
@@ -234,11 +234,11 @@ public class Personne implements Serializable {
 		this.dateNaissance = dateNaissance;
 	}
 
-	public List<Personne> getCooptations() {
+	public Set<Long> getCooptations() {
 		return cooptations;
 	}
 
-	public void setCooptations(List<Personne> cooptations) {
+	public void setCooptations(Set<Long> cooptations) {
 		this.cooptations = cooptations;
 	}
 
@@ -262,5 +262,5 @@ public class Personne implements Serializable {
 		this.email = email;
 	}
 	
-
+	
 }

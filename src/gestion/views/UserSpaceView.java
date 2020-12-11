@@ -2,7 +2,10 @@ package gestion.views;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -73,6 +76,19 @@ public class UserSpaceView implements Serializable {
 		}
 	}
 
+	public Set<Personne> getCooptationsOfPersonOfId(Long id){
+		Set<Personne> cooptedPersons = new HashSet<Personne>();
+		Set<Long> idsOfCoop = guestService.getPersonById(id).getCooptations();
+		
+		for(Long pId : idsOfCoop) {
+			System.out.println("ids : "+pId);
+			cooptedPersons.add(guestService.getPersonById(pId));
+		}
+		for(Personne c : cooptedPersons) {
+			System.out.println("+++++++"+ c.getIdPerson()+" "+c.getPrenom()+" "+c);
+		}
+		return cooptedPersons;
+	}
 
 	public Personne getPersonne() {
 		return personne;
@@ -222,7 +238,7 @@ public class UserSpaceView implements Serializable {
     
     public void supprimerCooptation(Personne pers) {
 		try {
-			personne.getCooptations().removeIf(p -> pers.getIdPerson().equals(p.getIdPerson()));
+			personne.getCooptations().removeIf(p -> pers.getIdPerson().equals(p));
 			
 			 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cooptation Supprim�e", "");
 		        FacesContext.getCurrentInstance().addMessage(null, message);

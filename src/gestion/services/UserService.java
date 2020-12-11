@@ -1,6 +1,7 @@
 package gestion.services;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.Remove;
 import javax.ejb.Stateful;
@@ -76,8 +77,10 @@ public class UserService {
 	public void addCooptation(Personne personne) throws AccessInterditException {
 		if(loggedIn) {
 			System.err.println("personne cooptée : "+personne.getPrenom()+" à "+this.personne.getPrenom());
-			//this.personneDao.savePersonne(personne);
-			this.personne.addCooptation(personne);
+			this.personneDao.savePersonne(personne);
+			System.err.println("On enregistre la personne coopté : "+personne.getIdPerson()+" "+personne.getPrenom());
+			this.personne.addCooptation(personne.getIdPerson());
+			System.err.println("On enregistre la personne qui coopte : "+this.personne.getIdPerson()+" "+this.personne.getPrenom());
 			this.personneDao.savePersonne(this.personne);
 			
 		}else throw new AccessInterditException("adding cooptation");
@@ -139,9 +142,9 @@ public class UserService {
 	}
 
 	//TODO: Que faire de ça ??
-	public List<Personne> getCoptations() throws AccessInterditException {
+	public Set<Long> getCooptations() throws AccessInterditException {
 		if(loggedIn) {
-			return this.personne.getCoptations();
+			return this.personne.getCooptations();
 			
 			
 		}else throw new AccessInterditException("adding activite");

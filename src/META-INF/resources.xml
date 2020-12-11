@@ -3,7 +3,7 @@
 
 	<Resource id="MyDataSource" type="DataSource">
         JdbcDriver org.hsqldb.jdbcDriver
-        JdbcUrl jdbc:hsqldb:mem:maBase;shutdown=false;hsqldb.write_delay=false
+        JdbcUrl jdbc:hsqldb:file:/home/imbert/Documents/M2/Archi_Appli/GestionCv/data/maBase;shutdown=false;hsqldb.write_delay=false
         JtaManaged true
         UserName gestion
     	Password password

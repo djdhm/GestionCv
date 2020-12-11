@@ -351,25 +351,23 @@
 				</p:accordionPanel>
 			</h:form>
 			
-			<h:form id="CooptationList">
+			 <h:form id="CooptationList">
 				<p:growl id="msgs" showDetail="true" />
 				<p:accordionPanel activeIndex="-1">
 					<p:tab title="Mes cooptations">
 
 						<p:dataTable id="listeCoopt" widgetVar="cooptations" var="c"
-							value="#{userSpaceView.personne.cooptations}" editable="true"
+							value="#{userSpaceView.getCooptationsOfPersonOfId(userSpaceView.personne.idPerson)}" editable="true"
 							emptyMessage="Aucune Cooptation	 "
 							style="margin-bottom:00px;width:100%">
 							<f:facet name="header">
 			            Mes Cooptations
 			        </f:facet>
-			        		<!-- Edition des cooptations -->
 							<p:ajax event="rowEdit" listener="#{userSpaceView.onRowCooptEdit}"
 								update=":form:msgs" />
 							<p:ajax event="rowEditCancel"
 								listener="#{userSpaceView.onRowCooptCancel}" update=":form:msgs" />
 
-							<!-- Affichage -->
 							<p:column headerText="Nom	">
 								<p:cellEditor>
 									<f:facet name="output">
@@ -450,7 +448,7 @@
 
 
 
-			</h:form>
+			</h:form> 
 
 		</f:view>
 	</ui:define>
