@@ -78,6 +78,29 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 			em.merge(p);
 			}
 	}
+	
+	/*@Override
+    public void savePersonne(Personne p) {
+          em.createNativeQuery("SHOW TABLES");
+          em.createNativeQuery("SHOW COLUMNS from Personne");
+
+
+        if(p.getIdPerson() == null) {
+            System.err.println("On persiste une personne");
+            em.persist(p);
+        }
+        else {
+            System.err.println("On merge une personne");
+            List<Activite> activities = p.getActivites();
+            for(Activite act:activities)        System.out.println(act.getIdActivity()+"=="+act.getTitre());
+            em.merge(p);
+
+            p.setActivites(new ArrayList<Activite>(activities));
+            em.merge(p);
+
+        }
+    }*/
+	
 	public List<Personne> applyFilter(String nom,String prenom,String activiteTitre){
 
 		HashMap<String, String> parameters = new HashMap<String, String>();

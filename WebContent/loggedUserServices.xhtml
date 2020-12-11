@@ -17,7 +17,7 @@
 <ui:composition template="/template/mylayout.xhtml">
 	<ui:define name="content">
 		<f:view>
-			<h1>Inscription</h1>
+			<h1>Espace Personnel</h1>
 			<c:set var="p" value="#{userSpaceView.personne}" />
 			<!-- Je peux placer var ici ???? -->
 
@@ -55,7 +55,7 @@
 								</p:inputText>
 								<p:message id="nomMsg" for="nom" />
 
-								<p:outputLabel value="Prenom:" />
+								<p:outputLabel value="Prenom*:" />
 								<p:inputText id="lastName" value="#{p.prenom}" required="true"
 									label="Prenom" />
 								<p:message id="lastNameMsg" for="lastName" />
@@ -293,6 +293,163 @@
 						</p:panel>
 					</p:tab>
 				</p:accordionPanel>
+			</h:form>
+			
+			<h:form id="cooptation">
+				<p:accordionPanel activeIndex="-1">
+					<p:tab title="Ajouter personne (cooptation)">
+							<p:panel header="Nouvelle cooptation" style="width: 800px;">
+
+							<h:panelGrid columns="3">
+								<p:outputLabel value="Nom:*" />
+								<p:inputText id="titre"
+									value="#{userSpaceView.nouvelleCooptation.nom}" required="true"
+									label="Titre" style="width:100%"
+									placeholder="nom de la cooptation">
+									<p:ajax event="keyup" update="titreMsg"></p:ajax>
+								</p:inputText>
+								<p:message id="titreMsg" for="titre" />
+
+								<p:outputLabel value="Prenom:*" />
+								<p:inputText value="#{userSpaceView.nouvelleCooptation.prenom}"
+									id="annee" required="true" style="width:100%" label="annee"
+									placeholder="pénom">
+									<p:ajax event="keyup" update="anneeMsg"></p:ajax>
+
+								</p:inputText>
+
+								<p:message autoUpdate="true" id="anneeMsg" for="annee" />
+
+								<p:outputLabel value="Email*:" />
+								<p:inputText id="description"
+									value="#{userSpaceView.nouvelleCooptation.email}"
+									style="width:100%" label="description"
+									placeholder="mail" />
+								<p:message id="descMsg" for="description" />
+
+								<p:outputLabel value="Site Web:" />
+								<p:inputText value="#{userSpaceView.nouvelleCooptation.siteweb}"
+									style="width:100%" label="siteweb" id="siteweb"
+									placeholder="https://www.site.fr">
+									<f:validator validatorId="website-validator"></f:validator>
+								</p:inputText>
+								<p:message id="sitewebMsg" for="siteweb" />
+
+
+
+
+
+								<p:outputLabel value="" />
+								<p:commandButton action="#{userSpaceView.ajouterCooptation}"
+									value="Ajouter Cooptation" update="CooptationList :form" />
+								<p:outputLabel value="" />
+							</h:panelGrid>
+
+						</p:panel>
+							
+					</p:tab>
+				</p:accordionPanel>
+			</h:form>
+			
+			<h:form id="CooptationList">
+				<p:growl id="msgs" showDetail="true" />
+				<p:accordionPanel activeIndex="-1">
+					<p:tab title="Mes cooptations">
+
+						<p:dataTable id="listeCoopt" widgetVar="cooptations" var="c"
+							value="#{userSpaceView.personne.cooptations}" editable="true"
+							emptyMessage="Aucune Cooptation	 "
+							style="margin-bottom:00px;width:100%">
+							<f:facet name="header">
+			            Mes Cooptations
+			        </f:facet>
+			        		<!-- Edition des cooptations -->
+							<p:ajax event="rowEdit" listener="#{userSpaceView.onRowCooptEdit}"
+								update=":form:msgs" />
+							<p:ajax event="rowEditCancel"
+								listener="#{userSpaceView.onRowCooptCancel}" update=":form:msgs" />
+
+							<!-- Affichage -->
+							<p:column headerText="Nom	">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{c.nom}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText id="nom" value="#{c.nom}"
+											style="width:100%" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column headerText="Prenom" sortBy="#{c.prenom}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{c.prenom}">
+										</h:outputText>
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText value="#{c.prenom}" style="width:100%"
+											label="annee" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column headerText="Email">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{c.email}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText value="#{c.email}"
+											style="width:100%" label="annee" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							
+							<p:column headerText="Site Web">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{c.siteweb}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText value="#{c.siteweb}"
+											style="width:100%" label="annee" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column style="width:35px">
+								<p:rowEditor />
+							</p:column>
+
+							<p:column style="width:50px">
+								<p:commandButton icon="ui-icon-trash" style="width:30px;"
+									title="Supprimer"
+									actionListener="#{userSpaceView.supprimerCooptation}"
+									update="form">
+									<p:confirm header="Attention!"
+										message="Voulez vous vraiment supprimer cette cooptation ?"
+										icon="pi pi-exclamation-triangle" />
+
+								</p:commandButton>
+								<p:confirmDialog global="true" showEffect="fade"
+									hideEffect="fade">
+									<p:commandButton value="Oui" type="button"
+										styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+									<p:commandButton value="Non" type="button"
+										styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+								</p:confirmDialog>
+							</p:column>
+
+
+						</p:dataTable>
+
+
+					</p:tab>
+				</p:accordionPanel>
+
+
+
+
 			</h:form>
 
 		</f:view>

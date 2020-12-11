@@ -13,12 +13,13 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
+
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.validation.constraints.Past;
 
 import org.hibernate.annotations.Fetch;
@@ -112,14 +113,15 @@ public class Personne implements Serializable {
 	Date dateNaissance;
 
 	//@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@OneToMany( targetEntity=Personne.class)
+	@OneToMany( targetEntity=Personne.class, fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	List<Personne> cooptations = new ArrayList<Personne>();
 
 	@OneToMany( targetEntity=Activite.class, cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	    @JoinTable(
 	            name="PERSONNE_ACTIVITE",
-	            joinColumns = @JoinColumn( name="idPerson")
+	            joinColumns = @JoinColumn( name="idPerson", unique = false)
 	  )
+	//@OneToMany( targetEntity=Activite.class, mappedBy="personne", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private List<Activite> activites = new ArrayList<Activite>();
 
 	public Personne() {

@@ -21,6 +21,7 @@ import gestion.entities.Activite;
 import gestion.entities.NatureActivite;
 import gestion.entities.Personne;
 import gestion.services.AccessInterditException;
+import gestion.services.GuestService;
 import gestion.services.UserService;
 
 @Named
@@ -34,14 +35,18 @@ public class UserSpaceView implements Serializable {
 	
 	@Inject
 	UserService userService;
+	
+	@Inject
+	GuestService guestService;
 
 	private Activite nouvelleActivite;
 	private boolean isNewActivite;
 	private List<Activite> activities;
+	private List<Personne> cooptations; // Liste des personnes recommandables
+	private Personne nouvelleCooptation;
 	private NatureActivite[] natures = NatureActivite.values();
 	private Personne personne;
 	private boolean ajout;
-	private Personne signingUpPerson = new Personne();
 	
 	
 	
@@ -53,6 +58,7 @@ public class UserSpaceView implements Serializable {
 				this.personne = userService.getPersonne();
 				activities = personne.getActivites();
 				nouvelleActivite = new Activite();
+				nouvelleCooptation = new Personne();
 				isNewActivite = false;
 				setAjout(false);
 			}catch(Exception e ) {
@@ -164,11 +170,69 @@ public class UserSpaceView implements Serializable {
         Object newValue = event.getNewValue();
          
         if(newValue != null && !newValue.equals(oldValue)) {
-         
+        	//WHAT ???
         }
         
     }
+    
+    //DEBUT POUR COOPTATION
+    
+    public void ajouterCooptation() {
+		try {
+			System.err.println("--On coopte "+nouvelleCooptation.getPrenom()+" à "+userService.getPersonne().getPrenom());
+			userService.addCooptation(nouvelleCooptation);
+			nouvelleCooptation = new Personne();
 
+			System.err.println("Voici maintenant toutes les personnes inscrites et issus de la cooptation");
+			for(Personne p : guestService.getAllPersonnes())
+				System.err.println(p.getIdPerson()+" "+p.getPrenom());
+		}catch(AccessInterditException e) {
+			System.out.println("Vous netes pas connecte");
+		}
+	}
+    
+    public void onRowCooptEdit(RowEditEvent<Personne> event) {
+		try {
+			userService.updatePerson(event.getObject());
+
+		}catch(Exception exception) {
+			FacesMessage msg = new FacesMessage("Erreur de modification cooptation", event.getObject().getNom());
+	        FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+		FacesMessage msg = new FacesMessage("Cooptation Modifie", event.getObject().getNom());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+     
+    public void onRowCooptCancel(RowEditEvent<Personne> event) {
+
+        FacesMessage msg = new FacesMessage("Modification Annullee", event.getObject().getNom());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+
+    }
+     
+    public void onCellCooptEdit(CellEditEvent<Personne> event) {
+        Object oldValue = event.getOldValue();
+        Object newValue = event.getNewValue();
+         
+        if(newValue != null && !newValue.equals(oldValue)) {
+        	//WHAT ???
+        }
+        
+    }
+    
+    public void supprimerCooptation(Personne pers) {
+		try {
+			personne.getCooptations().removeIf(p -> pers.getIdPerson().equals(p.getIdPerson()));
+			
+			 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cooptation Supprim�e", "");
+		        FacesContext.getCurrentInstance().addMessage(null, message);
+		}catch(Exception e) {
+			System.out.println("Vous netes pas connecete");
+
+		}
+	}
+
+  //FIN POUR COOPTATION
 
 	public boolean isNewActivite() {
 		return isNewActivite;
@@ -190,13 +254,29 @@ public class UserSpaceView implements Serializable {
 	}
 
 
-	public Personne getSigningUpPerson() {
-		return signingUpPerson;
+	public List<Personne> getCooptations() {
+		return cooptations;
 	}
 
 
-	public void setSigningUpPerson(Personne signingUpPerson) {
-		this.signingUpPerson = signingUpPerson;
+	public void setCooptations(List<Personne> cooptations) {
+		this.cooptations = cooptations;
 	}
 
+
+	public Personne getNouvelleCooptation() {
+		return nouvelleCooptation;
+	}
+
+
+	public void setNouvelleCooptation(Personne nouvelleCooptation) {
+		this.nouvelleCooptation = nouvelleCooptation;
+	}
+
+
+	public void setPersonne(Personne personne) {
+		this.personne = personne;
+	}
+
+	
 }	

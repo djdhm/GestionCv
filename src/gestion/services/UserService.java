@@ -71,6 +71,17 @@ public class UserService {
 	public void updatePerson(Personne p ) {
 		personneDao.savePersonne(p);
 	}
+	
+	/* Ajoute une activité à la personne */
+	public void addCooptation(Personne personne) throws AccessInterditException {
+		if(loggedIn) {
+			System.err.println("personne cooptée : "+personne.getPrenom()+" à "+this.personne.getPrenom());
+			//this.personneDao.savePersonne(personne);
+			this.personne.addCooptation(personne);
+			this.personneDao.savePersonne(this.personne);
+			
+		}else throw new AccessInterditException("adding cooptation");
+	}
 
 	//TODO: Pour la cooptation, j'ai pas compris quoi en faire ^^
 	public void addPersonne(Personne p) throws AccessInterditException {
@@ -78,8 +89,8 @@ public class UserService {
 		System.out.println(this.loggedIn);
 		if(loggedIn) {
 			personneDao.savePersonne(p);
-			this.personne.addCooptation(p);
-			personneDao.savePersonne(p);
+			//this.personne.addCooptation(p);
+			//personneDao.savePersonne(p);
 			
 		}else throw new AccessInterditException("test");
 	}
