@@ -12,6 +12,7 @@ import javax.inject.Named;
 
 import org.primefaces.model.LazyDataModel;
 
+import gestion.entities.Activite;
 import gestion.entities.NatureActivite;
 import gestion.entities.Personne;
 import gestion.services.GuestService;
@@ -28,7 +29,7 @@ public class SearchView implements Serializable {
 
 	private List<Personne> listePersonnes;
 	private List<Personne> filteredPersonnes;
-
+	private Personne selectedPersonne;
 	private LazyPersonneDataModel lazyListePersonne;
 
 	private NatureActivite typeActiviteFilter;
@@ -126,5 +127,22 @@ public class SearchView implements Serializable {
 	}
 	public NatureActivite[] getNatures() {
 		return NatureActivite.values();
+	}
+
+
+	public Personne getSelectedPersonne() {
+		return selectedPersonne;
+	}
+
+
+	public void setSelectedPersonne(Personne selectedPersonne) {
+		
+		this.selectedPersonne = selectedPersonne;
+		System.out.println("Changing Persone "+selectedPersonne.getEmail());
+		List<Activite> liste = this.selectedPersonne.getActivites();
+		System.out.println(liste.size());
+		for(Activite a: liste) {
+			System.out.println(a.getNature());
+		}
 	}
 }

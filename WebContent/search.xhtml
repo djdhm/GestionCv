@@ -86,10 +86,35 @@
 					    </f:facet>
 						<h:outputText value="#{car.email}" />
 					</p:column>
+					 <p:column style="width:48px;height:32px;text-align: center" headerText="Voir">
+		<p:commandButton  icon="pi pi-search" update=":form:cvPersonne"  oncomplete="PF('carDialog').show()"   style="border=0px;" title="Details">
+                <f:setPropertyActionListener value="#{car}" target="#{searchView.selectedPersonne}" />
+            </p:commandButton>
+        </p:column>
+        
+        
 				</p:dataTable>
-	  			
-	
-
+	     
+    <p:dialog id="cvPersonne" header="CV de #{searchView.selectedPersonne.nom} #{searchView.selectedPersonne.prenom}" widgetVar="carDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+        <p:outputPanel id="carDetail" style="text-align:center;">
+         <h:outputText value="Id:" />
+                <h:outputText value="#{searchView.selectedPersonne.idPerson}" />
+            <p:panelGrid  columns="2" columnClasses="label,value">
+               
+                 
+               
+ 
+                <h:outputText value="Year" />
+                <h:outputText value="#{searchView.selectedPersonne.idPerson}" />
+ 
+                <h:outputText value="Color:" />
+                <h:outputText value="#{searchView.selectedPersonne.idPerson}"/>
+             
+                <h:outputText value="Price" />
+                <h:outputText value="#{searchView.selectedPersonne.idPerson}" />
+            </p:panelGrid>
+        </p:outputPanel>
+    </p:dialog>
 
     
  			</h:form>

@@ -80,7 +80,7 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 	}
 	public List<Personne> applyFilter(String nom,String prenom,String activiteTitre){
 
-		HashMap<String, String> parameters = new HashMap();
+		HashMap<String, String> parameters = new HashMap<String, String>();
 		if(!nom.equals("")) parameters.put("n", nom);
 		if(!prenom.equals("")) parameters.put("p", prenom);
 		if(!activiteTitre.equals("")) parameters.put("a", activiteTitre);

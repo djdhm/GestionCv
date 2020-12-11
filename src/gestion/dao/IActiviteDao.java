@@ -3,6 +3,7 @@ package gestion.dao;
 import java.util.List;
 
 import gestion.entities.Activite;
+import gestion.entities.Personne;
 
 public interface IActiviteDao {
 	public void saveActivite(Activite activite);
