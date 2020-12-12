@@ -1,5 +1,7 @@
 package gestiont.test;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,7 +42,7 @@ public class TestCrud extends BaseJunit5 {
 	    this.p = new Personne("name", "surname", "www.adresse.b", TEST_EMAIL_COM, PASSWORD, new Date());
 		personneDao.savePersonne(p);
 	
-		userService.authentify(TEST_EMAIL_COM,PASSWORD);
+		assertTrue(userService.authentify(TEST_EMAIL_COM,PASSWORD));
 	}
 	
 	@AfterEach
