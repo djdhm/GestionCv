@@ -36,7 +36,7 @@ public class GuestService {
 		// Creating Mock Data 
 		// Tu peux ennlever les commentaire et choisir laa taaille des donneess 
 		Personne p = new Personne("Henri","Poincare","https://www.google.fr","henri.poincare@gmail.com","password",new Date(Date.UTC(1995, 1, 1, 14,14, 8)));
-		for(int i=0;i<5;i++) {
+		for(int i=0;i<30;i++) {
 			personneDAO.savePersonne(Personne.randomPersonne());
 			
 		}
@@ -47,9 +47,7 @@ public class GuestService {
 		return this.personneDAO.getAllPerson();
 	}
 	
-	public List<Personne> getAllPersonnes(int page, int pageSize){
-		return this.personneDAO.getAllPerson(page,pageSize);
-	}
+	
 	public int countAllPersonne(Map<String, String> filters, Map<String,String> activiteFilters) {
 		return personneDAO.countAllPersonne(filters,activiteFilters);
 	}
@@ -61,9 +59,7 @@ public class GuestService {
 		personneDAO.savePersonne(p);
 	}
 	
-	public List<Activite> getActivitiesOfPerson(long id){
-			return personneDAO.getPersonById(id).getActivites();
-	}
+
 
 	public List<Personne> filterPersonnes(Map<String,String> filters, Map<String, String> activiteFilters, int first, int pageSize){
 		

@@ -8,6 +8,7 @@
 
 
 <ui:composition template="/template/mylayout.xhtml">
+ <ui:param name="connected" value="#{userService.isLoggedIn==true}"/>
 	<ui:define name="content">
 		<f:view>
 
@@ -102,16 +103,43 @@
 
 				</p:dataTable>
 
-				<p:dialog id="cvPersonne"
+				<p:dialog id="cvPersonne" style="width:60%;max-width:80%;"  
 					header="CV de #{searchView.selectedPersonne.nom} #{searchView.selectedPersonne.prenom}"
 					widgetVar="carDialog" modal="true" showEffect="fade"
 					hideEffect="fade" resizable="false">
-					<p:outputPanel id="carDetail" style="text-align:center;">
+					<p:outputPanel id="carDetail" style="text-align:center; width:80%;">
 						<h:outputText value="Id de la personne:" />
 						<h:outputText value="#{searchView.selectedPersonne.idPerson}" />
 						<br />
-
-						<p:dataTable var="a" value="#{searchView.selectedPersonne.activites}">
+						<p:panelGrid columns="2" styleClass="ui-noborder" style="margin-right: auto;">
+							
+							<h:outputText value="Nom : " />
+							<h:outputText value="#{searchView.selectedPersonne.nom}" />				
+							<h:outputText value="Prenom : " />
+							<h:outputText value="#{searchView.selectedPersonne.prenom}" />				
+							<h:outputText value="Date de naissance : " />
+							<h:outputText value="#{searchView.selectedPersonne.dateNaissance}">
+							  <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+							</h:outputText>
+							
+							<h:outputText value="Email : " />
+							<h:outputLink value="mailto:#{searchView.selectedPersonne.email}">
+							    <f:param name="subject" value="Votre CV nous plait " />
+							    <f:param name="body" value="Voulez vous faire un stage chez nous !!" />
+							    <h:outputText value="#{searchView.selectedPersonne.email}" />
+							</h:outputLink>
+									
+							<h:outputText value="Site Web : " />
+							<h:outputLink value="http://#{searchView.selectedPersonne.siteweb}" target="_blank"> 
+							  <i class="icon-external-link"></i> 
+							  #{searchView.selectedPersonne.siteweb}
+							</h:outputLink>
+						
+						
+						</p:panelGrid>
+						
+						<p:dataTable var="a" value="#{searchView.selectedPersonne.activites}" emptyMessage="Aucune activites renseigne pour cette personne">
+						
 							<p:column headerText="Titre">
 								<h:outputText value="#{a.titre}" />
 							</p:column>
@@ -131,6 +159,23 @@
 							<p:column headerText="Site Web">
 								<h:outputText value="#{a.siteWeb}" />
 							</p:column>
+						</p:dataTable>
+						
+						<p:dataTable var="a" value="#{searchView.selectedPersonne.cooptations}">
+						
+							<p:column headerText="Nom">
+								<h:outputText value="#{a.nom}" />
+							</p:column>
+
+							<p:column headerText="Prenom">
+								<h:outputText value="#{a.prenom}" />
+							</p:column>
+							
+							<p:column headerText="email">
+								<h:outputText value="#{a.email}" />
+							</p:column>
+
+							
 						</p:dataTable>
 					</p:outputPanel>
 				</p:dialog>

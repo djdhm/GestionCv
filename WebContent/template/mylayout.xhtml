@@ -48,7 +48,7 @@
 <h:body>
 
     <div class="container">
-
+	<f:view  >
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -69,18 +69,24 @@
             </div>
 
             <!-- Mon menu -->
-            <div class="collapse navbar-collapse"
+            <div class="collapse navbar-collapse" 
                 id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><h:link outcome="signUp">Sign Up</h:link></li>
-                    <li><h:link outcome="login">Login</h:link></li>
+                <c:if test="#{paragraph==1}">
+                    <li><h:link >#{connected}</h:link></li>
+                
+                </c:if>
+                    <li><h:link outcome="signUp" rendered="#{connected=='false'}">#{connected}</h:link></li>
+                    <li><h:link outcome="login" rendered="#{connected=='false'}" >Login</h:link></li>
 					<li><h:link outcome="search">Search</h:link></li>
 					<li><h:link outcome="loggedUserServices">Espace perso</h:link></li>
-					<li><h:link  value="#{userService.logout()}">Log out</h:link></li>
+					<li><h:link  value="#{userService.logout()}"  rendered="#{connected=='true'}">Log out</h:link></li>
                 </ul>
             </div>
         </div>
     </nav>
+    	</f:view>
+    
 <!-- Je n'arrive pas à accéder à la page de debug avec le raccourci -->
     <ui:debug />
     <div>
