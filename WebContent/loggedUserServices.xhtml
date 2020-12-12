@@ -18,6 +18,9 @@
 	<ui:define name="content">
 		<f:view>
 			<h1>Espace Personnel</h1>
+			
+			<p:commandButton action="#{userService.logout()}" value="logout" />
+			
 			<c:set var="p" value="#{userSpaceView.personne}" />
 			<!-- Je peux placer var ici ???? -->
 

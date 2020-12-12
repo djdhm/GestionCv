@@ -58,11 +58,11 @@ public class UserService {
 	public String logout() {
 		if(loggedIn) {
 			loggedIn=false;
-			System.out.println(personne.getNom() +" "+ personne.getPrenom() + " s'est déconnecté");
+			System.err.println(personne.getNom() +" "+ personne.getPrenom() + " s'est déconnecté");
 			personne=null;
 			return "search?faces-redirect=true";
 		}else {
-			System.out.println("WTF je suis pas co...");
+			System.err.println("WTF je suis pas co...");
 			return "search?faces-redirect=true";
 			//throw new IllegalAccessError();
 		}

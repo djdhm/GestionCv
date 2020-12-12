@@ -41,8 +41,8 @@ public class TestCrud extends BaseJunit5 {
 		
 	    this.p = new Personne("name", "surname", "www.adresse.b", TEST_EMAIL_COM, PASSWORD, new Date());
 		personneDao.savePersonne(p);
-	
 		assertTrue(userService.authentify(TEST_EMAIL_COM,PASSWORD));
+
 	}
 	
 	@AfterEach
@@ -65,15 +65,7 @@ public class TestCrud extends BaseJunit5 {
 
 			Personne pDb = personneDao.getPersonById(p1.getIdPerson());
 			assert(pDb.getIdPerson()==p1.getIdPerson());
-			//List<Personne> listeCoptations = userService.getCoptations();
-			
-			//System.out.println(listeCoptations);
-			//listeCoptations = userService.getCoptations();
 			System.out.println("allo");
-			//System.out.println(listeCoptations.size());
-			//assert(listeCoptations.get(0).getIdPerson()==p1.getIdPerson());
-
-			//assert(listeCoptations.size()==3);
 
 
 			
