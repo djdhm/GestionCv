@@ -35,7 +35,7 @@ import org.hibernate.annotations.ParamDef;
 })
 @Filters({
 	@Filter(name = "activity", condition = "nature = :value"),
-	@Filter(name = "description", condition = "description like :value"),
+	@Filter(name = "description", condition = "lower(description) like :value"),
 })
 public class Activite implements Serializable {
 

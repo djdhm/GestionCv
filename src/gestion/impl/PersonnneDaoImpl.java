@@ -263,7 +263,7 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 				session.enableFilter(column).setParameter("value", filters.get(column));
 			}else {
 				System.out.println("Applying filter:"+column);
-				session.enableFilter(column).setParameter("value", "%"+filters.get(column)+"%");
+				session.enableFilter(column).setParameter("value", "%"+filters.get(column).toLowerCase()+"%");
 
 			}
 		}

@@ -67,7 +67,8 @@ public class ActiviteDaoImpl implements IActiviteDao {
 		if(activiteFilters.get("activity")!=null) {
 			queryString += " a.nature="+NatureActivite.valueOf(activiteFilters.get("activity")).ordinal()+" and ";
 		}
-		queryString += "a.description like '%"+activiteFilters.getOrDefault("description", "")+"%'";
+		queryString += "lower(a.description) like '%"+activiteFilters.getOrDefault("description", "").toLowerCase()+"%'";
+		System.out.println(queryString);
 		Query query = em.createNativeQuery(queryString);
 		List<Long> liste = query.getResultList();
 		return liste;
