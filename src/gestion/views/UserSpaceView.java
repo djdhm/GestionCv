@@ -238,7 +238,11 @@ public class UserSpaceView implements Serializable {
     
     public void supprimerCooptation(Personne pers) {
 		try {
+			System.err.println("On veut suppr la cooptation "+pers.getPrenom());
+			System.err.println("AVANT : "+personne.getCooptations().size());
 			personne.getCooptations().removeIf(p -> pers.getIdPerson().equals(p));
+			System.err.println("APRES : "+personne.getCooptations().size());
+			userService.updatePerson(pers);
 			
 			 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cooptation Supprim�e", "");
 		        FacesContext.getCurrentInstance().addMessage(null, message);

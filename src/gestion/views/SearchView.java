@@ -1,7 +1,9 @@
 package gestion.views;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.faces.event.AjaxBehaviorEvent;
@@ -111,6 +113,18 @@ public class SearchView implements Serializable {
 		return lazyListePersonne;
 	}
 
+	public List<Personne> getCooptationsOfPerson(Personne p) {
+		if(p==null) {
+			System.out.println("WHAAAAAAAAAAAAAAAAAAAAt");
+			return new ArrayList();
+		}
+		List<Personne> coopted = new ArrayList<Personne>();
+		System.err.println("On veut recup cooptation de "+p.getPrenom());
+		for(Long id : guestService.getPersonsCooptationById(p.getIdPerson())) {
+			coopted.add(guestService.getPersonById(id));
+		}
+		return coopted;
+	}
 
 	public void setLazyListePersonne(LazyPersonneDataModel lazyListePersonne) {
 		this.lazyListePersonne = lazyListePersonne;

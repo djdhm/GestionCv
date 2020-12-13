@@ -338,8 +338,12 @@
 								</p:inputText>
 								<p:message id="sitewebMsg" for="siteweb" />
 
-
-
+								<p:outputLabel for="datenaissance" value="Date de naissance*:" />
+								<p:datePicker id="datenaissance" value="#{userSpaceView.nouvelleCooptation.dateNaissance}"
+									yearNavigator="true" pattern="dd/MM/yyyy"
+									placeholder="dd/MM/yyyy" yearRange="1900:2002" />
+								<p:ajax update="dateNaissanceMsg" event="keyup" />
+								<p:message id="dateNaissanceMsg" for="datenaissance" />
 
 
 								<p:outputLabel value="" />
@@ -418,14 +422,10 @@
 								</p:cellEditor>
 							</p:column>
 
-							<p:column style="width:35px">
-								<p:rowEditor />
-							</p:column>
-
 							<p:column style="width:50px">
-								<p:commandButton icon="ui-icon-trash" style="width:30px;"
+								<!-- <p:commandButton icon="ui-icon-trash" style="width:30px;"
 									title="Supprimer"
-									actionListener="#{userSpaceView.supprimerCooptation}"
+									actionListener="#{userSpaceView.supprimerCooptation(c)}"
 									update="form">
 									<p:confirm header="Attention!"
 										message="Voulez vous vraiment supprimer cette cooptation ?"
@@ -438,7 +438,7 @@
 										styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
 									<p:commandButton value="Non" type="button"
 										styleClass="ui-confirmdialog-no" icon="pi pi-times" />
-								</p:confirmDialog>
+								</p:confirmDialog> --> 
 							</p:column>
 
 

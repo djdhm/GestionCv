@@ -137,7 +137,7 @@
 						
 						
 						</p:panelGrid>
-						
+						<h2>Activités</h2>
 						<p:dataTable var="a" value="#{searchView.selectedPersonne.activites}" emptyMessage="Aucune activites renseigne pour cette personne">
 						
 							<p:column headerText="Titre">
@@ -160,8 +160,8 @@
 								<h:outputText value="#{a.siteWeb}" />
 							</p:column>
 						</p:dataTable>
-						
-						<p:dataTable var="a" value="#{searchView.selectedPersonne.cooptations}">
+						<h2>Cooptations</h2>
+						<p:dataTable var="a" value="#{searchView.getCooptationsOfPerson(searchView.selectedPersonne)}" emptyMessage="Aucune cooptation renseigne pour cette personne">>
 						
 							<p:column headerText="Nom">
 								<h:outputText value="#{a.nom}" />
@@ -176,7 +176,7 @@
 							</p:column>
 
 							
-						</p:dataTable>
+						</p:dataTable> 
 					</p:outputPanel>
 				</p:dialog>
 

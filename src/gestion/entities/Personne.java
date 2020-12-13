@@ -77,6 +77,7 @@ public class Personne implements Serializable {
 		p.setEmail(faker.internet().emailAddress());
 		p.setPassword(faker.superhero().name());
 		p.setSiteweb(faker.internet().domainName());
+		//p.setCooptations(new HashSet<Long>());
 		
 		for(int i = 0 ; i< faker.number().numberBetween(0, 5);i++) {
 			Activite a = new Activite();

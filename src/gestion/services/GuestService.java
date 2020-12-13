@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -47,6 +48,9 @@ public class GuestService {
 		return this.personneDAO.getAllPerson();
 	}
 	
+	public Set<Long> getPersonsCooptationById(long id) {
+		return personneDAO.getPersonById(id).getCooptations();
+	}
 	
 	public int countAllPersonne(Map<String, String> filters, Map<String,String> activiteFilters) {
 		return personneDAO.countAllPersonne(filters,activiteFilters);
