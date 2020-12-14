@@ -64,7 +64,7 @@ public class LoginView implements Serializable {
 			return "";
 		}else {
 			
-			return "search.xhtml";
+			return "/search.xhtml?faces-redirect=true";
 		}
 //		System.out.println(p);
 //		if(p==null) {

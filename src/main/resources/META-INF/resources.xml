@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+	<Resource id="MyDataSource" type="DataSource">
+        JdbcDriver org.hsqldb.jdbcDriver
+        JdbcUrl jdbc:hsqldb:mem:maBase;shutdown=false;hsqldb.write_delay=false
+        JtaManaged true
+        UserName gestion
+    	Password password
+    </Resource>
+ 
+
+  <!-- <Resource id="MysqlDataSource" type="DataSource">
+    JdbcDriver com.mysql.jdbc.Driver
+    JdbcUrl jdbc:mysql://localhost:3306/gestioncvv?serverTimezone=UTC
+    JtaManaged true
+	DefaultAutoCommit	true
+    UserName gestion
+    Password password
+  </Resource> -->
+
+</resources>

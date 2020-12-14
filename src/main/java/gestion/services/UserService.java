@@ -176,6 +176,7 @@ public class UserService {
 	}
 	
 	public boolean isLoggedIn() {
+		System.out.println(loggedIn);
 		return loggedIn;
 	}
 	
