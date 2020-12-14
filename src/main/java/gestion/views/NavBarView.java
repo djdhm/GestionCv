@@ -2,13 +2,14 @@ package gestion.views;
 
 import java.io.Serializable;
 
+import javax.enterprise.context.ConversationScoped;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import gestion.services.UserService;
 @Named
-@ViewScoped
+@ConversationScoped
 public class NavBarView implements Serializable{
 
 	

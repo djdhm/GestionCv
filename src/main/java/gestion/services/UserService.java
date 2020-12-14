@@ -54,18 +54,10 @@ public class UserService {
 		return this.personne;
 	}
 	
-	@Remove
-	public String logout() {
-		if(loggedIn) {
-			loggedIn=false;
-			System.err.println(personne.getNom() +" "+ personne.getPrenom() + " s'est déconnecté");
-			personne=null;
-			return "search?faces-redirect=true";
-		}else {
-			System.err.println("WTF je suis pas co...");
-			return "search?faces-redirect=true";
-			//throw new IllegalAccessError();
-		}
+	public void logout() {
+		this.loggedIn=false;
+		this.personne = null;
+		
 	}
 	
 	//TODO: Rajouter cooptation après ??
