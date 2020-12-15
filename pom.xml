@@ -10,7 +10,7 @@
 </properties>
 	
   <build>
-    <sourceDirectory>src/main</sourceDirectory>
+    <sourceDirectory>src/main/java</sourceDirectory>
     <plugins>
     <plugin>
   <groupId>org.codehaus.cargo</groupId>
