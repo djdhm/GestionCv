@@ -140,8 +140,8 @@
 <!-- https://mvnrepository.com/artifact/org.apache.xbean/xbean-asm8-shaded -->
 <dependency>
     <groupId>org.apache.xbean</groupId>
-    <artifactId>xbean-asm8-shaded</artifactId>
-    <version>4.17</version>
+    <artifactId>xbean-asm7-shaded</artifactId>
+    <version>4.16</version>
 </dependency>
 
 <dependency>
