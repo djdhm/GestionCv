@@ -1,5 +1,6 @@
 package gestion.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,12 +35,12 @@ public class ActiviteDaoImpl implements IActiviteDao {
 	@Override
 	public void saveActivite(Activite activite) {
 		if(activite.getIdActivity() == null) {
-			System.err.println("persiste activité : "+ activite.getIdActivity() +" "+activite.getTitre());
+			System.err.println("persiste activité : "+ activite.getIdActivity() +" "+activite.getTitre()+activite.getPersonne().getEmail());
 			em.persist(activite);
 			
 		}
 		else {
-			System.err.println("merge activité : "+ activite.getIdActivity() +" "+activite.getTitre());
+			System.err.println("merge activité : "+ activite.getIdActivity() +" "+activite.getTitre()+activite.getPersonne().getEmail());
 			em.merge(activite);
 			System.err.println("Maintenant voici toutes les activités :");
 		
@@ -92,6 +93,19 @@ public class ActiviteDaoImpl implements IActiviteDao {
 				System.out.println("disabling :"+column);
 				session.disableFilter(column);
 		}
+	}
+
+	@Override
+	public List<Activite> getActiviteOfPersonne(Personne p) {
+		// TODO Auto-generated method stub
+		List<Activite> activites = new ArrayList<Activite>() ; 
+		Personne personne = em.find(Personne.class, p.getIdPerson());
+		for(Activite a: personne.getActivites()) {
+			System.out.println("Test Dao "+a.getSiteWeb());
+			
+		}
+		activites.addAll(personne.getActivites());
+		return activites;
 	}
 
 }

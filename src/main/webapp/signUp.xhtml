@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/template/mylayout.xhtml">
+	<ui:define name="content">
+		<f:view>
+
+			<h1>Inscription</h1>
+			<h:form id="inscription">
+			
+				<c:set var="p" value="#{signup.signingUpPerson}" />
+   			<p:panel header="Inscription" style="width: 800px;">
+
+			<h:panelGrid columns="3">
+      <p:outputLabel value="Email:*"/>
+      <p:inputText id="email" value="#{signup.signingUpPerson.email}"
+          required="true" label="Email"   >
+              <f:validator validatorId="email-validator" />
+          
+        <p:ajax event="keyup"  update="emailMsg"/>
+      </p:inputText>
+      <p:message id="emailMsg" for="email"/>
+      
+      <p:outputLabel value="Mot de Passe:*"/>
+      <p:password id="password" value="#{signup.signingUpPerson.password}" 
+            required="true" label="MotDePasse">
+        <f:validateLength minimum="4"/>
+                      <f:validator validatorId="password-strength-validator" />
+        
+        <p:ajax update="passwordMsg" event="keyup"/>
+      </p:password>
+      <p:message id="passwordMsg" for="password"/>
+      
+      <p:outputLabel value="Nom:*" />    
+      
+      <p:inputText id="nom" value="#{signup.signingUpPerson.nom}"  placeholder="John"
+             required="true" label="Nom">
+      	
+      </p:inputText>
+      <p:message id="nomMsg" for="nom"/>
+      
+      <p:outputLabel value="Prenom:"/>
+      <p:inputText id="lastName" value="#{signup.signingUpPerson.prenom}" placeholder="Doe"
+       required="true" label="Prenom"
+      />
+      <p:message id="lastNameMsg" for="lastName"/>
+      
+ 
+        <p:outputLabel value="Site Web:"/>
+      <p:inputText id="siteweb" value="#{signup.signingUpPerson.siteweb}" type="url" placeholder="https://www.monsite.fr"
+       required="false" label="SiteWeb"
+      >
+      <f:validator validatorId="website-validator" />
+      <p:ajax update="sitewebMsg" event="keyup" />
+      </p:inputText>
+      <p:message id="sitewebMsg" for="siteweb"/>
+
+      
+	<p:outputLabel for="datenaissance" value="Date de naissance*:" />
+	<p:datePicker id="datenaissance" value="#{signup.signingUpPerson.dateNaissance}" yearNavigator="true"  pattern="dd/MM/yyyy" placeholder="dd/MM/yyyy" maxdate="#{signup.maxAge}" mindate="#{signup.minAge}" yearRange="1900:2002" />
+        <p:ajax update="dateNaissanceMsg" event="keyup" />
+
+    <p:message id="dateNaissanceMsg" for="datenaissance"/>
+        
+     <p:outputLabel value=""/>
+     <p:commandButton action="#{signup.save}" value="S'inscrire" update="inscription"/>
+     <p:outputLabel value=""/>
+    </h:panelGrid>
+				
+				    </p:panel>
+			</h:form>
+
+		</f:view>
+	</ui:define>
+</ui:composition>
+
+</html>

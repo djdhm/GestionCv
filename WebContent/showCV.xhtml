@@ -5,40 +5,93 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
-
+<f:metadata>  
+       					 <f:viewParam name="id" value="#{personneView.id}" />  
+       					     <f:event type="preRenderView" listener="#{personneView.onload}" />
+       					 
+   			 </f:metadata>
 <ui:composition template="/template/mylayout.xhtml">
 	<ui:define name="content">
 		<f:view>
+				
+			
+			<h:outputText>test</h:outputText>
+			<h:outputText value="#{personneView.id}" rendered="#{personneView.selectedPersonne==null}"> Please Choose a personne </h:outputText>
 			
 			
-			<h2>CV de <h:outputText value="#{guestService.currentPerson.nom}" /> <h:outputText value=" #{guestService.currentPerson.prenom}" /></h2>
-			
-			<table class="table">
-					<h:dataTable value="#{guestService.currentCV}" var="a"
-						styleClass="table table-hover" headerClass="danger"
-						footerClass="danger" rowClasses="success,warning">
-
-						<h:column>
-							<!-- Une colonne -->
-							<f:facet name="header">Titre</f:facet>
-							<h:outputText value="#{a.titre}" />
-						</h:column>
-						<h:column>
-							<f:facet name="header">Année</f:facet>
-							<h:outputText value="#{a.annee}" />
-						</h:column>
-						<h:column>
-							<f:facet name="header">Description</f:facet>
-							<h:outputText value="#{a.description}" />
-						</h:column>
-						<h:column>
-							<f:facet name="header">Site web</f:facet>
-							<h:outputText value="#{a.siteWeb}" />
-						</h:column>
+			<p:outputPanel rendered="#{personneView.selectedPersonne!=null}" id="carDetail" style="text-align:center; width:80%;">
+						<h:outputText value="Id de la personne:" />
+						<h:outputText value="#{PersonneView.selectedPersonne.idPerson}" />
+						<br />
+						<p:panelGrid columns="2" styleClass="ui-noborder" style="margin-right: auto;">
+							
+							<h:outputText value="Nom : " />
+							<h:outputText value="#{PersonneView.selectedPersonne.nom}" />				
+							<h:outputText value="Prenom : " />
+							<h:outputText value="#{PersonneView.selectedPersonne.prenom}" />				
+							<h:outputText value="Date de naissance : " />
+							<h:outputText value="#{PersonneView.selectedPersonne.dateNaissance}">
+							  <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+							</h:outputText>
+							
+							<h:outputText value="Email : " />
+							<h:outputLink value="mailto:#{PersonneView.selectedPersonne.email}">
+							    <f:param name="subject" value="Votre CV nous plait " />
+							    <f:param name="body" value="Voulez vous faire un stage chez nous !!" />
+							    <h:outputText value="#{searchView.selectedPersonne.email}" />
+							</h:outputLink>
+									
+							<h:outputText value="Site Web : " />
+							<h:outputLink value="http://#{PersonneView.selectedPersonne.siteweb}" target="_blank"> 
+							  <i class="icon-external-link"></i> 
+							  #{searchView.selectedPersonne.siteweb}
+							</h:outputLink>
 						
-					</h:dataTable>
-				</table>
+						
+						</p:panelGrid>
+<h2>Activités</h2>
+						<p:dataTable var="a" value="#{PersonneView.selectedPersonneActivites}" emptyMessage="Aucune activites renseigne pour cette personne">
+						
+							<p:column headerText="Titre">
+								<h:outputText value="#{a.titre}" />
+							</p:column>
 
+							<p:column headerText="Année">
+								<h:outputText value="#{a.annee}" />
+							</p:column>
+							
+							<p:column headerText="Nature">
+								<h:outputText value="#{a.nature}" />
+							</p:column>
+
+							<p:column headerText="Description">
+								<h:outputText value="#{a.description}" />
+							</p:column>
+
+							<p:column headerText="Site Web">
+								<h:outputText value="#{a.siteWeb}" />
+							</p:column>
+						</p:dataTable>
+						<h2>Cooptations</h2>
+						<p:dataTable var="a" value="#{PersonneView.selectedPersonneCooptations}" emptyMessage="Aucune cooptation renseigne pour cette personne">>
+						
+							<p:column headerText="Nom">
+								<h:outputText value="#{a.nom}" />
+							</p:column>
+
+							<p:column headerText="Prenom">
+								<h:outputText value="#{a.prenom}" />
+							</p:column>
+							
+							<p:column headerText="email">
+								<h:outputText value="#{a.email}" />
+							</p:column>
+
+							
+						</p:dataTable> 
+
+			
+					</p:outputPanel>
 		</f:view>
 	</ui:define>
 </ui:composition>

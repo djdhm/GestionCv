@@ -12,6 +12,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.hibernate.LazyInitializationException;
 import org.primefaces.model.LazyDataModel;
 
 import gestion.entities.Activite;
@@ -35,7 +36,6 @@ public class SearchView implements Serializable {
 	private LazyPersonneDataModel lazyListePersonne;
 
 	private NatureActivite typeActiviteFilter;
-	private boolean filtersHaveChanged = false;
 	
 	public List<Personne> getFilteredPersonnes() {
 		return filteredPersonnes;
@@ -115,16 +115,15 @@ public class SearchView implements Serializable {
 
 	public List<Personne> getCooptationsOfPerson(Personne p) {
 		if(p==null) {
-			System.out.println("WHAAAAAAAAAAAAAAAAAAAAt");
 			return new ArrayList();
 		}
 		List<Personne> coopted = new ArrayList<Personne>();
 		System.err.println("On veut recup cooptation de "+p.getPrenom());
-		for(Long id : guestService.getPersonsCooptationById(p.getIdPerson())) {
-			coopted.add(guestService.getPersonById(id));
-		}
+		Set<Personne> liste = guestService.getPersonsCooptationById(p);
+		coopted.addAll(liste);
 		return coopted;
 	}
+
 
 	public void setLazyListePersonne(LazyPersonneDataModel lazyListePersonne) {
 		this.lazyListePersonne = lazyListePersonne;
@@ -147,16 +146,58 @@ public class SearchView implements Serializable {
 	public Personne getSelectedPersonne() {
 		return selectedPersonne;
 	}
+	List <Activite> selectedPersonneActivites;
+	List <Personne> selectedPersonneCooptations;
+
+	public List<Activite> getSelectedPersonneActivites() {
+		return selectedPersonneActivites;
+	}
+
+
+	public void setSelectedPersonneActivites(List<Activite> selectedPersonneActivites) {
+		this.selectedPersonneActivites = selectedPersonneActivites;
+	}
+
+
+	public List<Personne> getSelectedPersonneCooptations() {
+		return selectedPersonneCooptations;
+	}
+
+
+	public void setSelectedPersonneCooptations(List<Personne> selectedPersonneCooptations) {
+		this.selectedPersonneCooptations = selectedPersonneCooptations;
+	}
 
 
 	public void setSelectedPersonne(Personne selectedPersonne) {
-		
-		this.selectedPersonne = selectedPersonne;
-		System.out.println("Changing Persone "+selectedPersonne.getEmail());
-		List<Activite> liste = this.selectedPersonne.getActivites();
-		System.out.println(liste.size());
-		for(Activite a: liste) {
-			System.out.println(a.getNature());
+		this.selectedPersonne = guestService.getPersonById(selectedPersonne.getIdPerson());
+	
+		try {
+			this.selectedPersonneActivites = guestService.getPersonneActivites(selectedPersonne);
+			System.out.println(selectedPersonneActivites.size());
+			this.selectedPersonneCooptations = this.getCooptationsOfPerson(selectedPersonne);
+		}catch(LazyInitializationException e) {
+			System.out.println(e);
+			System.out.println("Test Lazy ");
 		}
+		
+		
+		//this.selectedPersonneCooptations = getCooptationsOfPerson(selectedPersonne);
+		/*
+		System.out.println("I am getting the new Personne now "+selectedPersonne.getIdPerson());
+		this.selectedPersonne = guestService.getPersonById(selectedPersonne.getIdPerson());
+		System.out.println("Changing Persone "+selectedPersonne.getEmail());
+		System.out.println("Changing Persone "+selectedPersonne.getIdPerson());
+		List<Activite> liste = this.selectedPersonne.getActivites();
+		if(liste==null) {
+			System.out.println("Ulach");
+
+		}else {
+			System.out.println(liste.size());
+
+		}
+		System.out.println("I am getting the new Personne now ");*/
+
+
 	}
 }

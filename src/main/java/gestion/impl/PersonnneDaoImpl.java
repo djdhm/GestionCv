@@ -3,8 +3,10 @@ package gestion.impl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -53,10 +55,36 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 	}
 	@Override
 	public Personne getPersonById(long id) {
-		return em.find(Personne.class,id);
+		String queryString = "select p from Personne p where p.idPerson = "+id;
+		System.out.println(queryString);
+		Query query = em.createQuery(queryString);
+		try {
+			Personne p1 = (Personne) query.getSingleResult();
+			
+			System.out.println("Trying to find a perosnne "+p1.getNom());
+			System.out.println("Trying to find a perosnne "+id);
+			List<Activite> l = p1.getActivites();
+			Set<Personne> coop = p1.getCooptations();
+			for(Activite a:l) {
+				System.out.println(a.getDescription());
+			}
+			return p1;
+		}catch(Exception e) {
+			System.out.println("Not found");
+			return null;
+		}
+	
+		
 		
 	}
-
+	@Override 
+	public Set<Personne> getPersonneCooptations(Personne p){
+		Personne p1 = em.find(Personne.class,p.getIdPerson());
+		Set<Personne> cooptations = new HashSet<Personne>();
+		cooptations.addAll(p1.getCooptations());
+		
+		return cooptations;
+	}
 	@Override
 	public void deletePersonne(Personne p) {
 		em.remove(em.contains(p) ? p : em.merge(p));
@@ -180,7 +208,7 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 			return null;
 		}
 	}
-
+	
 
 
 	@Override
@@ -275,6 +303,35 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 				System.out.println("disabling :"+column);
 				session.disableFilter(column);
 		}
+	}
+	@Override
+	public void addActivite(Personne personne, Activite activite) {
+		// TODO Auto-generated method stub
+		Personne p = em.find(Personne.class, personne.getIdPerson());
+		p.getActivites();
+		p.addActivite(activite);
+		System.out.println(p.getActivites().size());
+		em.merge(p);
+
+		System.out.println(p.getActivites().size());
+	}
+	@Override
+	public void addCooptation(Personne personne,Personne coopte) {
+		// TODO Auto-generated method stub
+		coopte.setReferant(personne);
+		em.persist(coopte);
+		System.out.println(coopte.getIdPerson());
+		Set<Personne> cooptations = new HashSet<Personne>();
+		System.out.println("Adding "+coopte.getIdPerson()+"To user "+personne.getIdPerson());
+		Personne p = em.find(Personne.class, personne.getIdPerson());
+		System.out.println(p.getCooptations().size());
+
+		cooptations.addAll(p.getCooptations());
+		cooptations.add(coopte);
+		
+		p.setCooptations(cooptations);
+		em.merge(p);		
+		System.out.println(p.getCooptations().size());
 	}
 
 }

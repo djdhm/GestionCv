@@ -25,6 +25,7 @@ import org.hibernate.annotations.ParamDef;
 
 @NamedQueries({ 
 	@NamedQuery(name = "findAllActivites", query = "Select a from Activite a"),
+	@NamedQuery(name = "findPersoneActivites", query = "Select a from Activite a where a.personne.idPerson= :idPerson")
 
 	})
 @Entity

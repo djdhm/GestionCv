@@ -17,138 +17,123 @@ import gestion.entities.Personne;
 @SessionScoped
 public class UserService {
 
-	
-	
 	@Inject
 	IPersonneDAO personneDao;
 	@Inject
 	IActiviteDao activiteDao;
-	
-	
+
 	private boolean loggedIn;
 	private Personne personne;
-	
+
 	private Activite editedActivity;
 
-	/*On vérifie si l'authentification est correcte */
-	public boolean authentify(String username,String password) {
+	/* On vérifie si l'authentification est correcte */
+	public boolean authentify(String username, String password) {
 		Personne p = personneDao.getPersonneByEmail(username);
-		if(p == null) {
-			System.out.println("Aucun compte n'est associé à "+username);
-			return false; 
+		if (p == null) {
+			System.out.println("Aucun compte n'est associé à " + username);
+			return false;
 		}
-		if(p.verifyPassword(password)) {
-			loggedIn=true;
+		if (p.verifyPassword(password)) {
+			loggedIn = true;
 			this.personne = p;
-			System.out.println(personne.getNom() +" "+ personne.getPrenom() + " s'est loggé");
+			System.out.println(personne.getNom() + " " + personne.getPrenom() + " s'est loggé");
 			return true;
 		}
 		System.out.println("--------Problème login : le psw " + password + " est mauvais");
 		return false;
 	}
-	
-	public Personne login(String username,String password) {
-		 
-		//TODO: faire un logout ici au cas où une personne ait 2 compte ??
+
+	public Personne login(String username, String password) {
+
+		// TODO: faire un logout ici au cas où une personne ait 2 compte ??
 		authentify(username, password);
 		return this.personne;
 	}
-	
+
 	public void logout() {
-		this.loggedIn=false;
+		this.loggedIn = false;
 		this.personne = null;
-		
-	}
-	
-	//TODO: Rajouter cooptation après ??
-	public void updatePerson(Personne p ) {
-		personneDao.savePersonne(p);
-	}
-	
-	/* Ajoute une activité à la personne */
-	public void addCooptation(Personne personne) throws AccessInterditException {
-		if(loggedIn) {
-			System.err.println("personne cooptée : "+personne.getPrenom()+" à "+this.personne.getPrenom());
-			this.personneDao.savePersonne(personne);
-			System.err.println("On enregistre la personne coopté : "+personne.getIdPerson()+" "+personne.getPrenom());
-			this.personne.addCooptation(personne.getIdPerson());
-			System.err.println("On enregistre la personne qui coopte : "+this.personne.getIdPerson()+" "+this.personne.getPrenom());
-			this.personneDao.savePersonne(this.personne);
-			
-		}else throw new AccessInterditException("adding cooptation");
+
 	}
 
-	//TODO: Pour la cooptation, j'ai pas compris quoi en faire ^^
-	public void addPersonne(Personne p) throws AccessInterditException {
-		System.out.println(this.personne);
-		System.out.println(this.loggedIn);
-		if(loggedIn) {
-			personneDao.savePersonne(p);
-			//this.personne.addCooptation(p);
-			//personneDao.savePersonne(p);
-			
-		}else throw new AccessInterditException("test");
+	// TODO: Rajouter cooptation après ??
+	public void updatePerson(Personne p) {
+		personneDao.savePersonne(p);
+	}
+
+	/* Ajoute une activité à la personne */
+	public void addCooptation(Personne coopte) throws AccessInterditException {
+		if (loggedIn) {
+			System.out.println("personne cooptée : " + coopte.getIdPerson() + " à " + personne.getIdPerson());
+
+			System.out
+					.println("On enregistre la personne coopté : " + coopte.getEmail() + " " + coopte.getPrenom());
+			personneDao.savePersonne(coopte);
+			personneDao.addCooptation(personne, coopte);
+			System.err.println(
+					"On enregistre la personne qui coopte : " + personne.getIdPerson() + " " + personne.getPrenom());
+
+		} else
+			throw new AccessInterditException("adding cooptation");
 	}
 
 	/* Ajoute une activité à la personne */
 	public void addActivite(Activite activite) throws AccessInterditException {
-		if(loggedIn) {
-			
+		if (loggedIn) {
+			activite.setPersonne(personne);
 			this.activiteDao.saveActivite(activite);
-			this.personne.addActivite(activite);
-			this.personneDao.savePersonne(this.personne);
-			
-		}else throw new AccessInterditException("adding activite");
+			this.personneDao.addActivite(personne, activite);
+			// this.personneDao.savePersonne(personne);
+			// this.personne.addActivite(activite);
+			// this.personneDao.savePersonne(this.personne);
+
+		} else
+			throw new AccessInterditException("adding activite");
 	}
-	
+
 	public void updateActivite(Activite activite) throws AccessInterditException {
-		if(loggedIn) {
+		if (loggedIn) {
 			this.activiteDao.saveActivite(activite);
-			//this.personne.updateActivite(activite);
+			// this.personne.updateActivite(activite);
 			this.personneDao.savePersonne(personne);
-		}else throw new AccessInterditException("updating activite");
+		} else
+			throw new AccessInterditException("updating activite");
 	}
-	
+
 	public String createActivity() {
-		if(loggedIn) {
+		if (loggedIn) {
 			editedActivity = new Activite();
 			return "editActivity?faces-redirect=true";
-		}else {
+		} else {
 			System.out.println("WTF je suis pas co...");
 			return "search?faces-redirect=true";
-			//throw new IllegalAccessError();
+			// throw new IllegalAccessError();
 		}
 	}
-	
 
-	public void deleteActivity(Activite activite )  throws AccessInterditException {
-		
-		if(loggedIn) {
+	public void deleteActivity(Activite activite) throws AccessInterditException {
+
+		if (loggedIn) {
 			personne.removeActivite(activite);
 			this.personneDao.savePersonne(personne);
 			this.activiteDao.deleteActivite(activite);
-		}else {
-			 throw new AccessInterditException("Suppression");
-			//throw new IllegalAccessError();
+		} else {
+			throw new AccessInterditException("Suppression");
+			// throw new IllegalAccessError();
 		}
 	}
 
-	//TODO: Que faire de ça ??
-	public Set<Long> getCooptations() throws AccessInterditException {
-		if(loggedIn) {
-			return this.personne.getCooptations();
-			
-			
-		}else throw new AccessInterditException("adding activite");
-	}
 	public String getEmail() {
-		if(loggedIn) return this.personne.getEmail();
+		if (loggedIn)
+			return this.personne.getEmail();
 		return null;
 	}
 
 	public List<Activite> getActivities() {
-		if(loggedIn) 		return this.personne.getActivities();
-        return null;
+		if (loggedIn)
+			return this.personne.getActivites();
+		return null;
 	}
 
 	public Personne getPersonne() {
@@ -166,12 +151,9 @@ public class UserService {
 	public void setEditedActivity(Activite editedActivity) {
 		this.editedActivity = editedActivity;
 	}
-	
+
 	public boolean isLoggedIn() {
-		System.out.println(loggedIn);
 		return loggedIn;
 	}
-	
-	
-	
+
 }

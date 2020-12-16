@@ -12,5 +12,6 @@ public interface IActiviteDao {
 	public Activite getActiviteById(long id);
 	public List<Activite> getAllActivities(Map<String, String> activiteFilters);
 	public List<Long> getAssociatedPersonne(Map<String,String> activiteFilters);
+	public List<Activite> getActiviteOfPersonne(Personne p);
 	
 }

@@ -23,7 +23,6 @@ public class NavBarView implements Serializable{
 	
 	
 	public boolean getLoggedIn() {
-		System.out.println("Checking if logged in "+userService.isLoggedIn());
 		return userService.isLoggedIn();
 	///	return userService.isLoggedIn();
 	}
@@ -33,7 +32,6 @@ public class NavBarView implements Serializable{
 		return "/search.xhtml?faces-redirect=true";
 	}
 	public String goToLogin() {
-		System.out.println("Im goinng to ligin");
 		return "/login.xhtml?faces-redirect=true";
 	}
 }

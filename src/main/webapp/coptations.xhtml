@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<script type="text/javascript">
+        function editLastDatatableRow(){
+
+      jQuery('.ui-datatable-data tr').last().find('span.ui-icon-pencil').each(function(){
+         jQuery(this).click()
+      });
+   }
+
+    </script>
+<ui:composition template="/template/mylayout.xhtml">
+	<ui:define name="content">
+		<f:view>
+			<h1>Mes Coptations</h1>
+			<style type="text/css">
+.ui-diagram-element {
+	width: 5em;
+	height: 5em;
+	line-height: 5em;
+	text-align: center;
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+	border-radius: 5em;
+	border: 1px solid #404a4e;
+	background-color: #404a4e;
+	color: #cccccc;
+}
+
+.ui-diagram-element:hover {
+	background-color: #20282b;
+}
+</style>
+
+
+			<p:diagram value="#{diagramHierarchicalView.model}"
+				style="height:600px" styleClass="ui-widget-content" />
+
+		</f:view>
+	</ui:define>
+</ui:composition>
+
+</html>

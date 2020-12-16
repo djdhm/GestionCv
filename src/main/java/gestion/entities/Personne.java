@@ -39,12 +39,13 @@ import com.github.javafaker.Faker;
 import com.sun.istack.NotNull;
 
 @NamedQueries({ 
+	@NamedQuery(name = "findPersonne", query = "Select p from Personne p where p.idPerson= :value "),
 	@NamedQuery(name = "findAllPersonnes", query = "Select p from Personne p "),
 	@NamedQuery(name = "findAllPersonnesIn", query = "Select distinct p from Personne p where p.idPerson in (:liste)"),
-		@NamedQuery(name = "findPersonsByLastName", query = "Select p from Personne p where p.nom= :nom"),
-		@NamedQuery(name = "findPersonByFirstName", query = "Select p from Personne p where p.prenom= :prenom"),
-		@NamedQuery(name = "findPersonneByEmail", query = "Select p from Personne p where p.email= :email") ,
-		@NamedQuery(name = "countAllPersonnes", query = "Select count(p) from Personne p ") 
+	@NamedQuery(name = "findPersonsByLastName", query = "Select p from Personne p where p.nom= :nom"),
+	@NamedQuery(name = "findPersonByFirstName", query = "Select p from Personne p where p.prenom= :prenom"),
+	@NamedQuery(name = "findPersonneByEmail", query = "Select p from Personne p where p.email= :email") ,
+	@NamedQuery(name = "countAllPersonnes", query = "Select count(p) from Personne p ") 
 
 		})
 @Entity
@@ -75,7 +76,7 @@ public class Personne implements Serializable {
 		p.setPrenom(faker.name().lastName());
 		p.setDateNaissance(faker.date().birthday(18,70));
 		p.setEmail(faker.internet().emailAddress());
-		p.setPassword(faker.superhero().name());
+		p.setPassword("password");
 		p.setSiteweb(faker.internet().domainName());
 		//p.setCooptations(new HashSet<Long>());
 		
@@ -118,11 +119,23 @@ public class Personne implements Serializable {
 	Date dateNaissance;
 
 	//@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@ElementCollection(fetch = FetchType.EAGER )
-	Set<Long> cooptations = new HashSet<Long>();
+	@OneToMany(fetch = FetchType.LAZY , mappedBy = "referant")
+	Set<Personne> cooptations = new HashSet<Personne>();
+	
+	
+	 @ManyToOne()
+	 Personne referant;
 	
 
-	@OneToMany( targetEntity=Activite.class, cascade = CascadeType.ALL, orphanRemoval = true , fetch = FetchType.EAGER)
+	public Personne getReferant() {
+		return referant;
+	}
+
+	public void setReferant(Personne referant) {
+		this.referant = referant;
+	}
+
+	@OneToMany( targetEntity=Activite.class, cascade = CascadeType.ALL, orphanRemoval = true , fetch = FetchType.LAZY)
 	private List<Activite> activites = new ArrayList<Activite>();
 
 	public Personne() {
@@ -143,11 +156,11 @@ public class Personne implements Serializable {
 		this.email = email;
 		this.password = password;
 		this.dateNaissance = dateNaissance;
-		this.cooptations = new HashSet<Long>();
+		this.cooptations = new HashSet<Personne>();
 	}
 
-	public void addCooptation(Long idCoopte) {
-		this.cooptations.add(idCoopte);
+	public void addCooptation(Personne personne) {
+		this.cooptations.add(personne);
 	}
 
 	public void addActivite(Activite activite) {
@@ -174,10 +187,6 @@ public class Personne implements Serializable {
 	public void removeActivite(Activite activite) {
 		this.activites.remove(activite);
 		activite.setPersonne(null);
-	}
-
-	public List<Activite> getActivities() {
-		return this.activites;
 	}
 
 	public Long getIdPerson() {
@@ -235,11 +244,11 @@ public class Personne implements Serializable {
 		this.dateNaissance = dateNaissance;
 	}
 
-	public Set<Long> getCooptations() {
+	public Set<Personne> getCooptations() {
 		return cooptations;
 	}
 
-	public void setCooptations(Set<Long> cooptations) {
+	public void setCooptations(Set<Personne> cooptations) {
 		this.cooptations = cooptations;
 	}
 

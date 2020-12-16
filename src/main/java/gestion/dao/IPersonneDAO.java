@@ -3,7 +3,9 @@ package gestion.dao;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import gestion.entities.Activite;
 import gestion.entities.Personne;
 
 public interface IPersonneDAO {
@@ -20,4 +22,7 @@ public interface IPersonneDAO {
 	public List<Personne> getAllPerson(int page, int pageSize);
 	public int countAllPersonne(Map<String,String> filters, Map<String, String> activiteFilters);
 	public List<Personne> getFilteredData(Map<String,String> filters, Map<String, String> activiteFilters, int first, int pageSize);
+	Set<Personne> getPersonneCooptations(Personne p);
+	public void addActivite(Personne personne, Activite activite);
+	void addCooptation(Personne personne, Personne coopte);
 }

@@ -59,7 +59,8 @@ public class UserSpaceView implements Serializable {
 		if(userService.isLoggedIn()) {
 			try {
 				this.personne = userService.getPersonne();
-				activities = personne.getActivites();
+				activities = guestService.getPersonneActivites(personne);
+				cooptations = getCooptationsOfPerson(personne);
 				nouvelleActivite = new Activite();
 				nouvelleCooptation = new Personne();
 				isNewActivite = false;
@@ -76,18 +77,15 @@ public class UserSpaceView implements Serializable {
 		}
 	}
 
-	public Set<Personne> getCooptationsOfPersonOfId(Long id){
-		Set<Personne> cooptedPersons = new HashSet<Personne>();
-		Set<Long> idsOfCoop = guestService.getPersonById(id).getCooptations();
-		
-		for(Long pId : idsOfCoop) {
-			System.out.println("ids : "+pId);
-			cooptedPersons.add(guestService.getPersonById(pId));
+	public List<Personne> getCooptationsOfPerson(Personne p) {
+		if(p==null) {
+			return new ArrayList();
 		}
-		for(Personne c : cooptedPersons) {
-			System.out.println("+++++++"+ c.getIdPerson()+" "+c.getPrenom()+" "+c);
-		}
-		return cooptedPersons;
+		List<Personne> coopted = new ArrayList<Personne>();
+		System.err.println("On veut recup cooptation de "+p.getPrenom());
+		Set<Personne> liste = guestService.getPersonsCooptationById(p);
+		coopted.addAll(liste);
+		return coopted;
 	}
 
 	public Personne getPersonne() {
@@ -124,8 +122,9 @@ public class UserSpaceView implements Serializable {
 	public void ajouterActivite() {
 		try {
 			userService.addActivite(nouvelleActivite);
+			activities.add(nouvelleActivite);
 			nouvelleActivite = new Activite();
-
+			
 		}catch(AccessInterditException e) {
 			System.out.println("Vous netes pas connecete");
 		}
@@ -196,12 +195,11 @@ public class UserSpaceView implements Serializable {
     public void ajouterCooptation() {
 		try {
 			System.err.println("--On coopte "+nouvelleCooptation.getPrenom()+" à "+userService.getPersonne().getPrenom());
+			cooptations.add(nouvelleCooptation);
+			
 			userService.addCooptation(nouvelleCooptation);
 			nouvelleCooptation = new Personne();
-
-			System.err.println("Voici maintenant toutes les personnes inscrites et issus de la cooptation");
-			for(Personne p : guestService.getAllPersonnes())
-				System.err.println(p.getIdPerson()+" "+p.getPrenom());
+			
 		}catch(AccessInterditException e) {
 			System.out.println("Vous netes pas connecte");
 		}
@@ -236,21 +234,7 @@ public class UserSpaceView implements Serializable {
         
     }
     
-    public void supprimerCooptation(Personne pers) {
-		try {
-			System.err.println("On veut suppr la cooptation "+pers.getPrenom());
-			System.err.println("AVANT : "+personne.getCooptations().size());
-			personne.getCooptations().removeIf(p -> pers.getIdPerson().equals(p));
-			System.err.println("APRES : "+personne.getCooptations().size());
-			userService.updatePerson(pers);
-			
-			 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cooptation Supprim�e", "");
-		        FacesContext.getCurrentInstance().addMessage(null, message);
-		}catch(Exception e) {
-			System.out.println("Vous netes pas connecete");
 
-		}
-	}
 
   //FIN POUR COOPTATION
 
@@ -275,6 +259,10 @@ public class UserSpaceView implements Serializable {
 
 
 	public List<Personne> getCooptations() {
+		for(Personne p : cooptations) {
+			System.out.println(p.getEmail());
+		}
+		//return new ArrayList<Personne>();
 		return cooptations;
 	}
 
