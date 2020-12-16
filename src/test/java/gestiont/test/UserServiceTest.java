@@ -56,7 +56,8 @@ public class UserServiceTest extends BaseJunit5{
 		final String TEST_EMAIL_COM = "test@email.com";
 		final String PASSWORD = "password";
 
-	    Personne p = new Personne("name", "surname", "www.adresse.b", TEST_EMAIL_COM, PASSWORD, new Date());
+		Date myDate = new Date(System.currentTimeMillis());
+	    Personne p = new Personne("name", "surname", "www.adresse.b", TEST_EMAIL_COM, PASSWORD, new Date(myDate.getTime() - 10));
 		personneDao.savePersonne(p);
 	
 		boolean loggedIn = userService.authentify(TEST_EMAIL_COM,PASSWORD);
@@ -70,7 +71,8 @@ public class UserServiceTest extends BaseJunit5{
 		final String TEST_EMAIL_COM = "false@email.com";
 		final String PASSWORD = "notcorrect";
 
-	    Personne p = new Personne("name", "surname", "www.adresse.b", TEST_EMAIL_COM, PASSWORD, new Date());
+		Date myDate = new Date(System.currentTimeMillis());
+	    Personne p = new Personne("name", "surname", "www.adresse.b", TEST_EMAIL_COM, PASSWORD, new Date(myDate.getTime() - 10));
 		personneDao.savePersonne(p);
 		
 		boolean loggedWithFalseEmail = userService.authentify("nocorrect@email.test", "password");
@@ -83,9 +85,10 @@ public class UserServiceTest extends BaseJunit5{
 	/*Test CRUD Activités d'une personne*/
 	@Test //Test OK
 	public void testCRUDActivitesFromPerson() throws AccessInterditException {
-		final String TEST_EMAIL_COM = "test@email.com";
+		final String TEST_EMAIL_COM = "test2@email.com";
 		final String PASSWORD = "password";
-	    Personne p = new Personne("name", "surname", "www.adresse.b", TEST_EMAIL_COM, PASSWORD, new Date());
+		Date myDate = new Date(System.currentTimeMillis());
+	    Personne p = new Personne("name", "surname", "www.adresse.b", TEST_EMAIL_COM, PASSWORD, new Date(myDate.getTime() - 10));
 		personneDao.savePersonne(p);
 	
 		userService.login(TEST_EMAIL_COM, PASSWORD);
@@ -115,9 +118,10 @@ public class UserServiceTest extends BaseJunit5{
 	/*Test si renvoie/crée activites et mails -> null si pas loggé et pas null si loggué = tests accès champs "loggué" vs "non loggué" */
 	@Test //Test OK
 	public void testgetInfosWhenLogged() throws AccessInterditException {
-		final String TEST_EMAIL_COM = "test@email.com";
+		final String TEST_EMAIL_COM = "test3@email.com";
 		final String PASSWORD = "password";
-	    Personne p = new Personne("name", "surname", "www.adresse.b", TEST_EMAIL_COM, PASSWORD, new Date());
+		Date myDate = new Date(System.currentTimeMillis());
+	    Personne p = new Personne("name", "surname", "www.adresse.b", TEST_EMAIL_COM, PASSWORD, new Date(myDate.getTime() - 10));
 		personneDao.savePersonne(p);
 	
 		userService.login(TEST_EMAIL_COM, PASSWORD);
@@ -140,9 +144,10 @@ public class UserServiceTest extends BaseJunit5{
 	@Test //Test ok
 	public void testsetInfosWhenNotLogged() {
 		
-		final String TEST_EMAIL_COM = "test@email.com";
+		final String TEST_EMAIL_COM = "test4@email.com";
 		final String PASSWORD = "password";
-	    Personne p = new Personne("name", "surname", "www.adresse.b", TEST_EMAIL_COM, PASSWORD, new Date());
+		Date myDate = new Date(System.currentTimeMillis());
+	    Personne p = new Personne("name", "surname", "www.adresse.b", TEST_EMAIL_COM, PASSWORD, new Date(myDate.getTime() - 10));
 		personneDao.savePersonne(p);
 	
 		//On ne se login pas
@@ -167,9 +172,10 @@ public class UserServiceTest extends BaseJunit5{
 	@Test //Test OK
 	public void testgetCooptations() throws AccessInterditException {
 		//Création de la personne qui va coopter
-		final String TEST_EMAIL_COM = "test@email.com";
+		final String TEST_EMAIL_COM = "test5@email.com";
 		final String PASSWORD = "password";
-	    Personne p = new Personne("name", "surname", "www.adresse.b", TEST_EMAIL_COM, PASSWORD, new Date());
+		Date myDate = new Date(System.currentTimeMillis());
+	    Personne p = new Personne("name", "surname", "www.adresse.b", TEST_EMAIL_COM, PASSWORD, new Date(myDate.getTime() - 10));
 		personneDao.savePersonne(p);
 		
 		userService.login(TEST_EMAIL_COM, PASSWORD);
@@ -192,9 +198,10 @@ public class UserServiceTest extends BaseJunit5{
 	@Test //TEST PAS OK = Can not call EJB Stateful Bean Remove Method without scoped @Dependent.  Found scope: @SessionScoped
 	
 	public void testgetInfosAfterLogout() throws AccessInterditException {
-		final String TEST_EMAIL_COM = "test@email.com";
+		final String TEST_EMAIL_COM = "test6@email.com";
 		final String PASSWORD = "password";
-	    Personne p = new Personne("name", "surname", "www.adresse.b", TEST_EMAIL_COM, PASSWORD, new Date());
+		Date myDate = new Date(System.currentTimeMillis());
+	    Personne p = new Personne("name", "surname", "www.adresse.b", TEST_EMAIL_COM, PASSWORD, new Date(myDate.getTime() - 10));
 		personneDao.savePersonne(p);
 	
 		userService.login(TEST_EMAIL_COM, PASSWORD);
