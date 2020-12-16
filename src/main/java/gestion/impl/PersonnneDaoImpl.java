@@ -45,14 +45,9 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 		  Query query = em.createNamedQuery("findAllPersonnes",Personne.class);
 		  return query.getResultList();
 	}
-	@Override
-	public List<Personne> getAllPerson(int page, int pageSize) {
-		// TODO Auto-generated method stub
-		 Query query = em.createNamedQuery("findAllPersonnes",Personne.class);
-		 query.setFirstResult(pageSize*page);
-		 query.setMaxResults(pageSize);
-		 return query.getResultList();
-	}
+
+	
+	
 	@Override
 	public Personne getPersonById(long id) {
 		String queryString = "select p from Personne p where p.idPerson = "+id;
@@ -61,8 +56,7 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 		try {
 			Personne p1 = (Personne) query.getSingleResult();
 			
-			System.out.println("Trying to find a perosnne "+p1.getNom());
-			System.out.println("Trying to find a perosnne "+id);
+
 			List<Activite> l = p1.getActivites();
 			Set<Personne> coop = p1.getCooptations();
 			for(Activite a:l) {
@@ -121,28 +115,7 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 		}
 	}
 	
-	/*@Override
-    public void savePersonne(Personne p) {
-          em.createNativeQuery("SHOW TABLES");
-          em.createNativeQuery("SHOW COLUMNS from Personne");
 
-
-        if(p.getIdPerson() == null) {
-            System.err.println("On persiste une personne");
-            em.persist(p);
-        }
-        else {
-            System.err.println("On merge une personne");
-            List<Activite> activities = p.getActivites();
-            for(Activite act:activities)        System.out.println(act.getIdActivity()+"=="+act.getTitre());
-            em.merge(p);
-
-            p.setActivites(new ArrayList<Activite>(activities));
-            em.merge(p);
-
-        }
-    }*/
-	
 	public List<Personne> applyFilter(String nom,String prenom,String activiteTitre){
 
 		HashMap<String, String> parameters = new HashMap<String, String>();
@@ -213,26 +186,32 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 
 	@Override
 	public List<Personne> getFilteredData(Map<String,String> filters, Map<String, String> activiteFilters,int first,int pageSize) {
-		// TODO Auto-generated method stub
+		// On recupere la session hibernate pour appliquer les filtres predifinies 
 		org.hibernate.Session session =em.unwrap(Session.class);
+		// Appliquer les filtres sur la table personnes 
 		applyFilter(session, filters);
-
+		// Si on a pas de filtres sur les activites on fait une requete select all basique sur la table personne 
+		// Sinon on passe pas la table activite pour faire plus rapide et evite de faire une jointure couteuse 
 		if(!activiteFilters.isEmpty()) {
-			
+			// Recuperer une projection de la table activite vers IdPerson on appliquant les filtres sur les activites 
 			List<Long> a = this.activiteDao.getAssociatedPersonne((activiteFilters));
+			// Si aucune acitvite ne satisfait les criteres on retourne null 
 			if(a.size()==0) return null;
+			// Sinon on recupere toutes les pêrsonnes qui ont leur id dans la liste precedentes 
 			CriteriaBuilder cb = em.getCriteriaBuilder();
 			CriteriaQuery<Personne> cq = cb.createQuery(Personne.class);
 			Root<Personne> root = cq.from(Personne.class);
 			CriteriaQuery<Personne> vrai = cq.where(root.get("idPerson").in(a));
-			//Query vrai = em.createQuery("select p from Personne p where p.idPerson in (1,2,3,4,5,6,7,8,9,10) ");
-			//Query vrai = em.createNamedQuery("findAllPersonnesIn");
 			TypedQuery<Personne> allQuery = em.createQuery(vrai);
+			allQuery.setMaxResults(pageSize);
+			allQuery.setFirstResult(first);
 			List<Personne> resultat = allQuery.getResultList();
+			
+			// On desactive les filtres Hibernates 
 			disableFilters(session, filters);
 	        return resultat;
 		}else {
-
+			
 			TypedQuery<Personne> query = em.createNamedQuery("findAllPersonnes",Personne.class);
 			List<Personne> resultList = query.getResultList();
 			disableFilters(session, filters);
@@ -240,47 +219,40 @@ public class PersonnneDaoImpl implements IPersonneDAO {
 			return resultList;
 
 		}
-		//	query.setMaxResults(1000);
 		
 		
 	}
 	@Override
 	public int countAllPersonne(Map<String, String> filters, Map<String, String> activiteFilters) {
-		// TODO Auto-generated method stub
+		// On applique les filtres de personnes dans la session 
 		org.hibernate.Session session =em.unwrap(Session.class);
 		System.out.println("activite Filter vide == "+activiteFilters.isEmpty());
 		applyFilter(session, filters);
 
+// Si on a pas de filtres sur les activites on fait une requete count basique sur la table personne 
+// Sinon on passe pas la table activite pour faire plus rapide et evite de faire une jointure couteuse 
 		if(!activiteFilters.isEmpty()) {
-			
+			// Recuperer les ids de personnes ayant des activites qui match les criteres  
 			List<Long> liste = activiteDao.getAssociatedPersonne(activiteFilters);
+			// Si aucune activite on retourne zero 
 			if(liste.size()==0) return 0;
+			// Sinon on fait une requete sur la table Personne pour appliquer les filtres sur la table personne
 			CriteriaBuilder cb = em.getCriteriaBuilder();
 			CriteriaQuery<Personne> cq = cb.createQuery(Personne.class);
 			CriteriaQuery<Long> vrai = cb.createQuery(Long.class);
 			Root<Personne> root = vrai.from(Personne.class);
 			vrai.select(cb.count(root));
-			
 			vrai.where(root.get("idPerson").in(liste)) ;
-			//Query vrai = em.createQuery("select p from Personne p where p.idPerson in (1,2,3,4,5,6,7,8,9,10) ");
-			//Query vrai = em.createNamedQuery("findAllPersonnesIn");
 			TypedQuery<Long> allQuery = em.createQuery(vrai);
 			Long x = allQuery.getSingleResult();
-			
-			
-			System.out.println("Compte as long with filters " + x);
-
 			disableFilters(session,filters);
 			return x.intValue();
-			
 		}
+		// On fait un count sur la table personne
 		TypedQuery<Long> query = em.createNamedQuery("countAllPersonnes",Long.class);
-		System.out.println("Compte as long without filters " + query.getSingleResult());
 		int intValue = query.getSingleResult().intValue();
 		disableFilters(session, filters);
-
 		return intValue;
-		
 		
 	}
 	

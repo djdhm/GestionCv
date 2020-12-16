@@ -8,7 +8,7 @@
 
 
 <ui:composition template="/template/mylayout.xhtml">
- <ui:param name="connected" value="#{userService.isLoggedIn==true}"/>
+	<ui:param name="connected" value="#{userService.isLoggedIn==true}" />
 	<ui:define name="content">
 		<f:view>
 
@@ -32,7 +32,7 @@
 					filteredValue="#{searchView.filteredPersonnes}">
 					<f:facet name="header">
 						<p:outputPanel>
-							<h:outputText value="Search all fields:" />
+							<h:outputText value="Description d'activites" />
 							<p:inputText id="descriptionFilter" style="width:150px"
 								placeholder="Type Activite"
 								valueChangeListener="#{searchView.setDescriptionFilter}">
@@ -102,18 +102,21 @@
 
 
 				</p:dataTable>
-					<p:blockUI block="form" trigger="generator">
+				<p:blockUI block="form" trigger="generator">
         LOADING<br />
 					<p:graphicImage name="images/ajaxloadingbar.gif" />
 				</p:blockUI>
-							<p:panelGrid  columns="3">
-								
-								<p:outputLabel> Nombre de donnees a generer :  </p:outputLabel>
-								<p:inputNumber value="#{searchView.nombre}" >  </p:inputNumber>
-								     <p:commandButton action="#{searchView.genererData}"  id="generator" value="Generer" update="form" oncomplete="PF('personnesTable').filter()" />
-								
-								</p:panelGrid>
-				<p:dialog id="cvPersonne" style="width:60%;max-width:80%;"  
+				<p:panelGrid columns="3">
+
+					<p:outputLabel> Nombre de donnees a generer :  </p:outputLabel>
+					<p:inputNumber value="#{searchView.nombre}">
+					</p:inputNumber>
+					<p:commandButton action="#{searchView.genererData}" id="generator"
+						value="Generer" update="form"
+						oncomplete="PF('personnesTable').filter()" />
+
+				</p:panelGrid>
+				<p:dialog id="cvPersonne" style="width:60%;max-width:80%;"
 					header="CV de #{searchView.selectedPersonne.nom} #{searchView.selectedPersonne.prenom}"
 					widgetVar="carDialog" modal="true" showEffect="fade"
 					hideEffect="fade" resizable="false">
@@ -121,35 +124,42 @@
 						<h:outputText value="Id de la personne:" />
 						<h:outputText value="#{searchView.selectedPersonne.idPerson}" />
 						<br />
-						<p:panelGrid columns="2" styleClass="ui-noborder" style="margin-right: auto;">
-							
+						<p:panelGrid columns="2" styleClass="ui-noborder"
+							style="margin-right: auto;">
+
 							<h:outputText value="Nom : " />
-							<h:outputText value="#{searchView.selectedPersonne.nom}" />				
+							<h:outputText value="#{searchView.selectedPersonne.nom}" />
 							<h:outputText value="Prenom : " />
-							<h:outputText value="#{searchView.selectedPersonne.prenom}" />				
+							<h:outputText value="#{searchView.selectedPersonne.prenom}" />
 							<h:outputText value="Date de naissance : " />
-							<h:outputText value="#{searchView.selectedPersonne.dateNaissance}">
-							  <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+							<h:outputText
+								value="#{searchView.selectedPersonne.dateNaissance}">
+								<f:convertDateTime type="date" pattern="dd-MM-yyyy" />
 							</h:outputText>
-							
+
 							<h:outputText value="Email : " />
 							<h:outputLink value="mailto:#{searchView.selectedPersonne.email}">
-							    <f:param name="subject" value="Votre CV nous plait " />
-							    <f:param name="body" value="Voulez vous faire un stage chez nous !!" />
-							    <h:outputText value="#{searchView.selectedPersonne.email}" />
+								<f:param name="subject" value="Votre CV nous plait " />
+								<f:param name="body"
+									value="Voulez vous faire un stage chez nous !!" />
+								<h:outputText value="#{searchView.selectedPersonne.email}" />
 							</h:outputLink>
-									
+
 							<h:outputText value="Site Web : " />
-							<h:outputLink value="http://#{searchView.selectedPersonne.siteweb}" target="_blank"> 
-							  <i class="icon-external-link"></i> 
+							<h:outputLink
+								value="http://#{searchView.selectedPersonne.siteweb}"
+								target="_blank">
+								<i class="icon-external-link"></i> 
 							  #{searchView.selectedPersonne.siteweb}
 							</h:outputLink>
-						
-						
+
+
 						</p:panelGrid>
-<h2>Activités</h2>
-						<p:dataTable var="a" value="#{searchView.selectedPersonneActivites}" emptyMessage="Aucune activites renseigne pour cette personne">
-						
+						<h2>Activités</h2>
+						<p:dataTable var="a"
+							value="#{searchView.selectedPersonneActivites}"
+							emptyMessage="Aucune activites renseigne pour cette personne">
+
 							<p:column headerText="Titre">
 								<h:outputText value="#{a.titre}" />
 							</p:column>
@@ -157,7 +167,7 @@
 							<p:column headerText="Année">
 								<h:outputText value="#{a.annee}" />
 							</p:column>
-							
+
 							<p:column headerText="Nature">
 								<h:outputText value="#{a.nature}" />
 							</p:column>
@@ -171,7 +181,9 @@
 							</p:column>
 						</p:dataTable>
 						<h2>Cooptations</h2>
-						<p:dataTable var="a" value="#{searchView.selectedPersonneCooptations}" emptyMessage="Aucune cooptation renseigne pour cette personne">>
+						<p:dataTable var="a"
+							value="#{searchView.selectedPersonneCooptations}"
+							emptyMessage="Aucune cooptation renseigne pour cette personne">>
 						
 							<p:column headerText="Nom">
 								<h:outputText value="#{a.nom}" />
@@ -180,15 +192,15 @@
 							<p:column headerText="Prenom">
 								<h:outputText value="#{a.prenom}" />
 							</p:column>
-							
+
 							<p:column headerText="email">
 								<h:outputText value="#{a.email}" />
 							</p:column>
 
-							
-						</p:dataTable> 
-						
-			
+
+						</p:dataTable>
+
+
 					</p:outputPanel>
 				</p:dialog>
 
