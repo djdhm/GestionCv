@@ -120,7 +120,7 @@ public class GuestServiceTest extends BaseJunit5{
 		Long filtredSize = personnneList
 								.stream()
 								.filter(p->{
-									List<Activite> activities = p.getActivites();
+									List<Activite> activities = guestService.getPersonneActivites(p);
 									return activities.stream().anyMatch(a->{
 										return a.getNature()==NatureActivite.valueOf(nature);
 									});
@@ -132,7 +132,7 @@ public class GuestServiceTest extends BaseJunit5{
 		filtredSize = personnneList
 				.stream()
 				.filter(p->{
-					List<Activite> activities = p.getActivites();
+					List<Activite> activities = guestService.getPersonneActivites(p);
 					return activities.stream().anyMatch(a->{
 						return  StringUtils.containsIgnoreCase(a.getDescription(),description) 
 								&&

@@ -7,8 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Date;
 
 import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.github.javafaker.Faker;
@@ -50,7 +53,10 @@ public class UserServiceTest extends BaseJunit5{
 	//
 	
 	/*test authentification*/
-	
+	@AfterEach
+	public void disconnect() {
+		
+	}
 	@Test //Test OK
 	public void testLoginSuccess() {
 		final String TEST_EMAIL_COM = "test@email.com";
