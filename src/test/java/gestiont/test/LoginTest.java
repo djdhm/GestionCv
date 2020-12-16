@@ -6,10 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Date;
 
-import javax.ejb.EJB;
 import javax.inject.Inject;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import gestion.dao.IPersonneDAO;
@@ -59,7 +57,7 @@ public class LoginTest  extends BaseJunit5 {
 	@Test
 	public void testIllegalAccess() {
 		assertThrows(AccessInterditException.class, () -> {
-			 userService.addPersonne(new Personne());
+			 userService.addCooptation(new Personne());
 			 
 		 });
 		assertThrows(AccessInterditException.class, () -> {

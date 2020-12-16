@@ -38,10 +38,7 @@ public class GuestService {
 		// Tu peux ennlever les commentaire et choisir laa taaille des donneess 
 		
 		
-		for(int i=0;i<5;i++) {
-			personneDAO.savePersonne(Personne.randomPersonne());
-			
-		}
+	
 		
 	}
 	
@@ -80,6 +77,14 @@ public class GuestService {
 		// TODO Auto-generated method stub
 		return (this.personneDAO.getPersonneByEmail(email)!=null);
 		
+	}
+
+	public void generateDate(int nombre) {
+		// TODO Auto-generated method stub
+		for(int i=0;i<nombre	;i++) {
+			personneDAO.savePersonne(Personne.randomPersonne());
+			
+		}
 	}
 
 	

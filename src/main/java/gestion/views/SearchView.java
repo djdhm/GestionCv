@@ -34,7 +34,6 @@ public class SearchView implements Serializable {
 	private List<Personne> filteredPersonnes;
 	private Personne selectedPersonne;
 	private LazyPersonneDataModel lazyListePersonne;
-
 	private NatureActivite typeActiviteFilter;
 	
 	public List<Personne> getFilteredPersonnes() {
@@ -62,6 +61,7 @@ public class SearchView implements Serializable {
 		//listePersonnes = guestService.getAllPersonnes();
 		System.out.println("Recuperer les personnne caa prends du tempss...s");
 		lazyListePersonne = new LazyPersonneDataModel(guestService);	
+		
 	}
 
 	public void setActivityFilter(ValueChangeEvent	 event) {
@@ -200,4 +200,23 @@ public class SearchView implements Serializable {
 
 
 	}
+	
+	private int nombre; 
+	
+	
+	public void genererData() {
+		System.out.println(nombre);
+		if(nombre > 0) 	guestService.generateDate(nombre);
+	}
+
+
+	public int getNombre() {
+		return nombre;
+	}
+
+
+	public void setNombre(int nombre) {
+		this.nombre = nombre;
+	}
+	
 }

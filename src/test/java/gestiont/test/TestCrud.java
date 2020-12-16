@@ -2,22 +2,18 @@ package gestiont.test;
 
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.inject.Inject;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import gestiont.test.BaseJunit5;
 import gestion.dao.IPersonneDAO;
-import gestion.entities.Activite;
-import gestion.entities.NatureActivite;
 import gestion.entities.Personne;
-import gestion.services.AccessInterditException;
+import gestion.services.GuestService;
 import gestion.services.UserService;
 
 public class TestCrud extends BaseJunit5 {
@@ -25,6 +21,9 @@ public class TestCrud extends BaseJunit5 {
 	
 	@Inject 
 	UserService userService;
+	
+	@Inject 
+	GuestService guestService;
 	
 	@Inject
 	IPersonneDAO personneDao;
@@ -58,10 +57,10 @@ public class TestCrud extends BaseJunit5 {
 		Personne p2 = new Personne("test","test","siteweb.com","ggg@allo.fr","password", new Date());
 		Personne p3 = new Personne("test","test","siteweb.com","hhh@allo.fr","password", new Date());
 
-		try {
-			userService.addPersonne(p1);
-			userService.addPersonne(p2);
-			userService.addPersonne(p3);
+		
+			guestService.signup(p1);
+			guestService.signup(p2);
+			guestService.signup(p3);
 
 			Personne pDb = personneDao.getPersonById(p1.getIdPerson());
 			assert(pDb.getIdPerson()==p1.getIdPerson());
@@ -69,10 +68,7 @@ public class TestCrud extends BaseJunit5 {
 
 
 			
-		} catch (AccessInterditException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 	}
 	
 	
